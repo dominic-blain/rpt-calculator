@@ -12,11 +12,13 @@
     <script defer src="/__/firebase/5.3.0/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/5.3.0/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.3.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/5.3.0/firebase-firestore.js"></script>
     <script defer src="/__/firebase/5.3.0/firebase-messaging.js"></script>
     <script defer src="/__/firebase/5.3.0/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
+    <!-- JQuery -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
   </head>
   <body>
@@ -29,7 +31,7 @@
       <header class="card-day--title">Day 1</header>
       <main>
         <!-- Deadlift -->
-        <div class="card-exercise js-exercise" data-id="deadlift" data-goal="6" data-sets="2" data-breakdown="0.1" data-record="185">
+        <div class="card-exercise js-exercise" data-exercise="deadlift" data-goal="6" data-sets="2" data-breakdown="0.1" data-record="185">
           <header class="card-exercise--title">Deadlift <span class="card-exercise--goal">Goal: 6</span></header>
           <div class="card-set js-set" data-set="1">
             <div class="card-set--input-ctn card-set--reps js-reps">
@@ -53,7 +55,7 @@
           </div>
         </div>
         <!-- Overhead press -->
-        <div class="card-exercise js-exercise" data-id="overhead-press" data-goal="8" data-sets="3" data-breakdown="0.05" data-record="75">
+        <div class="card-exercise js-exercise" data-exercise="overhead-press" data-goal="8" data-sets="3" data-breakdown="0.05" data-record="75">
           <header class="card-exercise--title">Overhead press <span class="card-exercise--goal">Goal: 8</span></header>
           <div class="card-set js-set" data-set="1">
             <div class="card-set--input-ctn card-set--reps js-reps">
@@ -87,7 +89,7 @@
           </div>
         </div>
         <!-- Pressdown -->
-        <div class="card-exercise js-exercise" data-id="pressdown" data-goal="10" data-sets="2" data-breakdown="0.1" data-record="70">
+        <div class="card-exercise js-exercise" data-exercise="pressdown" data-goal="10" data-sets="2" data-breakdown="0.1" data-record="70">
           <header class="card-exercise--title">Pressdown <span class="card-exercise--goal">Goal: 10</span></header>
           <div class="card-set js-set" data-set="1">
             <div class="card-set--input-ctn card-set--reps js-reps">
@@ -119,7 +121,7 @@
       <header class="card-day--title">Day 2</header>
       <main>
         <!-- Bench press -->
-        <div class="card-exercise js-exercise" data-id="bench-press" data-goal="8" data-sets="3" data-breakdown="0.1" data-record="">
+        <div class="card-exercise js-exercise" data-exercise="bench-press" data-goal="8" data-sets="3" data-breakdown="0.1" data-record="">
           <header class="card-exercise--title">Bench press <span class="card-exercise--goal">Goal: 8</span></header>
           <div class="card-set js-set" data-set="1">
             <div class="card-set--input-ctn card-set--reps js-reps">
@@ -153,7 +155,7 @@
             </div>
         </div>
         <!-- Row -->
-        <div class="card-exercise js-exercise" data-id="row" data-goal="8" data-sets="3" data-breakdown="0.1" data-record="">
+        <div class="card-exercise js-exercise" data-exercise="row" data-goal="8" data-sets="3" data-breakdown="0.1" data-record="">
           <header class="card-exercise--title">Row <span class="card-exercise--goal">Goal: 8</span></header>
           <div class="card-set js-set" data-set="1">
             <div class="card-set--input-ctn card-set--reps js-reps">
@@ -187,7 +189,7 @@
             </div>
         </div>
         <!-- Curls -->
-        <div class="card-exercise js-exercise" data-id="curls" data-goal="10" data-sets="2" data-breakdown="0.1" data-record="">
+        <div class="card-exercise js-exercise" data-exercise="curls" data-goal="10" data-sets="2" data-breakdown="0.1" data-record="">
           <header class="card-exercise--title">Curls <span class="card-exercise--goal">Goal: 10</span></header>
           <div class="card-set js-set" data-set="1">
             <div class="card-set--input-ctn card-set--reps js-reps">
@@ -221,14 +223,44 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
 
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-        }
+        const db = firebase.firestore();
+        const settings = {timestampsInSnapshots: true}
+        db.settings(settings);
+
+        var completeDay = function () {
+          var logs = db.batch();
+          var day = $(this).closest('.js-day');
+          var exercises = day.find('.js-exercise');
+          exercises.each(function () {
+            var exercise = $(this);
+            var sets = exercise.find('.js-set');
+            sets.each(function () {
+              var set = $(this);
+              var reps = parseInt(set.find('.js-reps input').val()) || 0;
+              var weight = parseInt(set.find('.js-weight input').val()) || 0;
+              var logRef = db.collection('logs').doc(); 
+              console.log(logRef);
+              logs.set(logRef, {
+                timestamp: new Date(),
+                user: 1,
+                set: set.data('set') || 0,
+                exercise: exercise.data('exercise') || 0,
+                day: day.data('day') || 0,
+                program: 1,
+                reps: reps,
+                weight: weight
+              });
+            });
+          });
+
+          logs.commit().then(function (data) {
+            console.log(data);
+          });
+          
+        };
+
+        $('.js-button-done').on('click', completeDay);
+
       });
     </script>
   </body>
