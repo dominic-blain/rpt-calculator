@@ -1,6 +1,8 @@
 html, body {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
     font-weight: 300;
+    margin: 0;
+    padding: 0;
 }
 
 .module-day-list {
@@ -9,8 +11,23 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    
+}
+
+.module-day-list--grid {
+    display: flex;
+    margin-top: -28px;
+    margin-left: -28px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding: 42px;
+    box-sizing: border-box;
+}
+
+.module-day-list--grid-item {
+    padding-top: 28px;
+    padding-left: 28px;
+    flex-shrink: 0;
 }
 
 .card-day {
