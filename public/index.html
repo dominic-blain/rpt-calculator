@@ -329,48 +329,52 @@
         
 
     <script>
+      var completeDay = function () {
+        var logs = db.batch(),
+            day = $(this).closest('.js-day'),
+            exercises = day.find('.js-exercise');
+
+        exercises.each(function () {
+          var exercise = $(this),
+              sets = exercise.find('.js-set');
+
+          sets.each(function () {
+            var set = $(this),
+                reps = parseInt(set.find('.js-reps input').val()) || 0,
+                weight = parseInt(set.find('.js-weight input').val()) || 0,
+                logRef = db.collection('logs').doc(); 
+            
+            if (weight && reps) {
+              console.log('Adding set to batch '+ reps +' x '+ weight);
+              logs.set(logRef, {
+                timestamp: new Date(),
+                user: 1,
+                set: set.data('set') || 0,
+                exercise: exercise.data('exercise') || 0,
+                day: day.data('day') || 0,
+                program: 1,
+                reps: reps,
+                weight: weight
+              });
+            }
+            else {
+              console.log('No action taken, set is empty');
+            }
+          });
+        });
+
+        logs.commit().then(function () {
+          console.log('Data has been saved!');
+        });
+        
+      };
+
+
       document.addEventListener('DOMContentLoaded', function() {
 
-        const db = firebase.firestore();
-        const settings = {timestampsInSnapshots: true}
+        const db = firebase.firestore(),
+              settings = {timestampsInSnapshots: true};
         db.settings(settings);
-
-        var completeDay = function () {
-          var logs = db.batch();
-          var day = $(this).closest('.js-day');
-          var exercises = day.find('.js-exercise');
-          exercises.each(function () {
-            var exercise = $(this);
-            var sets = exercise.find('.js-set');
-            sets.each(function () {
-              var set = $(this);
-              var reps = parseInt(set.find('.js-reps input').val()) || 0;
-              var weight = parseInt(set.find('.js-weight input').val()) || 0;
-              var logRef = db.collection('logs').doc(); 
-              if (weight && reps) {
-                console.log('Adding set to batch '+ reps +' x '+ weight);
-                logs.set(logRef, {
-                  timestamp: new Date(),
-                  user: 1,
-                  set: set.data('set') || 0,
-                  exercise: exercise.data('exercise') || 0,
-                  day: day.data('day') || 0,
-                  program: 1,
-                  reps: reps,
-                  weight: weight
-                });
-              }
-              else {
-                console.log('No action taken, set is empty');
-              }
-            });
-          });
-
-          logs.commit().then(function () {
-            console.log('Data has been saved!');
-          });
-          
-        };
 
         $('.js-button-done').on('click', completeDay);
 
