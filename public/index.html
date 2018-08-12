@@ -329,55 +329,89 @@
         
 
     <script>
-      var completeDay = function () {
-        var logs = db.batch(),
-            day = $(this).closest('.js-day'),
-            exercises = day.find('.js-exercise');
-
-        exercises.each(function () {
-          var exercise = $(this),
-              sets = exercise.find('.js-set');
-
-          sets.each(function () {
-            var set = $(this),
-                reps = parseInt(set.find('.js-reps input').val()) || 0,
-                weight = parseInt(set.find('.js-weight input').val()) || 0,
-                logRef = db.collection('logs').doc(); 
-            
-            if (weight && reps) {
-              console.log('Adding set to batch '+ reps +' x '+ weight);
-              logs.set(logRef, {
-                timestamp: new Date(),
-                user: 1,
-                set: set.data('set') || 0,
-                exercise: exercise.data('exercise') || 0,
-                day: day.data('day') || 0,
-                program: 1,
-                reps: reps,
-                weight: weight
-              });
-            }
-            else {
-              console.log('No action taken, set is empty');
-            }
-          });
-        });
-
-        logs.commit().then(function () {
-          console.log('Data has been saved!');
-        });
-        
-      };
 
 
       document.addEventListener('DOMContentLoaded', function() {
-
         const db = firebase.firestore(),
               settings = {timestampsInSnapshots: true};
         db.settings(settings);
 
-        $('.js-button-done').on('click', completeDay);
+        var completeDay = function () {
+          var logs = db.batch(),
+              day = $(this).closest('.js-day'),
+              exercises = day.find('.js-exercise');
 
+          exercises.each(function () {
+            var exercise = $(this),
+                sets = exercise.find('.js-set');
+
+            sets.each(function () {
+              var set = $(this),
+                  reps = parseInt(set.find('.js-reps input').val()) || 0,
+                  weight = parseInt(set.find('.js-weight input').val()) || 0,
+                  logRef = db.collection('logs').doc(); 
+              
+              if (weight && reps) {
+                console.log('Adding set to batch '+ reps +' x '+ weight);
+                logs.set(logRef, {
+                  timestamp: new Date(),
+                  user: 1,
+                  set: set.data('set') || 0,
+                  exercise: exercise.data('exercise') || 0,
+                  day: day.data('day') || 0,
+                  program: 1,
+                  reps: reps,
+                  weight: weight
+                });
+              }
+              else {
+                console.log('No action taken, set is empty');
+              }
+            });
+          });
+
+          logs.commit().then(function () {
+            console.log('Data has been saved!');
+          });
+          
+        };
+
+        var populatePlaceholders = function () {
+          var sets = $('.js-set');
+          sets.each(function () {
+            var set = $(this),
+                setId = set.data('set'),
+                exerciseId = set.closest('.js-exercise').data('exercise'),
+                dayId = set.closest('.js-day').data('day'),
+                reps = set.find('.js-reps input'),
+                weight = set.find('.js-weight input'),
+                logsRef = db.collection('logs'),
+                logQuery = logsRef
+                          .where('day', '==', dayId)
+                          .where('exercise', '==', exerciseId)
+                          .where('set', '==', setId)
+                          .orderBy('timestamp', 'desc')
+                          .limit(1);
+            logQuery.get().then(function (logSnapshot) {
+              logSnapshot.forEach(function(log) {
+                var data = log.data(),
+                    repsVal = data.reps,
+                    weightVal = data.weight;
+                reps.attr('placeholder', repsVal);
+                weight.attr('placeholder', weightVal);
+              });
+            }).catch(function(error) {
+              console.log("Error getting log:", error);
+            }); 
+          });
+        };
+
+        var init = function () {
+          populatePlaceholders();
+          $('.js-button-done').on('click', completeDay);
+        };
+
+        init();
       });
     </script>
   </body>
