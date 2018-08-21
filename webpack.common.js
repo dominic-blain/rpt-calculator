@@ -16,15 +16,26 @@ const common = {
   },
   module: {
     rules: [
+      // Javascript
       {
         test: /\.js$/,
         exclude: [nodeModulesPath],
         use: 'babel-loader'
       },
+      // HTML
       {
         test: /\.html$/,
         use: 'html-loader'
-      }
+      },
+      // Less
+			{
+				test: /\.less$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					'less-loader'
+				]
+			},
     ]
   },
   plugins: [

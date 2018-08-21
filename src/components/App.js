@@ -1,7 +1,8 @@
 import React from 'react';
 import ActionCreators from '../actions/ActionCreators';
-import store from '../store/store.js';
+import store from '../store/store';
 import Program from './Program';
+import Loading from './Loading/Loading';
 
 class App extends React.Component {
     componentWillMount() {
@@ -10,7 +11,11 @@ class App extends React.Component {
 
     render() {
         return (
-            <Program />
+            <main className="app">
+                <Loading />
+                <Program />
+            </main>
+            
         );
     }
 }

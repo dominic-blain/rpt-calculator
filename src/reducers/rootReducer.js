@@ -17,6 +17,12 @@ const rootReducer = (state = initialState, action) => {
             return update(state, {
                 currentUser: {$set: action.user}
             });
+        case type.SET_IS_LOADING:
+            return update (state, {
+                ui: {
+                    isLoading: {$set: action.value}
+                }
+            })
         default:
             return state;
     }
