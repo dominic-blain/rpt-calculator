@@ -6,7 +6,7 @@ const inputPath = path.resolve(__dirname, 'src', 'index.js');
 const outputPath = path.resolve(__dirname, 'public');
 const templatePath = path.resolve(__dirname, 'src', 'index.html');
 
-module.exports = {
+const common = {
   entry: {
     main: inputPath
   },
@@ -37,3 +37,5 @@ module.exports = {
     })
   ]
 };
+
+module.exports = common;

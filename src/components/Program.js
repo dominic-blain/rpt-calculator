@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 
 class Program extends React.Component {
     render() {
-        console.log(this.props);
         let user = this.props.user;
-        let userName = `${user.name.first} ${user.name.last}`;
+        let userName = user.name !== undefined ? user.name.first : '';
+        let greetings = (!!userName.length ? 
+            `Hello ${userName}`:
+            'Hello wanderer'
+        );
         return (
-            <h1>Hello {userName}</h1>
+            <h1>{greetings}</h1>
         );
     }
 }
