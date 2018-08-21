@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js --mode development",
-    "build": "webpack --config webpack.prod.js --progress --mode production"
+    "build": "webpack --config webpack.prod.js --progress --mode production",
+    "stage": "npm run build && firebase deploy -P staging",
+    "deploy": "npm run build && firebase deploy"
   },
   "repository": {
     "type": "git",
