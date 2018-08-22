@@ -5,17 +5,15 @@ const initialState = {
     ui: {
         isLoading: true
     },
-    currentUser: {},
-    program: {},
-    days: {},
-    exercises: {}
+    user:  'KJwfM2YjnZmhwK4iaSBb',
+    currentProgram: ''
 };
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
-        case type.SET_CURRENT_USER:
+        case type.SET_CURRENT_PROGRAM:
             return update(state, {
-                currentUser: {$set: action.user}
+                currentProgram: {$set: action.id}
             });
         case type.SET_IS_LOADING:
             return update (state, {

@@ -46,6 +46,8 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "firebase": "^5.4.0"
+    "firebase": "^5.4.0",
+    "react-redux-firebase": "^2.2.0-alpha",
+    "redux-firestore": "^0.5.7"
   }
 }
