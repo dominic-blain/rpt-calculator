@@ -17,7 +17,10 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapFirestoreToProps = (state, props) => [
-    {collection: 'programs', doc: state.currentProgram}
+    {collection: 'programs', doc: 'ZJB69m2N7SaiBmPFQcLf'}
 ];
 
-export default firestoreConnect(mapFirestoreToProps)(Program);
+export default compose(
+    firestoreConnect(mapFirestoreToProps)
+    // connect(mapStateToProps)
+)(Program);
