@@ -6,7 +6,12 @@ const initialState = {
         isLoading: true
     },
     user:  'KJwfM2YjnZmhwK4iaSBb',
-    currentProgram: ''
+    currentProgram: '',
+    firestore: {
+        data: {
+            programs: {}
+        }
+    }
 };
 
 const rootReducer = (state = initialState, action) => {

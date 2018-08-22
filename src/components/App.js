@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ActionCreators from '../actions/ActionCreators';
 import store from '../store/store';
 import Program from './Program';
@@ -13,11 +14,15 @@ class App extends React.Component {
         return (
             <main className="app">
                 <Loading />
-                <Program />
+                <Program programId={this.props.programId} />
             </main>
             
         );
     }
 }
 
-export default App;
+const mapStateToProps = state => ({
+    programId: state.currentProgram
+});
+
+export default connect(mapStateToProps)(App);

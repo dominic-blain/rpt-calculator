@@ -8,13 +8,15 @@ const ActionCreators = {
             const state = getState();
             const userRef = database.collection('users').doc(state.user);
             const loadStart = Date.now() / 1000;
+            
             userRef.get().then(result => {
                 const loadEnd = Date.now() / 1000;
                 const loadDuration = loadEnd - loadStart;
                 const loadMin = 1000;
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
-                user.programId.get().then(result =>{
+
+                user.programId.get().then(result => {
                     if (result.exists) {
                         const program = result.data();
                         dispatch(ActionCreators.setCurrentProgram(program.id));
