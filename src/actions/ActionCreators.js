@@ -37,8 +37,7 @@ const ActionCreators = {
                 }
             }).catch(error => {
                 // Manage error
-                console.log(error);
-                dispatch(ActionCreators.getProgramError());
+                dispatch(ActionCreators.getProgramError(error));
             })
         }
     },
@@ -48,9 +47,10 @@ const ActionCreators = {
             program: program
         }
     },
-    getProgramError() {
+    getProgramError(error) {
         return {
-            type: type.GET_PROGRAM_ERROR
+            type: type.GET_PROGRAM_ERROR,
+            error: error
         }
     },
     getDaysStart(programId) {
