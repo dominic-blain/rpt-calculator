@@ -16,11 +16,15 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
-                dispatch(ActionCreators.getProgramStart(user.program.id));
+                dispatch(ActionCreators.getProgramStart(user.program.id)).then(() => {
+                    setTimeout(() => {
+                        dispatch(ActionCreators.setIsLoading(false));
+                    }, loadTimeout);
+                }).catch(error => {
+                    // Manage error  
+                });
 
-                setTimeout(() => {
-                    dispatch(ActionCreators.setIsLoading(false));
-                }, loadTimeout);
+                
             });
         }
     },
@@ -29,11 +33,11 @@ const ActionCreators = {
             const database = store.firestore;
             const programRef = database.collection('programs').doc(id);
 
-            programRef.get().then(result => {
+            return programRef.get().then(result => {
                 if (result.exists) {
                     const program = result.data();
                     dispatch(ActionCreators.getProgramSuccess(program));
-                    dispatch(ActionCreators.getDaysStart(program.id));
+                    return dispatch(ActionCreators.getDaysStart(program.id));
                 }
             }).catch(error => {
                 // Manage error
@@ -61,13 +65,13 @@ const ActionCreators = {
                 .doc(programId)
                 .collection('days');
 
-            daysRef.get().then(results => {
+            return daysRef.get().then(results => {
                 let days = [];
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const day = result.data();
                         days.push(day);
-                        dispatch(ActionCreators.getExercisesStart(day.id, programId));
+                        return dispatch(ActionCreators.getExercisesStart(day.id, programId));
                     }
                 });
                 dispatch(ActionCreators.getDaysSuccess(days));
@@ -99,7 +103,7 @@ const ActionCreators = {
                 .doc(dayId)
                 .collection('exercises');
 
-            exercisesRef.get().then(results => {
+            return exercisesRef.get().then(results => {
                 let exercises = [];
                 results.docs.forEach(result => {
                     if (result.exists) {
