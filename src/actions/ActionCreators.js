@@ -23,8 +23,6 @@ const ActionCreators = {
                 }).catch(error => {
                     // Manage error  
                 });
-
-                
             });
         }
     },
@@ -70,6 +68,7 @@ const ActionCreators = {
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const day = result.data();
+                        day['programId'] = programId;
                         days.push(day);
                         return dispatch(ActionCreators.getExercisesStart(day.id, programId));
                     }
@@ -108,6 +107,7 @@ const ActionCreators = {
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const exercise = result.data();
+                        exercise['dayId'] = dayId;
                         exercises.push(exercise);
                     }
                 });
