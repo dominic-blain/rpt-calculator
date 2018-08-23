@@ -21,7 +21,7 @@ class Loading extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isLoading: state.ui.isLoading
+    isLoading: state.root.ui.isLoading
 });
 
 export default connect(mapStateToProps)(Loading);

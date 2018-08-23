@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isLoaded } from 'react-redux-firebase';
 
 class Program extends React.Component {
     render() {
@@ -12,15 +12,24 @@ class Program extends React.Component {
     }
 }
 
-const mapStateToProps = (state, props) => ({
-    program: state.firestore.data.programs
-});
+const mapStateToProps = (state, props) => {
+    return ({
+        program: isLoaded(state.firestore.data.programs) ? 
+            state.firestore.data.programs[props.programId] :
+            ''
+    })
+};
 
-const mapFirestoreToProps = (state, props) => [
-    {collection: 'programs', doc: 'ZJB69m2N7SaiBmPFQcLf'}
-];
+const mapFirestoreToProps = props => {
+    let queryArray = [];
+    if (!!props.programId) {
+        queryArray.push({ collection: 'programs', doc: props.programId });
+        queryArray.push({ collection: 'programs', doc: props.programId, subcollections: [{collection: 'days'}] });
+    }
+    return queryArray;
+};
 
 export default compose(
-    firestoreConnect(mapFirestoreToProps)
-    // connect(mapStateToProps)
+    firestoreConnect(mapFirestoreToProps),
+    connect(mapStateToProps)
 )(Program);

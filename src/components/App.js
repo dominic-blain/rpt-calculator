@@ -22,7 +22,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    programId: state.currentProgram
+    programId: state.root.currentProgram
 });
 
 export default connect(mapStateToProps)(App);

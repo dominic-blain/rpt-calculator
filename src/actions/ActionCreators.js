@@ -6,7 +6,7 @@ const ActionCreators = {
         return (dispatch, getState) => {
             const database = store.firestore;
             const state = getState();
-            const userRef = database.collection('users').doc(state.user);
+            const userRef = database.collection('users').doc(state.root.user);
             const loadStart = Date.now() / 1000;
             
             userRef.get().then(result => {

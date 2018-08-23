@@ -27,7 +27,7 @@ const reducers = combineReducers({
 });
 
 const store = createStoreWithFirebase(
-    rootReducer, 
+    reducers, 
     applyMiddleware(
         thunk.withExtraArgument(getFirebase),
         logger
