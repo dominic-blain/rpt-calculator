@@ -6,26 +6,27 @@ const initialState = {
         isLoading: true
     },
     user:  'KJwfM2YjnZmhwK4iaSBb',
-    currentProgram: '',
-    firestore: {
-        data: {
-            programs: {}
-        }
-    }
+    program: {},
+    days: [],
+    exercises: {}
 };
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
-        case type.SET_CURRENT_PROGRAM:
+        case type.GET_PROGRAM_SUCCESS:
+            return update (state, {
+                program: {$set: action.program}
+            });
+        case type.ADD_DAY:
             return update(state, {
-                currentProgram: {$set: action.id}
+                days: {$push: [action.day]}
             });
         case type.SET_IS_LOADING:
             return update (state, {
                 ui: {
                     isLoading: {$set: action.value}
                 }
-            })
+            });
         default:
             return state;
     }

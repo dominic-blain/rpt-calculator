@@ -16,28 +16,76 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
-                user.programId.get().then(result => {
-                    if (result.exists) {
-                        const program = result.data();
-                        dispatch(ActionCreators.setCurrentProgram(program.id));
-                    }
-                    else {
-                        // manage error
-                        console.log('You don\'t have a program yet');
-                    }
-                }).catch(error => {
-                    console.log('Error: ', error);
-                });
+                dispatch(ActionCreators.getProgramStart(user.program.id));
+
                 setTimeout(() => {
                     dispatch(ActionCreators.setIsLoading(false));
                 }, loadTimeout);
             });
         }
     },
-    setCurrentProgram(id) {
+    getProgramStart(id) {
+        return dispatch => {
+            const database = store.firestore;
+            const programRef = database.collection('programs').doc(id);
+
+            programRef.get().then(result => {
+                if (result.exists) {
+                    const program = result.data();
+                    dispatch(ActionCreators.getProgramSuccess(program));
+                    dispatch(ActionCreators.getDaysStart(program.id));
+                }
+            }).catch(error => {
+                // Manage error
+                console.log(error);
+                dispatch(ActionCreators.getProgramError());
+            })
+        }
+    },
+    getProgramSuccess(program) {
         return {
-            type: type.SET_CURRENT_PROGRAM,
-            id: id
+            type: type.GET_PROGRAM_SUCCESS,
+            program: program
+        }
+    },
+    getProgramError() {
+        return {
+            type: type.GET_PROGRAM_ERROR
+        }
+    },
+    getDaysStart(programId) {
+        return dispatch => {
+            const database = store.firestore;
+            const daysRef = database.collection('programs').doc(programId).collection('days');
+
+            daysRef.get().then(results => {
+                results.docs.forEach(result => {
+                    if (result.exists) {
+                        const day = result.data();
+                        dispatch(ActionCreators.addDay(day));
+                    }
+                });
+            }).catch(error => {
+                // Manage error
+                console.log(error);
+                dispatch(ActionCreators.getDaysError());
+            })
+        }
+    },
+    getDaysSuccess() {
+        return {
+            type: type.GET_DAYS_SUCCESS
+        }
+    },
+    getDaysError() {
+        return {
+            type: type.GET_DAYS_ERROR
+        }
+    },
+    addDay(day) {
+        return {
+            type: type.ADD_DAY,
+            day: day
         }
     },
     setIsLoading(value) {
