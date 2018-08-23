@@ -56,30 +56,74 @@ const ActionCreators = {
     getDaysStart(programId) {
         return dispatch => {
             const database = store.firestore;
-            const daysRef = database.collection('programs').doc(programId).collection('days');
+            const daysRef = database
+                .collection('programs')
+                .doc(programId)
+                .collection('days');
 
             daysRef.get().then(results => {
+                let days = [];
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const day = result.data();
-                        dispatch(ActionCreators.addDay(day));
+                        days.push(day);
+                        dispatch(ActionCreators.getExercisesStart(day.id, programId));
                     }
                 });
+                dispatch(ActionCreators.getDaysSuccess(days));
             }).catch(error => {
                 // Manage error
-                console.log(error);
-                dispatch(ActionCreators.getDaysError());
+                dispatch(ActionCreators.getDaysError(error));
             })
         }
     },
-    getDaysSuccess() {
+    getDaysSuccess(days) {
         return {
-            type: type.GET_DAYS_SUCCESS
+            type: type.GET_DAYS_SUCCESS,
+            days: days
         }
     },
-    getDaysError() {
+    getDaysError(error) {
         return {
-            type: type.GET_DAYS_ERROR
+            type: type.GET_DAYS_ERROR,
+            error: error
+        }
+    },
+    getExercisesStart(dayId, programId) {
+        return dispatch => {
+            const database = store.firestore;
+            const exercisesRef = database
+                .collection('programs')
+                .doc(programId)
+                .collection('days')
+                .doc(dayId)
+                .collection('exercises');
+
+            exercisesRef.get().then(results => {
+                let exercises = [];
+                results.docs.forEach(result => {
+                    if (result.exists) {
+                        const exercise = result.data();
+                        exercises.push(exercise);
+                    }
+                });
+                dispatch(ActionCreators.getExercisesSuccess(exercises));
+            }).catch(error => {
+                // Manage error
+                dispatch(ActionCreators.getExercisesError(error));
+            })
+        }
+    },
+    getExercisesSuccess(exercises) {
+        return {
+            type: type.GET_EXERCISES_SUCCESS,
+            exercises: exercises
+        }
+    },
+    getExercisesError(error) {
+        return {
+            type: type.GET_EXERCISES_ERROR,
+            error: error
         }
     },
     addDay(day) {

@@ -8,7 +8,7 @@ const initialState = {
     user:  'KJwfM2YjnZmhwK4iaSBb',
     program: {},
     days: [],
-    exercises: {}
+    exercises: []
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -16,6 +16,14 @@ const rootReducer = (state = initialState, action) => {
         case type.GET_PROGRAM_SUCCESS:
             return update (state, {
                 program: {$set: action.program}
+            });
+        case type.GET_DAYS_SUCCESS:
+            return update (state, {
+                days: {$set: action.days}
+            });
+        case type.GET_EXERCISES_SUCCESS:
+            return update (state, {
+                exercises: {$set: action.exercises}
             });
         case type.ADD_DAY:
             return update(state, {
