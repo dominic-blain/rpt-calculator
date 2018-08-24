@@ -117,7 +117,8 @@ const ActionCreators = {
                     if (result.exists) {
                         const exercise = result.data();
                         exercise['dayId'] = dayId;
-                        dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId)).then(response => {
+                        dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId))
+                        .then(response => {
                             const log = response.log;
                             exercise['goalLog'] = log;
                             exercises.push(exercise);

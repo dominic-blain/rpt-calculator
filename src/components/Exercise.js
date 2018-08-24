@@ -7,6 +7,7 @@ class Exercise extends React.Component {
         const data = this.props.data;
         const name = data.name;
         const sets = data.sets;
+        const goalLog = data.goalLog;
         // const reps = data.reps;
         // const weight = data.weight;
         return (
@@ -19,7 +20,7 @@ class Exercise extends React.Component {
                                 {`${sets} sets`}
                             </span>
                             <span className="exercise-card--goal">
-                                {/* {`${reps} × ${weight} lbs`} */}
+                                {`${goalLog.reps} × ${goalLog.weight} lbs`}
                             </span>
                         </div>
                     </div>
