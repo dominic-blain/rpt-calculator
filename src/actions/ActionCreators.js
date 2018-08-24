@@ -16,7 +16,7 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
-                dispatch(ActionCreators.getProgramStart(user.program.id)).then(() => {
+                dispatch(ActionCreators.getProgram(user.program.id)).then(() => {
                     setTimeout(() => {
                         dispatch(ActionCreators.setIsLoading(false));
                     }, loadTimeout);
@@ -26,8 +26,9 @@ const ActionCreators = {
             });
         }
     },
-    getProgramStart(id) {
+    getProgram(id) {
         return dispatch => {
+            dispatch(ActionCreators.getProgramStart());
             const database = store.firestore;
             const programRef = database.collection('programs').doc(id);
 
@@ -35,13 +36,16 @@ const ActionCreators = {
                 if (result.exists) {
                     const program = result.data();
                     dispatch(ActionCreators.getProgramSuccess(program));
-                    return dispatch(ActionCreators.getDaysStart(program.id));
+                    return dispatch(ActionCreators.getDays(program.id));
                 }
             }).catch(error => {
                 // Manage error
                 dispatch(ActionCreators.getProgramError(error));
             })
         }
+    },
+    getProgramStart() {
+        return { type: type.GET_PROGRAM_START }
     },
     getProgramSuccess(program) {
         return {
@@ -55,8 +59,9 @@ const ActionCreators = {
             error: error
         }
     },
-    getDaysStart(programId) {
+    getDays(programId) {
         return dispatch => {
+            dispatch(ActionCreators.getDaysStart());
             const database = store.firestore;
             const daysRef = database
                 .collection('programs')
@@ -70,7 +75,7 @@ const ActionCreators = {
                         const day = result.data();
                         day['programId'] = programId;
                         days.push(day);
-                        return dispatch(ActionCreators.getExercisesStart(day.id, programId));
+                        return dispatch(ActionCreators.getExercises(day.id, programId));
                     }
                 });
                 dispatch(ActionCreators.getDaysSuccess(days));
@@ -79,6 +84,9 @@ const ActionCreators = {
                 dispatch(ActionCreators.getDaysError(error));
             })
         }
+    },
+    getDaysStart() {
+        return { type: type.GET_DAYS_START }
     },
     getDaysSuccess(days) {
         return {
@@ -92,8 +100,9 @@ const ActionCreators = {
             error: error
         }
     },
-    getExercisesStart(dayId, programId) {
+    getExercises(dayId, programId) {
         return dispatch => {
+            dispatch(ActionCreators.getExercisesStart());
             const database = store.firestore;
             const exercisesRef = database
                 .collection('programs')
@@ -108,7 +117,11 @@ const ActionCreators = {
                     if (result.exists) {
                         const exercise = result.data();
                         exercise['dayId'] = dayId;
-                        exercises.push(exercise);
+                        dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId)).then(response => {
+                            const log = response.log;
+                            exercise['goalLog'] = log;
+                            exercises.push(exercise);
+                        });
                     }
                 });
                 dispatch(ActionCreators.getExercisesSuccess(exercises));
@@ -117,6 +130,9 @@ const ActionCreators = {
                 dispatch(ActionCreators.getExercisesError(error));
             })
         }
+    },
+    getExercisesStart() {
+        return { type: type.GET_EXERCISES_START }
     },
     getExercisesSuccess(exercises) {
         return {
@@ -127,6 +143,50 @@ const ActionCreators = {
     getExercisesError(error) {
         return {
             type: type.GET_EXERCISES_ERROR,
+            error: error
+        }
+    },
+    getGoalLog(exerciseId, dayId, programId) {
+        return dispatch => {
+            dispatch(ActionCreators.getGoalLogStart());
+            const database = store.firestore;
+            const logRef = database
+                .collection('programs')
+                .doc(programId)
+                .collection('days')
+                .doc(dayId)
+                .collection('exercises')
+                .doc(exerciseId)
+                .collection('logs')
+                .where('set', '==', 1)
+                .orderBy('timestamp', 'desc')
+                .limit(1);
+
+            return logRef.get().then(results => {
+                const result = results.docs[0];
+                let log = {};
+                if (result.exists) {
+                    log = result.data();
+                    return dispatch(ActionCreators.getGoalLogSuccess(log));
+                }
+            }).catch(error => {
+                // Manage error
+                dispatch(ActionCreators.getGoalLogError(error));
+            })
+        }
+    },
+    getGoalLogStart() {
+        return { type: type.GET_GOAL_LOG_START }
+    },
+    getGoalLogSuccess(log) {
+        return {
+            type: type.GET_GOAL_LOG_SUCCESS,
+            log: log
+        }
+    },
+    getGoalLogError(error) {
+        return {
+            type: type.GET_GOAL_LOG_ERROR,
             error: error
         }
     },
