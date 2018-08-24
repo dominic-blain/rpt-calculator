@@ -4,11 +4,27 @@ import { connect } from 'react-redux';
 
 class Exercise extends React.Component {
     render() {
-       const exerciseName = this.props.data.name;
+        const data = this.props.data;
+        const name = data.name;
+        const sets = data.sets;
+        // const reps = data.reps;
+        // const weight = data.weight;
         return (
-            <div className="exercise">
-                <h2 className="exercise-name">{exerciseName}</h2>
-            </div>
+            <section className="exercise">
+                <h2 className="exercise-name">{name}</h2>
+                <div className="exercise-card-ctn">
+                    <div className="exercise-card">
+                        <div className="exercise-card--details">
+                            <span className="exercise-card--sets">
+                                {`${sets} sets`}
+                            </span>
+                            <span className="exercise-card--goal">
+                                {/* {`${reps} × ${weight} lbs`} */}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
         )
     }
 }
