@@ -1,35 +1,27 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect, isLoaded } from 'react-redux-firebase';
+import Day from './Day';
 
 class Program extends React.Component {
     render() {
-        const programId = this.props.programId;
+        const days = this.props.days;
+        const daysTemplate = []
+        days.forEach(day => {
+            daysTemplate.push(<Day key={day.id} data={day} />)
+        });
         return (
-            <h1>{`Program ${programId}`}</h1>
+            <div className="program">
+                {daysTemplate}
+            </div>
         )
     }
 }
 
 const mapStateToProps = (state, props) => {
     return ({
-        program: isLoaded(state.firestore.data.programs) ? 
-            state.firestore.data.programs[props.programId] :
-            ''
+        program: state.root.program,
+        days: state.root.days
     })
 };
 
-const mapFirestoreToProps = props => {
-    let queryArray = [];
-    if (!!props.programId) {
-        queryArray.push({ collection: 'programs', doc: props.programId });
-        queryArray.push({ collection: 'programs', doc: props.programId, subcollections: [{collection: 'days'}] });
-    }
-    return queryArray;
-};
-
-export default compose(
-    firestoreConnect(mapFirestoreToProps),
-    connect(mapStateToProps)
-)(Program);
+export default connect(mapStateToProps)(Program);
