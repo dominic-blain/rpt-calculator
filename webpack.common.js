@@ -35,7 +35,7 @@ const common = {
 					'css-loader',
 					'less-loader'
 				]
-			},
+      }
     ]
   },
   plugins: [
