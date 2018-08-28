@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Exercise from './Exercise';
+import Exercise from './Exercise/Exercise';
 
 class Day extends React.Component {
     render() {

@@ -27,13 +27,42 @@ const common = {
         test: /\.html$/,
         use: 'html-loader'
       },
+      // CSS
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          }
+        ]
+      },
       // Less
 			{
 				test: /\.less$/,
 				use: [
-					'style-loader',
-					'css-loader',
-					'less-loader'
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              modules: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]'
+            }
+          },
+          {
+            loader: 'less-loader'
+          },
+          {
+            loader: 'style-resources-loader',
+            options: {
+              patterns: path.resolve(__dirname, 'src/styles/theme/*.less')
+            }
+          }
 				]
       }
     ]

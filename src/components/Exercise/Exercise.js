@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import Day from './Day';
+import styles from './Exercise.less';
 
 class Exercise extends React.Component {
     render() {
@@ -11,18 +11,22 @@ class Exercise extends React.Component {
         // const reps = data.reps;
         // const weight = data.weight;
         return (
-            <section className="exercise">
-                <h2 className="exercise-name">{name}</h2>
-                <div className="exercise-card-ctn">
-                    <div className="exercise-card">
-                        <div className="exercise-card--details">
-                            <span className="exercise-card--sets">
+            <section className={styles.exercise}>
+                <h2 className={styles.name}>{name}</h2>
+                <div className={styles.cardCtn}>
+                    <div className={styles.card}>
+                        <div className={styles.cardDetails}>
+                            <span className={styles.cardSets}>
                                 {`${sets} sets`}
                             </span>
-                            <span className="exercise-card--goal">
+                            <span className={styles.cardGoal}>
                                 {`${goalLog.reps} × ${goalLog.weight} lbs`}
                             </span>
                         </div>
+                        <button className={styles.buttonLogs}>
+                        </button>
+                        <button className={styles.buttonStart}>
+                        </button>
                     </div>
                 </div>
             </section>

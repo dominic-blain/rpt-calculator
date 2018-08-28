@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styles from './styles.less';
+import styles from './Loading.less';
 
 class Loading extends React.Component {
     render() {
         let isLoading = this.props.isLoading;
-        let stateClass = isLoading ? 'is-loading' : '';
-        let classes = `loading ${stateClass}`;
+        let stateClass = isLoading ? styles.isLoading : '';
+        let classes = `${styles.loading} ${stateClass}`;
         return(
             <div className={classes}>
-                <div className="sk-folding-cube">
-                    <div className="sk-cube1 sk-cube"></div>
-                    <div className="sk-cube2 sk-cube"></div>
-                    <div className="sk-cube4 sk-cube"></div>
-                    <div className="sk-cube3 sk-cube"></div>
+                <div className={styles.cube}>
+                    <div className={styles.cubeFace}></div>
+                    <div className={`${styles.cubeFace} ${styles.cubeFace2}`}></div>
+                    <div className={`${styles.cubeFace} ${styles.cubeFace4}`}></div>
+                    <div className={`${styles.cubeFace} ${styles.cubeFace3}`}></div>
                 </div>
             </div>
         );
