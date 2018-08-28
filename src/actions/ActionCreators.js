@@ -119,8 +119,10 @@ const ActionCreators = {
                         exercise['dayId'] = dayId;
                         dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId))
                         .then(response => {
-                            const log = response.log;
-                            exercise['goalLog'] = log;
+                            if (!!response) {
+                                const log = response.log;
+                                exercise['goalLog'] = log;
+                            }
                             exercises.push(exercise);
                         });
                     }

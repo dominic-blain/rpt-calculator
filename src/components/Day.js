@@ -7,7 +7,7 @@ class Day extends React.Component {
         const exercises = this.props.exercises;
         const exercisesTemplate = []
         exercises.forEach(exercise => {
-            exercisesTemplate.push(<Exercise key={exercise.id} data={exercise} />)
+            exercisesTemplate.unshift(<Exercise key={exercise.id} data={exercise} />)
         });
         return (
             <div className="day">

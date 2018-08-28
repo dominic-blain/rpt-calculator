@@ -7,7 +7,10 @@ class Exercise extends React.Component {
         const data = this.props.data;
         const name = data.name;
         const sets = data.sets;
-        const goalLog = data.goalLog;
+        const goalLog = !!data.goalLog ? data.goalLog : {
+            reps: data.goal,
+            weight: 0
+        };
         // const reps = data.reps;
         // const weight = data.weight;
         return (
