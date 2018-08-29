@@ -204,6 +204,12 @@ const ActionCreators = {
             type: type.SET_IS_LOADING,
             value: value
         }
+    },
+    setActiveExercise(id) {
+        return {
+            type: type.SET_ACTIVE_EXERCISE,
+            id: id
+        }
     }
 };
 

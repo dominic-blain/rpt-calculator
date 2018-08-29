@@ -1,6 +1,6 @@
 .exercise {
     color: @main-text;
-    margin: @unit-5 @unit-3
+    margin: @unit-10 @unit-3
 }
 
 .name {
@@ -9,17 +9,34 @@
 }
 
 .cardCtn {
+    padding-bottom: @unit-15;
+    position: relative;
+    background-color: @white;
+    .box-shadow-main;
+    transition: padding-bottom @duration-faster @ease-out-standard;
     
+    // ~> IS ACTIVE
+    .exercise.isActive & {
+        padding-bottom: @golden-padding-bottom;
+    }
 }
 
 .card {
-    height: @unit-15;
-    min-height: 50px;
+    height: 100%;
+    position: absolute;
     width: 100%;
-    background-color: @white;
     display: flex;
     align-items: center;
-    .box-shadow-main;
+    transition: @duration-faster @ease-out-standard;
+    transition-property: opacity, visibility;
+    transition-delay: 0ms;
+
+    // ~> IS ACTIVE
+    .exercise.isActive & {
+        opacity: 0;
+        visibility: hidden;
+        transition-delay: 0ms, @duration-faster;
+    }
 }
 
 .cardDetails {
@@ -50,5 +67,97 @@
 
 .buttonStart {
     .button;
+    background-color: @accent-reversed-fill;
+}
+
+.cardActive {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: @duration-faster @ease-out-standard;
+    transition-property: opacity, visibility;
+
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0ms, @duration-faster;
+
+    // ~> IS ACTIVE
+    .exercise.isActive & {
+        transition-delay: 0ms;
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.cardSet {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0ms, @duration-faster;
+
+    // ~> IS ACTIVE
+    &.isActive {
+        transition-delay: 0ms;
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.goalBox {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.setReps {
+    .font--title-big;
+}
+
+.setWeight {
+    .font--title-small;
+    color: @accent-text;
+}
+
+.setButtons {
+    display: flex;
+    flex-wrap: wrap;
+    width: 39.3103448%;
+}
+
+.buttonSet {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .font--label-big;
+}
+
+.buttonPlus {
+    .buttonSet;
+    background-color: @main-fill-darker;
+}
+
+.buttonMinus {
+    .buttonSet;
+    background-color: @main-fill;
+}
+
+.buttonNextSet {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: @accent-reversed-fill;
 }

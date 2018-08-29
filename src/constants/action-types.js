@@ -16,3 +16,4 @@ export const GET_GOAL_LOG_SUCCESS = 'get goal log success';
 export const GET_GOAL_LOG_ERROR = 'get goal log error';
 export const ADD_DAY = 'add day';
 export const SET_IS_LOADING = 'set is loading';
+export const SET_ACTIVE_EXERCISE = 'set active exercise';
