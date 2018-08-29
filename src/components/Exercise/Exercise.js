@@ -83,7 +83,7 @@ class Exercise extends React.Component {
                         <button 
                             className={styles.buttonStart}
                             onClick={this.handleButtonStartClick}>
-                        🏋️
+                        💪
                         </button>
                     </div>
                     <div className={styles.cardActive}>
