@@ -34,13 +34,16 @@ class Exercise extends React.Component {
         for (let setCount = 1; setCount <= sets; setCount++) {
             const setWeight = goalLog.weight * (1 - breakdown * setCount); 
             const isSetActive = setCount == activeSet && isActive;
+            const offsetX = (setCount - activeSet) * 100;
+            const inlineStyle = {transform: `translateX(${offsetX}%)`}
 
             setsTemplate.push(
                <Set
                     key={setCount}
                     goalLog={goalLog}
                     weight={setWeight}
-                    isActive={isSetActive}  
+                    isActive={isSetActive}
+                    inlineStyle={inlineStyle}
                 />
             );
         }
@@ -69,7 +72,7 @@ class Exercise extends React.Component {
                         💪
                         </button>
                     </div>
-                    <div className={styles.cardActive}>
+                    <div className={styles.setsCtn}>
                         {setsTemplate}
                     </div>
                 </div>

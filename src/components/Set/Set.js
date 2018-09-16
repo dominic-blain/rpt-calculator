@@ -6,11 +6,12 @@ class Set extends React.Component {
         const goalLog = this.props.goalLog;
         const weight = this.props.weight;
         const isActive = this.props.isActive;
+        const inlineStyle = this.props.inlineStyle;
         const setStyles = 
                 styles.cardSet +' '+
                 (isActive ? styles.isActive : '');
         return (
-            <div className={setStyles}>
+            <div className={setStyles} style={inlineStyle}>
                 <div className={styles.goalBox}>
                     <div className={styles.setReps}>
                         {goalLog.reps}

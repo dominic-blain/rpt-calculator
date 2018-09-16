@@ -8,7 +8,9 @@
 
     opacity: 0;
     visibility: hidden;
-    transition-delay: 0ms, @duration-faster;
+    transition-property: transform, opacity, visibility;
+    transition-duration: @duration-faster, @duration-faster, 0ms;
+    transition-delay: 0ms, 0ms, @duration-faster;
 
     // ~> IS ACTIVE
     &.isActive {
