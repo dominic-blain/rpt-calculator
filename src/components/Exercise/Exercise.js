@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './Exercise.less';
 import ActionCreators from '../../actions/ActionCreators';
+import Set from '../Set/Set';
 
 class Exercise extends React.Component {
     constructor(props) {
@@ -32,33 +33,15 @@ class Exercise extends React.Component {
         var setsTemplate = []
         for (let setCount = 1; setCount <= sets; setCount++) {
             const setWeight = goalLog.weight * (1 - breakdown * setCount); 
-            const isSetActive = setCount == activeSet;
-            const setStyles = 
-                styles.cardSet +' '+
-                (isSetActive && isActive ? styles.isActive : '');
+            const isSetActive = setCount == activeSet && isActive;
 
             setsTemplate.push(
-                <div key={setCount} className={setStyles}>
-                    <div className={styles.goalBox}>
-                        <div className={styles.setReps}>
-                            {goalLog.reps}
-                        </div>
-                        <div className={styles.setWeight}>
-                            {`${setWeight} lbs`}
-                        </div>
-                    </div>
-                    <div className={styles.setButtons}>
-                        <div className={styles.buttonMinus}>
-                        –
-                        </div>
-                        <div className={styles.buttonPlus}>
-                        +
-                        </div>
-                        <div className={styles.buttonNextSet}>
-                        🏋️
-                        </div>
-                    </div>
-                </div>
+               <Set
+                    key={setCount}
+                    goalLog={goalLog}
+                    weight={setWeight}
+                    isActive={isSetActive}  
+                />
             );
         }
 
