@@ -1,7 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import ActionCreators from '../../actions/ActionCreators';
 import styles from './Set.less';
 
 class Set extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleButtonNextClick = this.handleButtonNextClick.bind(this);
+    }
+
+    handleButtonNextClick(event) {
+        const nextSetId = this.props.order + 1;
+        this.props.onButtonNextClick(nextSetId);
+    }
+
     render() {
         const goalLog = this.props.goalLog;
         const weight = this.props.weight;
@@ -27,8 +39,10 @@ class Set extends React.Component {
                     <div className={styles.buttonPlus}>
                     +
                     </div>
-                    <div className={styles.buttonNextSet}>
-                    🏋️
+                    <div 
+                        className={styles.buttonNext} 
+                        onClick={this.handleButtonNextClick}>
+                    🏋
                     </div>
                 </div>
             </div>
@@ -36,4 +50,8 @@ class Set extends React.Component {
     }
 }
 
-export default Set;
+const mapDispatchToProps = dispatch => ({
+    onButtonNextClick: id => dispatch(ActionCreators.setActiveSet(id))
+});
+
+export default connect(null, mapDispatchToProps)(Set);

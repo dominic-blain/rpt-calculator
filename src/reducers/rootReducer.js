@@ -43,6 +43,12 @@ const rootReducer = (state = initialState, action) => {
                     activeExercise: {$set: action.id}
                 }
             });
+        case type.SET_ACTIVE_SET:
+            return update (state, {
+                ui: {
+                    activeSet: {$set: action.id}
+                }
+            });
         default:
             return state;
     }

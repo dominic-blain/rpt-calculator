@@ -40,6 +40,7 @@ class Exercise extends React.Component {
             setsTemplate.push(
                <Set
                     key={setCount}
+                    order={setCount}
                     goalLog={goalLog}
                     weight={setWeight}
                     isActive={isSetActive}

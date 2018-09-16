@@ -210,6 +210,12 @@ const ActionCreators = {
             type: type.SET_ACTIVE_EXERCISE,
             id: id
         }
+    },
+    setActiveSet(id) {
+        return {
+            type: type.SET_ACTIVE_SET,
+            id: id
+        }
     }
 };
 
