@@ -16,7 +16,9 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
-                dispatch(ActionCreators.getProgram(user.program.id)).then(() => {
+                dispatch(ActionCreators.getProgram(user.program.id))
+                .then((program) => {
+                    console.log('PROGRMA', program)
                     setTimeout(() => {
                         dispatch(ActionCreators.setIsLoading(false));
                     }, loadTimeout);
@@ -69,16 +71,20 @@ const ActionCreators = {
                 .collection('days');
 
             return daysRef.get().then(results => {
-                let days = [];
+                const days = [];
+                const daysPromises = [];
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const day = result.data();
                         day['programId'] = programId;
                         days.push(day);
-                        return dispatch(ActionCreators.getExercises(day.id, programId));
+                        daysPromises.push(dispatch(ActionCreators.getExercises(day.id, programId)));
                     }
                 });
-                dispatch(ActionCreators.getDaysSuccess(days));
+                return Promise.all(daysPromises).then(() => {
+                    dispatch(ActionCreators.getDaysSuccess(days));
+                });
+                
             }).catch(error => {
                 // Manage error
                 dispatch(ActionCreators.getDaysError(error));
@@ -112,22 +118,27 @@ const ActionCreators = {
                 .collection('exercises');
 
             return exercisesRef.get().then(results => {
-                let exercises = [];
+                const exercises = [];
+                const exercisesPromises = [];
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const exercise = result.data();
                         exercise['dayId'] = dayId;
-                        dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId))
-                        .then(response => {
-                            if (!!response) {
-                                const log = response.log;
-                                exercise['goalLog'] = log;
-                            }
-                            exercises.push(exercise);
-                        });
+                        exercisesPromises.push(
+                            dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId))
+                            .then(response => {
+                                if (!!response) {
+                                    const log = response.log;
+                                    exercise['goalLog'] = log;
+                                }
+                                exercises.push(exercise);
+                            })
+                        );
                     }
                 });
-                dispatch(ActionCreators.getExercisesSuccess(exercises));
+                return Promise.all(exercisesPromises).then(() => {
+                    dispatch(ActionCreators.getExercisesSuccess(exercises));
+                });
             }).catch(error => {
                 // Manage error
                 dispatch(ActionCreators.getExercisesError(error));
