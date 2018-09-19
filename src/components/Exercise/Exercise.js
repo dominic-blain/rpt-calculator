@@ -18,6 +18,7 @@ class Exercise extends React.Component {
     render() {
         const isActive = this.props.isActive;
         const activeSet = this.props.activeSet;
+        const activeExercise = this.props.activeExercise;
         const data = this.props.data;
         const name = data.name;
         const sets = data.sets;
@@ -44,6 +45,7 @@ class Exercise extends React.Component {
                     goalLog={goalLog}
                     weight={setWeight}
                     isActive={isSetActive}
+                    activeExercise={activeExercise}
                     inlineStyle={inlineStyle}
                 />
             );
@@ -87,7 +89,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-    activeSet: state.root.ui.activeSet
+    activeSet: state.root.ui.activeSet,
+    activeExercise: state.root.exercises[state.root.ui.activeExercise]
+    
 });
 
 

@@ -10,8 +10,10 @@ class Set extends React.Component {
     }
 
     handleButtonNextClick(event) {
-        const nextSetId = this.props.order + 1;
-        this.props.onButtonNextClick(nextSetId);
+        const currentExercise = this.props.activeExercise;
+        const maxSet = currentExercise.sets;
+        const nextSet = this.props.order + 1 <= maxSet ? this.props.order + 1 : 1;
+        this.props.onButtonNextClick(nextSet); 
     }
 
     render() {
