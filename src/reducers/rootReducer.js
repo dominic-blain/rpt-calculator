@@ -40,7 +40,8 @@ const rootReducer = (state = initialState, action) => {
         case type.SET_ACTIVE_EXERCISE:
             return update (state, {
                 ui: {
-                    activeExercise: {$set: action.id}
+                    activeExercise: {$set: action.id},
+                    activeSet: {$set: 1}
                 }
             });
         case type.SET_ACTIVE_SET:
