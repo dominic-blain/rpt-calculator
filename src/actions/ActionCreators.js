@@ -17,8 +17,7 @@ const ActionCreators = {
                 const user = result.data();
 
                 dispatch(ActionCreators.getProgram(user.program.id))
-                .then((program) => {
-                    console.log('PROGRMA', program)
+                .then(() => {
                     setTimeout(() => {
                         dispatch(ActionCreators.setIsLoading(false));
                     }, loadTimeout);
