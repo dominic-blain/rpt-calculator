@@ -7,7 +7,8 @@ class Day extends React.Component {
         const exercises = this.props.exercises;
         const activeExercise = this.props.activeExercise;
         const exercisesTemplate = [];
-        exercises.forEach(exercise => {
+        for (const exerciseId in exercises) {
+            const exercise = exercises[exerciseId];
             const isActive = activeExercise == exercise.id;
             exercisesTemplate.unshift(
                 <Exercise 
@@ -16,7 +17,7 @@ class Day extends React.Component {
                     isActive={isActive} 
                 />
             );
-        });
+        }
         return (
             <div className="day">
                 {exercisesTemplate}
@@ -27,7 +28,7 @@ class Day extends React.Component {
 
 const mapStateToProps = (state, props) => {
     return ({
-        exercises: state.root.exercises.filter(exercise => exercise.dayId = props.data.id),
+        exercises: state.root.exercises,
         activeExercise: state.root.ui.activeExercise
     })
 };

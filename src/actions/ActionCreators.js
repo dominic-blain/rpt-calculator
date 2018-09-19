@@ -117,7 +117,7 @@ const ActionCreators = {
                 .collection('exercises');
 
             return exercisesRef.get().then(results => {
-                const exercises = [];
+                const exercises = {};
                 const exercisesPromises = [];
                 results.docs.forEach(result => {
                     if (result.exists) {
@@ -130,7 +130,7 @@ const ActionCreators = {
                                     const log = response.log;
                                     exercise['goalLog'] = log;
                                 }
-                                exercises.push(exercise);
+                                exercises[exercise.id] = exercise;
                             })
                         );
                     }

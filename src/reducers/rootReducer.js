@@ -10,7 +10,7 @@ const initialState = {
     user:  'KJwfM2YjnZmhwK4iaSBb',
     program: {},
     days: [],
-    exercises: []
+    exercises: {}
 };
 
 const rootReducer = (state = initialState, action) => {
