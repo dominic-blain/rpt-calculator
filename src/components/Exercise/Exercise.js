@@ -22,34 +22,31 @@ class Exercise extends React.Component {
         const data = this.props.data;
         const name = data.name;
         const sets = data.sets;
-        const breakdown = data.breakdown;
-        const goalLog = !!data.goalLog ? data.goalLog : {
-            reps: data.goal,
-            weight: 0
-        };
+        const setsData = data.setsData;
+
         const exerciseStyles = 
             styles.exercise +' '+
             (isActive ? styles.isActive : '');
 
         var setsTemplate = []
-        for (let setCount = 1; setCount <= sets; setCount++) {
-            const setWeight = goalLog.weight * (1 - breakdown * setCount); 
-            const isSetActive = setCount == activeSet && isActive;
-            const offsetX = (setCount - activeSet) * 100;
+        setsData.forEach((set, index) => {
+            const order = index + 1;
+            const isSetActive = order == activeSet && isActive;
+            const offsetX = (order - activeSet) * 100;
             const inlineStyle = {transform: `translateX(${offsetX}%)`}
 
             setsTemplate.push(
                <Set
-                    key={setCount}
-                    order={setCount}
-                    goalLog={goalLog}
-                    weight={setWeight}
+                    key={index}
+                    order={order}
+                    reps={set.reps}
+                    weight={set.weight}
                     isActive={isSetActive}
                     activeExercise={activeExercise}
                     inlineStyle={inlineStyle}
                 />
             );
-        }
+        });
 
         // const reps = data.reps;
         // const weight = data.weight;
@@ -63,7 +60,7 @@ class Exercise extends React.Component {
                                 {`${sets} sets`}
                             </span>
                             <span className={styles.cardGoal}>
-                                {`${goalLog.reps} × ${goalLog.weight} lbs`}
+                                {`${setsData[0].reps} × ${setsData[0].weight} lbs`}
                             </span>
                         </div>
                         <button className={styles.buttonLogs}>

@@ -50,6 +50,18 @@ const rootReducer = (state = initialState, action) => {
                     activeSet: {$set: action.id}
                 }
             });
+        case type.SET_REPS:
+            return update (state, {
+                exercises: {
+                    [action.exerciseId]: {
+                        setsData: {
+                            [action.set]: {
+                                reps: {$set: action.reps}
+                            }    
+                        }
+                    }
+                }
+            })
         default:
             return state;
     }

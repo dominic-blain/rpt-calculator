@@ -124,12 +124,10 @@ const ActionCreators = {
                         const exercise = result.data();
                         exercise['dayId'] = dayId;
                         exercisesPromises.push(
-                            dispatch(ActionCreators.getGoalLog(exercise.id, dayId, programId))
+                            dispatch(ActionCreators.getSetsByStrat('rpt', exercise, dayId, programId))
                             .then(response => {
-                                if (!!response) {
-                                    const log = response.log;
-                                    exercise['goalLog'] = log;
-                                }
+                                console.log('RESPONSE', response)
+                                exercise['setsData'] = response;
                                 exercises[exercise.id] = exercise;
                             })
                         );
@@ -159,9 +157,9 @@ const ActionCreators = {
             error: error
         }
     },
-    getGoalLog(exerciseId, dayId, programId) {
+    getLastLog(exerciseId, dayId, programId) {
         return dispatch => {
-            dispatch(ActionCreators.getGoalLogStart());
+            dispatch(ActionCreators.getLastLogStart());
             const database = store.firestore;
             const logRef = database
                 .collection('programs')
@@ -180,27 +178,54 @@ const ActionCreators = {
                 let log = {};
                 if (result.exists) {
                     log = result.data();
-                    return dispatch(ActionCreators.getGoalLogSuccess(log));
+                    return dispatch(ActionCreators.getLastLogSuccess(log));
                 }
             }).catch(error => {
                 // Manage error
-                dispatch(ActionCreators.getGoalLogError(error));
+                dispatch(ActionCreators.getLastLogError(error));
             })
         }
     },
-    getGoalLogStart() {
-        return { type: type.GET_GOAL_LOG_START }
+    getLastLogStart() {
+        return { type: type.GET_LAST_LOG_START }
     },
-    getGoalLogSuccess(log) {
+    getLastLogSuccess(log) {
         return {
-            type: type.GET_GOAL_LOG_SUCCESS,
+            type: type.GET_LAST_LOG_SUCCESS,
             log: log
         }
     },
-    getGoalLogError(error) {
+    getLastLogError(error) {
         return {
-            type: type.GET_GOAL_LOG_ERROR,
+            type: type.GET_LAST_LOG_ERROR,
             error: error
+        }
+    },
+    getSetsByStrat(strategy, exercise, dayId, programId) {
+        return dispatch => {
+            switch(strategy) {
+                case 'rpt':
+                    return dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId))
+                    .then(response => {
+                        if (!!response) {
+                            const log = response.log;
+                            const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
+                            const setCount = exercise.sets;
+                            const sets = [];
+                            
+                            for (let i = 0; i <= setCount; i++) {
+                                const breakdownWeight = startingWeight * (1 - exercise.breakdown * i);
+                                const roundedWeight = Math.floor(breakdownWeight /5) *5;
+                                sets.push({
+                                    reps: log.reps,
+                                    weight: roundedWeight
+                                });
+                            }
+                            console.log('SETS', sets);
+                            return Promise.resolve(sets);
+                        }
+                    });
+            }
         }
     },
     addDay(day) {
@@ -225,6 +250,14 @@ const ActionCreators = {
         return {
             type: type.SET_ACTIVE_SET,
             id: id
+        }
+    },
+    setReps(exerciseId, set, reps) {
+        return {
+            type: type.SET_REPS,
+            exerciseId: exerciseId,
+            set: set,
+            reps: reps
         }
     }
 };
