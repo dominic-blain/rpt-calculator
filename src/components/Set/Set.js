@@ -51,21 +51,27 @@ class Set extends React.Component {
                     </div>
                 </div>
                 <div className={styles.setButtons}>
-                    <div 
+                    <button 
                         className={styles.buttonMinus}
                         onClick={this.handleButtonRemRepClick}>
-                    –
-                    </div>
-                    <div 
+                        <div className={styles.iconCtn}>
+                            –
+                        </div>
+                    </button>
+                    <button 
                         className={styles.buttonPlus}
                         onClick={this.handleButtonAddRepClick}>
-                    +
-                    </div>
-                    <div 
+                        <div className={styles.iconCtn}>
+                            +
+                        </div>                        
+                    </button>
+                    <button 
                         className={styles.buttonNext} 
                         onClick={this.handleButtonNextClick}>
-                    🏋
-                    </div>
+                        <div className={styles.iconCtn}>
+                            🏋
+                        </div>
+                    </button>
                 </div>
             </div>
         );
