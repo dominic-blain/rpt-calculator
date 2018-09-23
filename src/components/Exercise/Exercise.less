@@ -91,3 +91,39 @@
         visibility: visible;
     }
 }
+
+.dotsCtn {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        transform @duration-faster @ease-out-standard 0ms,
+        opacity @duration-faster @ease-out-standard 0ms,
+        visibility 0ms @duration-faster;
+
+    // ~> IS ACTIVE
+    &.isActive {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(100%);
+        transition-delay: 0ms;
+    }
+
+    .dot {
+        margin-top: @unit-2;
+        margin-right: @unit;
+        width: 9px;
+        height: 9px;
+        border-radius: 100%;
+        border: 1px solid @accent-stroke;
+        
+        transition: background-color @duration-faster @ease-out-standard;
+        // ~> IS ACTIVE
+        &.isActive {
+            background-color: @accent-reversed-fill;
+        }
+    }
+}

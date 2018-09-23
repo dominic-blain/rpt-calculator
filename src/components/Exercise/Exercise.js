@@ -27,14 +27,21 @@ class Exercise extends React.Component {
         const exerciseStyles = 
             styles.exercise +' '+
             (isActive ? styles.isActive : '');
+        const dotsCtnStyles = 
+            styles.dotsCtn +' '+
+            (isActive ? styles.isActive : '');
 
-        var setsTemplate = []
+        const setsTemplate = [];
+        const dotsTemplate = [];
         setsData.forEach((set, index) => {
             const order = index + 1;
             const isSetActive = order == activeSet && isActive;
             const offsetX = (order - activeSet) * 100;
             const inlineStyle = {transform: `translateX(${offsetX}%)`}
-
+            const dotStyles = 
+                styles.dot +' '+
+                (isSetActive ? styles.isActive : '');
+            console.log(index, set)
             setsTemplate.push(
                <Set
                     key={index}
@@ -46,10 +53,10 @@ class Exercise extends React.Component {
                     inlineStyle={inlineStyle}
                 />
             );
+            dotsTemplate.push(
+                <div key={index} className={dotStyles}></div>
+            );
         });
-
-        // const reps = data.reps;
-        // const weight = data.weight;
         return (
             <section className={exerciseStyles}>
                 <h2 className={styles.name}>{name}</h2>
@@ -74,6 +81,9 @@ class Exercise extends React.Component {
                     </div>
                     <div className={styles.setsCtn}>
                         {setsTemplate}
+                    </div>
+                    <div className={dotsCtnStyles}>
+                        {dotsTemplate}
                     </div>
                 </div>
             </section>

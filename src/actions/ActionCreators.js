@@ -213,7 +213,7 @@ const ActionCreators = {
                             const setCount = exercise.sets;
                             const sets = [];
                             
-                            for (let i = 0; i <= setCount; i++) {
+                            for (let i = 0; i < setCount; i++) {
                                 const breakdownWeight = startingWeight * (1 - exercise.breakdown * i);
                                 const roundedWeight = Math.floor(breakdownWeight /5) *5;
                                 sets.push({
@@ -221,7 +221,6 @@ const ActionCreators = {
                                     weight: roundedWeight
                                 });
                             }
-                            console.log('SETS', sets);
                             return Promise.resolve(sets);
                         }
                     });
