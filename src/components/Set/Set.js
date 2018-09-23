@@ -14,8 +14,10 @@ class Set extends React.Component {
     handleButtonNextClick(event) {
         const currentExercise = this.props.activeExercise;
         const maxSet = currentExercise.sets;
+        const hasReachedEnd = this.props.order + 1 == maxSet;
         const nextSet = this.props.order + 1 <= maxSet ? this.props.order + 1 : 1;
-        this.props.onButtonNextClick(nextSet); 
+        const nextExercise = this.props.order + 1 > maxSet ? currentExercise.order + 1 : null;
+        this.props.onButtonNextClick(nextSet, nextExercise); 
     }
 
     handleButtonAddRepClick(event) {
@@ -79,7 +81,14 @@ class Set extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onButtonNextClick: id => dispatch(ActionCreators.setActiveSet(id)),
+    onButtonNextClick: (nextSet, nextExercise) => {
+        if (nextExercise != null) {
+            dispatch(ActionCreators.setActiveExercise(nextExercise))
+        }
+        else {
+            dispatch(ActionCreators.setActiveSet(nextSet));
+        }
+    },
     onButtonChangeRepClick: (exerciseId, set, reps) => dispatch(ActionCreators.setReps(exerciseId, set, reps))
 });
 

@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 const initialState = {
     ui: {
         isLoading: true,
-        activeExercise: '',
+        activeExercise: 0,
         activeSet: 1
     },
     user:  'KJwfM2YjnZmhwK4iaSBb',

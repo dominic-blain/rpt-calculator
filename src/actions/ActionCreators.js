@@ -75,9 +75,18 @@ const ActionCreators = {
                 results.docs.forEach(result => {
                     if (result.exists) {
                         const day = result.data();
-                        day['programId'] = programId;
-                        days.push(day);
-                        daysPromises.push(dispatch(ActionCreators.getExercises(day.id, programId)));
+                        day.programId = programId;
+                        day.exercises = [];
+                        daysPromises.push(
+                            dispatch(ActionCreators.getExercises(day.id, programId))
+                            .then(response => {
+                                const exercises = response.exercises;
+                                for (let exerciseId in exercises) {
+                                    day.exercises.unshift(exerciseId);
+                                }
+                                days.push(day);
+                            })
+                        );
                     }
                 });
                 return Promise.all(daysPromises).then(() => {
@@ -126,7 +135,6 @@ const ActionCreators = {
                         exercisesPromises.push(
                             dispatch(ActionCreators.getSetsByStrat('rpt', exercise, dayId, programId))
                             .then(response => {
-                                console.log('RESPONSE', response)
                                 exercise['setsData'] = response;
                                 exercises[exercise.id] = exercise;
                             })
@@ -134,7 +142,7 @@ const ActionCreators = {
                     }
                 });
                 return Promise.all(exercisesPromises).then(() => {
-                    dispatch(ActionCreators.getExercisesSuccess(exercises));
+                    return dispatch(ActionCreators.getExercisesSuccess(exercises));
                 });
             }).catch(error => {
                 // Manage error

@@ -11,8 +11,8 @@ class Exercise extends React.Component {
     }
 
     handleButtonStartClick(event) {
-        const id = this.props.data.id;
-        this.props.onButtonStartClick(id);
+        const order = this.props.data.order;
+        this.props.onButtonStartClick(order);
     }
 
     render() {
@@ -41,7 +41,6 @@ class Exercise extends React.Component {
             const dotStyles = 
                 styles.dot +' '+
                 (isSetActive ? styles.isActive : '');
-            console.log(index, set)
             setsTemplate.push(
                <Set
                     key={index}
@@ -92,12 +91,12 @@ class Exercise extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onButtonStartClick: id => dispatch(ActionCreators.setActiveExercise(id))
+    onButtonStartClick: order => dispatch(ActionCreators.setActiveExercise(order))
 });
 
 const mapStateToProps = state => ({
     activeSet: state.root.ui.activeSet,
-    activeExercise: state.root.exercises[state.root.ui.activeExercise]
+    activeExercise: state.root.exercises[state.root.days[0].exercises[state.root.ui.activeExercise]]
     
 });
 

@@ -9,7 +9,7 @@ class Day extends React.Component {
         const exercisesTemplate = [];
         for (const exerciseId in exercises) {
             const exercise = exercises[exerciseId];
-            const isActive = activeExercise == exercise.id;
+            const isActive = activeExercise == exercise.order;
             exercisesTemplate.unshift(
                 <Exercise 
                     key={exercise.id} 
