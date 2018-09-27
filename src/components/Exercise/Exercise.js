@@ -24,6 +24,8 @@ class Exercise extends React.Component {
         const sets = data.sets;
         const setsData = data.setsData;
 
+        const exerciseCount = this.props.exerciseCount;
+
         const exerciseStyles = 
             styles.exercise +' '+
             (isActive ? styles.isActive : '');
@@ -49,6 +51,7 @@ class Exercise extends React.Component {
                     weight={set.weight}
                     isActive={isSetActive}
                     activeExercise={activeExercise}
+                    exerciseCount={exerciseCount}
                     inlineStyle={inlineStyle}
                 />
             );
@@ -96,7 +99,8 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
     activeSet: state.root.ui.activeSet,
-    activeExercise: state.root.exercises[state.root.days[0].exercises[state.root.ui.activeExercise]]
+    activeExercise: state.root.exercises[state.root.days[0].exercises[state.root.ui.activeExercise]],
+    exerciseCount: state.root.days[0].exercises.length
     
 });
 
