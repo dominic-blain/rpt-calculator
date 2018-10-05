@@ -266,6 +266,56 @@ const ActionCreators = {
             set: set,
             reps: reps
         }
+    },
+    logExercise(exercise) {
+        return (dispatch, getState) => {
+            dispatch(ActionCreators.logExerciseStart());
+            const database = store.firestore;
+            const batch = database.batch();
+            const state = getState();
+            const programId = state.root.program.id;
+            const dayId = exercise.dayId;
+            const logsRef = database.collection('programs').doc(programId)
+                .collection('days').doc(dayId)
+                .collection('exercises').doc(exercise.id)
+                .collection('logs');
+            
+            exercise.setsData.forEach((set, index) => {
+                const logRef = logsRef.doc();
+                batch.set(
+                    logsRef.doc(logRef.id), {
+                       reps: set.reps,
+                       weight: set.weight,
+                       set: index + 1,
+                       timestamp: new Date()
+                    }
+                );
+            });
+
+            batch.commit().then((response) => {
+                dispatch(ActionCreators.logExerciseSuccess(response));
+            }).catch((error) => {
+                dispatch(ActionCreators.logExerciseError(error));
+            });
+            
+
+        }
+    },
+    logExerciseStart() {
+        return {
+            type: type.LOG_EXERCISE_START
+        }
+    },
+    logExerciseSuccess() {
+        return {
+            type: type.LOG_EXERCISE_SUCCESS
+        }
+    },
+    logExerciseError(error) {
+        return {
+            type: type.LOG_EXERCISE_ERROR,
+            error: error
+        }
     }
 };
 

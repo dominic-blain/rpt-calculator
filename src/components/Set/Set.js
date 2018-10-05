@@ -20,6 +20,7 @@ class Set extends React.Component {
         const nextExercise = this.props.order + 1 > maxSet ? currentExercise.order + 1 : null;
         
         if (hasReachedEnd) {
+            this.props.onExerciseEnd();
             if  (nextExercise < exerciseCount) {
                 this.props.onButtonNextClickEnd(nextExercise);
             }

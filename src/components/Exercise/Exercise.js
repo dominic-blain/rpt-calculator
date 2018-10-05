@@ -8,11 +8,16 @@ class Exercise extends React.Component {
     constructor(props) {
         super(props);
         this.handleButtonStartClick = this.handleButtonStartClick.bind(this);
+        this.handleExerciseEnd = this.handleExerciseEnd.bind(this);
     }
 
     handleButtonStartClick(event) {
         const order = this.props.data.order;
         this.props.onButtonStartClick(order);
+    }
+
+    handleExerciseEnd() {
+        this.props.onExerciseEnd(this.props.data);
     }
 
     render() {
@@ -53,6 +58,7 @@ class Exercise extends React.Component {
                     activeExercise={activeExercise}
                     exerciseCount={exerciseCount}
                     inlineStyle={inlineStyle}
+                    onExerciseEnd={this.handleExerciseEnd}
                 />
             );
             dotsTemplate.push(
@@ -94,7 +100,8 @@ class Exercise extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onButtonStartClick: order => dispatch(ActionCreators.setActiveExercise(order))
+    onButtonStartClick: order => dispatch(ActionCreators.setActiveExercise(order)),
+    onExerciseEnd: exercise => dispatch(ActionCreators.logExercise(exercise))
 });
 
 const mapStateToProps = state => ({

@@ -20,3 +20,6 @@ export const SET_ACTIVE_EXERCISE = 'set active exercise';
 export const SET_ACTIVE_SET = 'set active set';
 export const SET_REPS = 'set reps';
 export const GET_SET_BY_START = 'get set by strat';
+export const LOG_EXERCISE_START = 'log exercise start';
+export const LOG_EXERCISE_SUCCESS = 'log exercise success';
+export const LOG_EXERCISE_ERROR = 'log exercise error';
