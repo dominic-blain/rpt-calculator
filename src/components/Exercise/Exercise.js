@@ -21,6 +21,7 @@ class Exercise extends React.Component {
     }
 
     render() {
+        const isCompleted = this.props.isCompleted;
         const isActive = this.props.isActive;
         const activeSet = this.props.activeSet;
         const activeExercise = this.props.activeExercise;
@@ -33,7 +34,8 @@ class Exercise extends React.Component {
 
         const exerciseStyles = 
             styles.exercise +' '+
-            (isActive ? styles.isActive : '');
+            (isActive ? styles.isActive : '') +' '+
+            (isCompleted ? styles.isCompleted : '');
         const dotsCtnStyles = 
             styles.dotsCtn +' '+
             (isActive ? styles.isActive : '');
@@ -86,6 +88,14 @@ class Exercise extends React.Component {
                             onClick={this.handleButtonStartClick}>
                         💪
                         </button>
+                    </div>
+                    <div className={styles.cardCompleted}>
+                        <div className={styles.label}>
+                            Completed
+                        </div>
+                        <div className={styles.icon}>
+                        ✅
+                        </div>
                     </div>
                     <div className={styles.setsCtn}>
                         {setsTemplate}

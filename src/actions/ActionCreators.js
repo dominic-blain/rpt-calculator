@@ -292,8 +292,8 @@ const ActionCreators = {
                 );
             });
 
-            batch.commit().then((response) => {
-                dispatch(ActionCreators.logExerciseSuccess(response));
+            batch.commit().then(() => {
+                dispatch(ActionCreators.logExerciseSuccess(exercise.id));
             }).catch((error) => {
                 dispatch(ActionCreators.logExerciseError(error));
             });
@@ -306,9 +306,10 @@ const ActionCreators = {
             type: type.LOG_EXERCISE_START
         }
     },
-    logExerciseSuccess() {
+    logExerciseSuccess(exerciseId) {
         return {
-            type: type.LOG_EXERCISE_SUCCESS
+            type: type.LOG_EXERCISE_SUCCESS,
+            exerciseId: exerciseId
         }
     },
     logExerciseError(error) {

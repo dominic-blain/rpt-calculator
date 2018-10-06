@@ -61,6 +61,14 @@ const rootReducer = (state = initialState, action) => {
                         }
                     }
                 }
+            });
+        case type.LOG_EXERCISE_SUCCESS:
+            return update(state, {
+                exercises: {
+                    [action.exerciseId]: {
+                        isCompleted: {$set: true}
+                    }
+                }
             })
         default:
             return state;

@@ -71,6 +71,45 @@
     background-color: @accent-reversed-fill;
 }
 
+.cardCompleted {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: @green;
+    transition: @duration-faster @ease-out-standard;
+    transition-property: opacity, visibility;
+
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0ms, @duration-faster;
+
+    // ~> IS COMPLETED
+    .exercise.isCompleted & {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0ms;
+    }
+
+    .label {
+        .font--label;
+        padding: 0 @unit-4;
+        flex-grow: 1;
+    }
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 19.6551724%;
+        height: 100%;
+        box-sizing: border-box;
+        .font--label;
+        background-color: @main-fill-alpha;
+    }
+}
+
 .setsCtn {
     height: 100%;
     position: absolute;
