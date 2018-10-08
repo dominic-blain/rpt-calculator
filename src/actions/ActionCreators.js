@@ -225,7 +225,7 @@ const ActionCreators = {
                                 const breakdownWeight = startingWeight * (1 - exercise.breakdown * i);
                                 const roundedWeight = Math.floor(breakdownWeight /5) *5;
                                 sets.push({
-                                    reps: log.reps,
+                                    reps: exercise.goal,
                                     weight: roundedWeight
                                 });
                             }
@@ -275,11 +275,11 @@ const ActionCreators = {
             const state = getState();
             const programId = state.root.program.id;
             const dayId = exercise.dayId;
-            const logsRef = database.collection('programs').doc(programId)
+            const exerciseRef = database.collection('programs').doc(programId)
                 .collection('days').doc(dayId)
-                .collection('exercises').doc(exercise.id)
-                .collection('logs');
-            
+                .collection('exercises').doc(exercise.id);
+            const logsRef = exerciseRef.collection('logs');
+
             exercise.setsData.forEach((set, index) => {
                 const logRef = logsRef.doc();
                 batch.set(
@@ -290,6 +290,10 @@ const ActionCreators = {
                        timestamp: new Date()
                     }
                 );
+            });
+
+            batch.update(exerciseRef, {
+                isCompleted: true
             });
 
             batch.commit().then(() => {
