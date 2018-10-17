@@ -21,6 +21,7 @@ class Exercise extends React.Component {
     }
 
     render() {
+        
         const isCompleted = this.props.isCompleted;
         const isActive = this.props.isActive;
         const activeSet = this.props.activeSet;

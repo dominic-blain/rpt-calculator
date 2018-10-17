@@ -7,7 +7,7 @@ class Program extends React.Component {
         const days = this.props.days;
         const daysTemplate = []
         days.forEach(day => {
-            daysTemplate.push(<Day key={day.id} data={day} />)
+            daysTemplate.unshift(<Day key={day.id} data={day} />)
         });
         return (
             <div className="program">

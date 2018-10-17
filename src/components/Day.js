@@ -5,13 +5,15 @@ import Exercise from './Exercise/Exercise';
 class Day extends React.Component {
     render() {
         const exercises = this.props.exercises;
+        const exerciseList = this.props.data.exercises;
         const activeExercise = this.props.activeExercise;
         const exercisesTemplate = [];
-        for (const exerciseId in exercises) {
+        exerciseList.forEach(exerciseId => {
             const exercise = exercises[exerciseId];
+            console.log('EXERCISE', exercises, exerciseId);
             const isCompleted = exercise.isCompleted;
             const isActive = activeExercise == exercise.order && !isCompleted;
-            exercisesTemplate.unshift(
+            exercisesTemplate.push(
                 <Exercise 
                     key={exercise.id} 
                     data={exercise}
@@ -19,7 +21,7 @@ class Day extends React.Component {
                     isCompleted={isCompleted}
                 />
             );
-        }
+        });
         return (
             <div className="day">
                 {exercisesTemplate}

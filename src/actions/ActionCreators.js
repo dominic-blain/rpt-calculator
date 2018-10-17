@@ -215,12 +215,11 @@ const ActionCreators = {
                 case 'rpt':
                     return dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId))
                     .then(response => {
+                        const sets = [];
+                        const setCount = exercise.sets;
                         if (!!response) {
                             const log = response.log;
                             const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
-                            const setCount = exercise.sets;
-                            const sets = [];
-                            
                             for (let i = 0; i < setCount; i++) {
                                 const breakdownWeight = startingWeight * (1 - exercise.breakdown * i);
                                 const roundedWeight = Math.floor(breakdownWeight /5) *5;
@@ -229,8 +228,17 @@ const ActionCreators = {
                                     weight: roundedWeight
                                 });
                             }
-                            return Promise.resolve(sets);
                         }
+                        else {
+                            for (let i = 0; i < setCount; i++) {
+                                sets.push({
+                                    reps: exercise.goal,
+                                    weight: 0
+                                });
+                            }
+                        }
+
+                        return Promise.resolve(sets);
                     });
             }
         }

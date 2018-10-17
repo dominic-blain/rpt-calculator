@@ -25,7 +25,7 @@ const rootReducer = (state = initialState, action) => {
             });
         case type.GET_EXERCISES_SUCCESS:
             return update (state, {
-                exercises: {$set: action.exercises}
+                exercises: {$merge: action.exercises}
             });
         case type.ADD_DAY:
             return update(state, {
