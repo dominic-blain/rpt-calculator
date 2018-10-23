@@ -10,7 +10,6 @@ class Day extends React.Component {
         const exercisesTemplate = [];
         exerciseList.forEach(exerciseId => {
             const exercise = exercises[exerciseId];
-            console.log('EXERCISE', exercises, exerciseId);
             const isCompleted = exercise.isCompleted;
             const isActive = activeExercise == exercise.order && !isCompleted;
             exercisesTemplate.push(

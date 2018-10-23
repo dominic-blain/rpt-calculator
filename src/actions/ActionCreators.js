@@ -84,7 +84,7 @@ const ActionCreators = {
                                 for (let exerciseId in exercises) {
                                     day.exercises.unshift(exerciseId);
                                 }
-                                days.push(day);
+                                days.unshift(day);
                             })
                         );
                     }
