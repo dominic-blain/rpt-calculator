@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ActionCreators from '../../actions/ActionCreators';
 import store from '../../store/store';
-import Program from '../Program';
+import TrainingView from '../TrainingView/TrainingView';
 import Loading from '../Loading/Loading';
 import styles from './App.less';
 
@@ -15,7 +15,7 @@ class App extends React.Component {
         return (
             <main className={styles.app}>
                 <Loading />
-                <Program programId={this.props.programId} />
+                <TrainingView />
             </main>
             
         );
