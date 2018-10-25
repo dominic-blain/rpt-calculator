@@ -316,8 +316,6 @@ const ActionCreators = {
             }).catch((error) => {
                 dispatch(ActionCreators.logExerciseError(error));
             });
-            
-
         }
     },
     logExerciseStart() {
