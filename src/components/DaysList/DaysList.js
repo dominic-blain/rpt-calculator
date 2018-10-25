@@ -1,8 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import DayCard from '../DayCard/DayCard';
+import ActionCreators from '../../actions/ActionCreators';
 
 class DaysList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleStartButtonClick = this.handleStartButtonClick.bind(this);
+    }
+
+    handleStartButtonClick(event) {
+        const dayId = event.target.value;
+        this.props.onStartButtonClick(dayId);
+    }
+
     render() {
         const days = this.props.days;
         const exercises = this.props.exercises;
@@ -22,9 +33,11 @@ class DaysList extends React.Component {
             dayCardTemplates.push(
                 <DayCard 
                     key={day.id}
+                    id={day.id}
                     name={name}
                     exercises={exercisesData}
-                    isCompleted={isCompleted} data={day}
+                    isCompleted={isCompleted}
+                    onStartButtonClick={this.handleStartButtonClick}
                 />
             );
         });
@@ -36,11 +49,14 @@ class DaysList extends React.Component {
     }
 }
 
-const mapStateToProps = (state, props) => {
-    return ({
-        days: state.root.days,
-        exercises: state.root.exercises
-    })
-};
+const mapDispatchToProps = dispatch => ({
+    onStartButtonClick: dayId => dispatch(ActionCreators.setActiveDay(dayId))
+});
 
-export default connect(mapStateToProps)(DaysList);
+
+const mapStateToProps = (state, props) => ({
+    days: state.root.days,
+    exercises: state.root.exercises
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DaysList);

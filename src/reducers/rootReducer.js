@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 const initialState = {
     ui: {
         isLoading: true,
-        actviveDay: 0,
+        actviveDay: null,
         activeExercise: 0,
         activeSet: 1
     },
@@ -36,6 +36,12 @@ const rootReducer = (state = initialState, action) => {
             return update (state, {
                 ui: {
                     isLoading: {$set: action.value}
+                }
+            });
+        case type.SET_ACTIVE_DAY:
+            return update (state, {
+                ui: {
+                    activeDay: {$set: action.id}
                 }
             });
         case type.SET_ACTIVE_EXERCISE:

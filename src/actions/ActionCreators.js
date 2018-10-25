@@ -255,6 +255,12 @@ const ActionCreators = {
             value: value
         }
     },
+    setActiveDay(id) {
+        return {
+            type: type.SET_ACTIVE_DAY,
+            id: id
+        }
+    },
     setActiveExercise(id) {
         return {
             type: type.SET_ACTIVE_EXERCISE,

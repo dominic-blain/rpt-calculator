@@ -4,18 +4,10 @@ import DaysList from '../DaysList/DaysList';
 import styles from './TrainingView.less';
 
 class TrainingView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displayExercises: false
-        }
-    }
-
     render() {
         const activeDay = this.props.activeDay;
-        const displayExercises = this.state.displayExercises;
         const trainingViewClasses = styles.trainingView + ' ' +
-            (displayExercises ? styles.isExercises : styles.isDays);
+            (!!activeDay ? styles.isExercises : styles.isDays);
 
         return (
             <div className={trainingViewClasses}>

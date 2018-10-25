@@ -16,6 +16,7 @@ export const GET_LAST_LOG_SUCCESS = 'get last log success';
 export const GET_LAST_LOG_ERROR = 'get last log error';
 export const ADD_DAY = 'add day';
 export const SET_IS_LOADING = 'set is loading';
+export const SET_ACTIVE_DAY = 'set active day';
 export const SET_ACTIVE_EXERCISE = 'set active exercise';
 export const SET_ACTIVE_SET = 'set active set';
 export const SET_REPS = 'set reps';
