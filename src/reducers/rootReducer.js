@@ -41,7 +41,12 @@ const rootReducer = (state = initialState, action) => {
         case type.SET_ACTIVE_DAY:
             return update (state, {
                 ui: {
-                    activeDay: {$set: action.id}
+                    activeDay: {$set: 
+                        {
+                            id: action.id,
+                            order: action.order
+                        }
+                    }
                 }
             });
         case type.SET_ACTIVE_EXERCISE:

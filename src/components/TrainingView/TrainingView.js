@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import DaysList from '../DaysList/DaysList';
+import ExercisesList from '../ExercisesList/ExercisesList';
 import styles from './TrainingView.less';
 
 class TrainingView extends React.Component {
     render() {
-        const activeDay = this.props.activeDay;
+        const activeDayRef = this.props.activeDayRef;
         const trainingViewClasses = styles.trainingView + ' ' +
-            (!!activeDay ? styles.isExercises : styles.isDays);
+            (!!activeDayRef ? styles.isExercises : styles.isDays);
 
         return (
             <div className={trainingViewClasses}>
@@ -15,7 +16,7 @@ class TrainingView extends React.Component {
                     <DaysList />
                 </div>
                 <div className={styles.exercisesListCtn}>
-                    {/* <ExercisesList dayId={activeDay} /> */}
+                    <ExercisesList activeDayRef={activeDayRef} />
                 </div>
             </div>
         );
@@ -24,7 +25,7 @@ class TrainingView extends React.Component {
 
 const mapStateToProps = (state, props) => {
     return ({
-        activeDay: state.root.activeDay
+        activeDayRef: state.root.ui.activeDay
     })
 };
 

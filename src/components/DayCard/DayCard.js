@@ -4,6 +4,7 @@ import styles from './DayCard.less';
 class DayCard extends React.Component {
     render() {
         const id = this.props.id;
+        const order = this.props.order;
         const name = this.props.name;
         const exercises = this.props.exercises;
         const isCompleted = this.props.isCompleted;
@@ -28,7 +29,8 @@ class DayCard extends React.Component {
                 <div className={styles.exercisesCtn}>{exerciseTemplates}</div>
                 <button 
                     className={styles.startButton}
-                    value={id} 
+                    data-id={id}
+                    data-order={order} 
                     onClick={onStartButtonClick}>
                     Start workout
                 </button>

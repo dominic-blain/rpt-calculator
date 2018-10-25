@@ -10,8 +10,9 @@ class DaysList extends React.Component {
     }
 
     handleStartButtonClick(event) {
-        const dayId = event.target.value;
-        this.props.onStartButtonClick(dayId);
+        const dayId = event.target.dataset.id;
+        const dayOrder = event.target.dataset.order;
+        this.props.onStartButtonClick(dayId, dayOrder);
     }
 
     render() {
@@ -34,6 +35,7 @@ class DaysList extends React.Component {
                 <DayCard 
                     key={day.id}
                     id={day.id}
+                    order={day.order}
                     name={name}
                     exercises={exercisesData}
                     isCompleted={isCompleted}
@@ -50,7 +52,7 @@ class DaysList extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onStartButtonClick: dayId => dispatch(ActionCreators.setActiveDay(dayId))
+    onStartButtonClick: (dayId, dayOrder) => dispatch(ActionCreators.setActiveDay(dayId, dayOrder))
 });
 
 
