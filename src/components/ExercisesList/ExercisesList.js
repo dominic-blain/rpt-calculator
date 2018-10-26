@@ -13,7 +13,9 @@ class ExercisesList extends React.Component {
             const activeExercise = this.props.activeExercise;
             
             activeDay.exercises.forEach(exerciseId => {
+                
                 const exercise = exercises[exerciseId];
+                console.log('EXERCISE', exercise.id, exercise.order);
                 // const isCompleted = exercise.isCompleted;
                 // TODO: remove line below and uncomment line above
                 const isCompleted = false;

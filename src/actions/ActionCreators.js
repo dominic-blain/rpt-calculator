@@ -123,7 +123,8 @@ const ActionCreators = {
                 .doc(programId)
                 .collection('days')
                 .doc(dayId)
-                .collection('exercises');
+                .collection('exercises')
+                .orderBy('order', 'desc');
 
             return exercisesRef.get().then(results => {
                 const exercises = {};
