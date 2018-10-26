@@ -7,6 +7,7 @@ class DayCard extends React.Component {
         const order = this.props.order;
         const name = this.props.name;
         const exercises = this.props.exercises;
+        const firstExerciseId = exercises[0].id;
         const isCompleted = this.props.isCompleted;
         const onStartButtonClick = this.props.onStartButtonClick;
 
@@ -30,7 +31,8 @@ class DayCard extends React.Component {
                 <button 
                     className={styles.startButton}
                     data-id={id}
-                    data-order={order} 
+                    data-order={order}
+                    data-first-exercise-id={firstExerciseId}
                     onClick={onStartButtonClick}>
                     Start workout
                 </button>

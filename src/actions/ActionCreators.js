@@ -263,10 +263,11 @@ const ActionCreators = {
             order: order
         }
     },
-    setActiveExercise(id) {
+    setActiveExercise(id, order) {
         return {
             type: type.SET_ACTIVE_EXERCISE,
-            id: id
+            id: id,
+            order: order
         }
     },
     setActiveSet(id) {
@@ -283,20 +284,19 @@ const ActionCreators = {
             reps: reps
         }
     },
-    logExercise(exercise) {
+    logExercise(id, dayId, sets) {
         return (dispatch, getState) => {
             dispatch(ActionCreators.logExerciseStart());
             const database = store.firestore;
             const batch = database.batch();
             const state = getState();
             const programId = state.root.program.id;
-            const dayId = exercise.dayId;
             const exerciseRef = database.collection('programs').doc(programId)
                 .collection('days').doc(dayId)
-                .collection('exercises').doc(exercise.id);
+                .collection('exercises').doc(id);
             const logsRef = exerciseRef.collection('logs');
 
-            exercise.setsData.forEach((set, index) => {
+            sets.forEach((set, index) => {
                 const logRef = logsRef.doc();
                 batch.set(
                     logsRef.doc(logRef.id), {
@@ -313,7 +313,7 @@ const ActionCreators = {
             });
 
             batch.commit().then(() => {
-                dispatch(ActionCreators.logExerciseSuccess(exercise.id));
+                dispatch(ActionCreators.logExerciseSuccess(id));
             }).catch((error) => {
                 dispatch(ActionCreators.logExerciseError(error));
             });

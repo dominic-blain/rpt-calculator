@@ -12,23 +12,28 @@ class Exercise extends React.Component {
     }
 
     handleButtonStartClick(event) {
-        const order = this.props.data.order;
-        this.props.onButtonStartClick(order);
+        const id = this.props.exercise.id;
+        const order = this.props.exercise.order;
+        this.props.onButtonStartClick(id, order);
     }
 
     handleExerciseEnd() {
-        this.props.onExerciseEnd(this.props.data);
+        const dayId = this.props.exercise.dayId;
+        const id = this.props.exercise.id;
+        const sets = this.props.exercise.setsData;
+        this.props.onExerciseEnd(id, dayId, sets);
     }
 
     render() {
         
         const isCompleted = this.props.isCompleted;
         const isActive = this.props.isActive;
-        const activeSet = this.props.activeSet;
-        const activeExercise = this.props.activeExercise;
-        const name = this.props.name;
-        const setCount = this.props.setCount;
-        const sets = this.props.sets;
+        const activeSetRef = this.props.activeSetRef;
+        const nextExerciseRef = this.props.nextExerciseRef;
+        const exercise = this.props.exercise;
+        const name = exercise.name;
+        const setCount = exercise.sets;
+        const sets = exercise.setsData;
         const exerciseCount = this.props.exerciseCount;
 
         const exerciseStyles = 
@@ -45,8 +50,8 @@ class Exercise extends React.Component {
         const dotsTemplate = [];
         sets.forEach((set, index) => {
             const order = index + 1;
-            const isSetActive = order == activeSet && isActive;
-            const offsetX = (order - activeSet) * 100;
+            const isSetActive = order == activeSetRef && isActive;
+            const offsetX = (order - activeSetRef) * 100;
             const inlineStyle = {transform: `translateX(${offsetX}%)`}
             const dotStyles = 
                 styles.dot +' '+
@@ -58,8 +63,9 @@ class Exercise extends React.Component {
                     reps={set.reps}
                     weight={set.weight}
                     isActive={isSetActive}
-                    activeExercise={activeExercise}
+                    exercise={exercise}
                     exerciseCount={exerciseCount}
+                    nextExerciseRef={nextExerciseRef}
                     inlineStyle={inlineStyle}
                     onExerciseEnd={this.handleExerciseEnd}
                 />
@@ -111,13 +117,12 @@ class Exercise extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onButtonStartClick: order => dispatch(ActionCreators.setActiveExercise(order)),
-    onExerciseEnd: exercise => dispatch(ActionCreators.logExercise(exercise))
+    onButtonStartClick: (id, order) => dispatch(ActionCreators.setActiveExercise(id, order)),
+    onExerciseEnd: (id, dayId, sets) => dispatch(ActionCreators.logExercise(id, dayId, sets))
 });
 
 const mapStateToProps = state => ({
-    activeSet: state.root.ui.activeSet,
-    activeExercise: state.root.exercises[state.root.days[0].exercises[state.root.ui.activeExercise]]
+    activeSetRef: state.root.ui.activeSet
 });
 
 

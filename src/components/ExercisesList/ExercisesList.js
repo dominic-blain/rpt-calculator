@@ -10,24 +10,28 @@ class ExercisesList extends React.Component {
         if (!!activeDayRef) {
             const activeDay = this.props.days[activeDayRef.order];
             const exercises = this.props.exercises;
-            const activeExercise = this.props.activeExercise;
-            
+            const activeExerciseRef = this.props.activeExerciseRef;
+            const nextExerciseOrder = activeExerciseRef.order + 1;
+            const nextExerciseId = activeDay.exercises[nextExerciseOrder];
+            const nextExerciseRef = {
+                id: nextExerciseId,
+                order: nextExerciseOrder
+            }
             activeDay.exercises.forEach(exerciseId => {
                 
                 const exercise = exercises[exerciseId];
                 // const isCompleted = exercise.isCompleted;
                 // TODO: remove line below and uncomment line above
                 const isCompleted = false;
-                const isActive = activeExercise == exercise.order && !isCompleted;
+                const isActive = activeExerciseRef.id == exercise.id && !isCompleted;
                 exercisesTemplate.push(
                     <Exercise 
                         key={exercise.id}
-                        name={exercise.name}
-                        setCount={exercise.sets}
-                        sets={exercise.setsData}
+                        exercise={exercise}
                         isActive={isActive}
                         isCompleted={isCompleted}
                         exerciseCount={activeDay.exercises.length}
+                        nextExerciseRef={nextExerciseRef}
                     />
                 );
             });
@@ -44,7 +48,7 @@ const mapStateToProps = (state, props) => {
     return ({
         days: state.root.days,
         exercises: state.root.exercises,
-        activeExercise: state.root.ui.activeExercise
+        activeExerciseRef: state.root.ui.activeExercise
     })
 };
 

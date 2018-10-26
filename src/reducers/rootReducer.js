@@ -5,7 +5,7 @@ const initialState = {
     ui: {
         isLoading: true,
         actviveDay: null,
-        activeExercise: 0,
+        activeExercise: null,
         activeSet: 1
     },
     user:  'KJwfM2YjnZmhwK4iaSBb',
@@ -52,7 +52,12 @@ const rootReducer = (state = initialState, action) => {
         case type.SET_ACTIVE_EXERCISE:
             return update (state, {
                 ui: {
-                    activeExercise: {$set: action.id},
+                    activeExercise: {$set: 
+                        {
+                            id: action.id,
+                            order: action.order
+                        }
+                    },
                     activeSet: {$set: 1}
                 }
             });
