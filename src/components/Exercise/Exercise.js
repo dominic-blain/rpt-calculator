@@ -26,11 +26,9 @@ class Exercise extends React.Component {
         const isActive = this.props.isActive;
         const activeSet = this.props.activeSet;
         const activeExercise = this.props.activeExercise;
-        const data = this.props.data;
-        const name = data.name;
-        const sets = data.sets;
-        const setsData = data.setsData;
-
+        const name = this.props.name;
+        const setCount = this.props.setCount;
+        const sets = this.props.sets;
         const exerciseCount = this.props.exerciseCount;
 
         const exerciseStyles = 
@@ -45,7 +43,7 @@ class Exercise extends React.Component {
 
         const setsTemplate = [];
         const dotsTemplate = [];
-        setsData.forEach((set, index) => {
+        sets.forEach((set, index) => {
             const order = index + 1;
             const isSetActive = order == activeSet && isActive;
             const offsetX = (order - activeSet) * 100;
@@ -77,10 +75,10 @@ class Exercise extends React.Component {
                     <div className={styles.card}>
                         <div className={styles.cardDetails}>
                             <span className={styles.cardSets}>
-                                {`${sets} sets`}
+                                {`${setCount} sets`}
                             </span>
                             <span className={styles.cardGoal}>
-                                {`${setsData[0].reps} × ${setsData[0].weight} lbs`}
+                                {`${sets[0].reps} × ${sets[0].weight} lbs`}
                             </span>
                         </div>
                         <button className={styles.buttonLogs}>
@@ -119,9 +117,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
     activeSet: state.root.ui.activeSet,
-    activeExercise: state.root.exercises[state.root.days[0].exercises[state.root.ui.activeExercise]],
-    exerciseCount: state.root.days[0].exercises.length
-    
+    activeExercise: state.root.exercises[state.root.days[0].exercises[state.root.ui.activeExercise]]
 });
 
 

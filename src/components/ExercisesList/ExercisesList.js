@@ -15,17 +15,19 @@ class ExercisesList extends React.Component {
             activeDay.exercises.forEach(exerciseId => {
                 
                 const exercise = exercises[exerciseId];
-                console.log('EXERCISE', exercise.id, exercise.order);
                 // const isCompleted = exercise.isCompleted;
                 // TODO: remove line below and uncomment line above
                 const isCompleted = false;
                 const isActive = activeExercise == exercise.order && !isCompleted;
                 exercisesTemplate.push(
                     <Exercise 
-                        key={exercise.id} 
-                        data={exercise}
+                        key={exercise.id}
+                        name={exercise.name}
+                        setCount={exercise.sets}
+                        sets={exercise.setsData}
                         isActive={isActive}
                         isCompleted={isCompleted}
+                        exerciseCount={activeDay.exercises.length}
                     />
                 );
             });
