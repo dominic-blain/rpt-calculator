@@ -2,4 +2,4 @@ const FIRESTORE_CONFIG = {
     timestampsInSnapshots: true
 };
 
-export default  FIRESTORE_CONFIG
+export default FIRESTORE_CONFIG

@@ -4,6 +4,7 @@ import ActionCreators from '../../actions/ActionCreators';
 import store from '../../store/store';
 import TrainingView from '../TrainingView/TrainingView';
 import Loading from '../Loading/Loading';
+import Signup from '../Signup/Signup';
 import styles from './App.less';
 
 class App extends React.Component {
@@ -16,6 +17,7 @@ class App extends React.Component {
             <main className={styles.app}>
                 <Loading />
                 <TrainingView />
+                <Signup />
             </main>
             
         );
