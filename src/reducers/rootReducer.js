@@ -8,7 +8,7 @@ const initialState = {
         activeExercise: null,
         activeSet: 1
     },
-    user:  'KJwfM2YjnZmhwK4iaSBb',
+    user: null,
     program: {},
     days: [],
     exercises: {}
@@ -16,6 +16,10 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+        case type.SET_USER:
+            return update (state, {
+                user: {$set: action.id}
+            });
         case type.GET_PROGRAM_SUCCESS:
             return update (state, {
                 program: {$set: action.program}
@@ -86,7 +90,9 @@ const rootReducer = (state = initialState, action) => {
                         isCompleted: {$set: true}
                     }
                 }
-            })
+            });
+        case type.RESET_STATE:
+            return update(state, {$set: initialState});
         default:
             return state;
     }

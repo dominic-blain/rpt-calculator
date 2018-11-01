@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import DaysList from '../DaysList/DaysList';
 import ExercisesList from '../ExercisesList/ExercisesList';
+import ButtonSignOut from '../ButtonSignOut/ButtonSignOut';
 import styles from './TrainingView.less';
 
 class TrainingView extends React.Component {
@@ -17,6 +18,9 @@ class TrainingView extends React.Component {
                 </div>
                 <div className={styles.exercisesListCtn}>
                     <ExercisesList activeDayRef={activeDayRef} />
+                </div>
+                <div className={styles.signOutCtn}>
+                    <ButtonSignOut />
                 </div>
             </div>
         );

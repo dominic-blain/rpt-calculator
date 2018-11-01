@@ -1,3 +1,6 @@
+export const RESET_STATE = 'reset state';
+export const SIGN_OUT = 'sign out';
+export const SET_USER = 'set user';
 export const GET_PROGRAM = 'get program';
 export const GET_PROGRAM_START = 'get program start';
 export const GET_PROGRAM_SUCCESS = 'get program success';

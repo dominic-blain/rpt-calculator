@@ -1,12 +1,26 @@
 import * as type from '../constants/action-types';
+import { auth } from '../firebase';
 import store from '../store/store';
 
 const ActionCreators = {
-    initApp() {
+    init() {
+        return dispatch => {
+            dispatch(ActionCreators.resetState());
+            
+        }
+    },
+    signOut() {
+        return () => {
+            auth.signOut();
+        }
+    },
+    resetState() {
+        return {type: type.RESET_STATE};
+    },
+    loadUser(id) {
         return (dispatch, getState) => {
             const database = store.firestore;
-            const state = getState();
-            const userRef = database.collection('users').doc(state.root.user);
+            const userRef = database.collection('users').doc(id);
             const loadStart = Date.now() / 1000;
             
             userRef.get().then(result => {
@@ -25,6 +39,12 @@ const ActionCreators = {
                     // Manage error  
                 });
             });
+        }
+    },
+    setUser(id) {
+        return { 
+            type: type.SET_USER,
+            id: id
         }
     },
     getProgram(id) {
