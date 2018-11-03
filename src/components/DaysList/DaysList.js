@@ -60,9 +60,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-const mapStateToProps = (state, props) => ({
-    days: state.root.days,
-    exercises: state.root.exercises
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DaysList);
+export default connect(null, mapDispatchToProps)(DaysList);

@@ -6,7 +6,6 @@ const ActionCreators = {
     init() {
         return dispatch => {
             dispatch(ActionCreators.resetState());
-            
         }
     },
     signOut() {
@@ -18,7 +17,7 @@ const ActionCreators = {
         return {type: type.RESET_STATE};
     },
     loadUser(id) {
-        return (dispatch, getState) => {
+        return dispatch => {
             const database = store.firestore;
             const userRef = database.collection('users').doc(id);
             const loadStart = Date.now() / 1000;
@@ -30,14 +29,28 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
-                dispatch(ActionCreators.getProgram(user.program.id))
-                .then(() => {
+                // User exists AND has program
+                if (user && user.program !== null) {
+                    dispatch(ActionCreators.getProgram(user.program.id))
+                    .then(() => {
+                        setTimeout(() => {
+                            dispatch(ActionCreators.setIsLoading(false));
+                        }, loadTimeout);
+                    }).catch(error => {
+                        // Manage error  
+                    });
+                }
+                // User exists BUT no program
+                else if (user) {
+                    // dispatch(ActionCreators.setActiveView('Manage'));
                     setTimeout(() => {
                         dispatch(ActionCreators.setIsLoading(false));
                     }, loadTimeout);
-                }).catch(error => {
-                    // Manage error  
-                });
+                }
+                // User does NOT exist
+                else {
+                    dispatch(ActionCreators.createUser(id));
+                }
             });
         }
     },
@@ -45,6 +58,39 @@ const ActionCreators = {
         return { 
             type: type.SET_USER,
             id: id
+        }
+    },
+    createUser(id) {
+        return dispatch => {
+            dispatch(ActionCreators.createUserStart(id));
+            const database = store.firestore;
+            database.collection('users').doc(id).set({
+                id: id,
+                program: null
+            })
+            .then(() => {
+                dispatch(ActionCreators.createUserSuccess());
+            })
+            .catch(() => {
+                dispatch(ActionCreators.createUserError());
+            })
+        }
+    },
+    createUserStart(id) {
+        return {
+            type: type.CREATE_USER_START,
+            id: id
+        }
+    },
+    createUserSuccess() {
+        return {
+            type: type.CREATE_USER_SUCCESS
+        }
+    },
+    createUserError(error) {
+        return {
+            type: type.CREATE_USER_ERROR,
+            error: error
         }
     },
     getProgram(id) {
@@ -274,6 +320,12 @@ const ActionCreators = {
         return {
             type: type.SET_IS_LOADING,
             value: value
+        }
+    },
+    setActiveView(view) {
+        return {
+            type: type.SET_ACTIVE_VIEW,
+            view: view
         }
     },
     setActiveDay(id, order) {

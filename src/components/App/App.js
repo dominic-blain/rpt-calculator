@@ -4,6 +4,7 @@ import ActionCreators from '../../actions/ActionCreators';
 import store from '../../store/store';
 import { auth } from '../../firebase';
 import TrainingView from '../TrainingView/TrainingView';
+import ManageView from '../ManageView/ManageView';
 import Loading from '../Loading/Loading';
 import Signup from '../Signup/Signup';
 import styles from './App.less';
@@ -25,7 +26,7 @@ class App extends React.Component {
     }
 
     handleUserChange(user) {
-        console.log('USER', user);
+        console.log('USER ID:', user.uid);
         if (user) {
             this.props.onUserChange(user.uid);
             store.dispatch(ActionCreators.setIsLoading(true));
@@ -38,8 +39,20 @@ class App extends React.Component {
     }
 
     render() {
-        const userId = this.props.userId;
-        const viewTemplate = userId ? <TrainingView /> : <Signup />
+        const activeView = this.props.activeView;
+        let viewTemplate;
+        
+        switch (activeView) {
+            case 'Training':
+                viewTemplate = <TrainingView />;
+                break;
+            case 'Manage':
+                viewTemplate = <ManageView />;
+                break;
+            default:
+                viewTemplate = <Signup />;
+                break;
+        }
 
         return (
             <main className={styles.app}>
@@ -55,7 +68,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => ({
-    userId: state.root.user
+    userId: state.root.user,
+    activeView: state.root.ui.activeView
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

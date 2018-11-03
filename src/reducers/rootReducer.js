@@ -4,14 +4,15 @@ import update from 'immutability-helper';
 const initialState = {
     ui: {
         isLoading: true,
+        activeView: 'Training',
         actviveDay: null,
         activeExercise: null,
         activeSet: 1
     },
     user: null,
-    program: {},
-    days: [],
-    exercises: {}
+    program: null,
+    days: null,
+    exercises: null
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -40,6 +41,12 @@ const rootReducer = (state = initialState, action) => {
             return update (state, {
                 ui: {
                     isLoading: {$set: action.value}
+                }
+            });
+        case type.SET_ACTIVE_VIEW:
+            return update (state, {
+                ui: {
+                    activeView: {$set: action.view}
                 }
             });
         case type.SET_ACTIVE_DAY:
