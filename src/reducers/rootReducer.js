@@ -7,7 +7,8 @@ const initialState = {
         activeView: 'Training',
         actviveDay: null,
         activeExercise: null,
-        activeSet: 1
+        activeSet: 1,
+        editingExercise: null
     },
     user: null,
     program: null,
@@ -76,6 +77,17 @@ const rootReducer = (state = initialState, action) => {
             return update (state, {
                 ui: {
                     activeSet: {$set: action.id}
+                }
+            });
+        case type.SET_EDITING_EXERCISE:
+            return update (state, {
+                ui: {
+                    editingExercise: {$set:
+                        {
+                            status: action.status,
+                            id: action.id
+                        }
+                    }
                 }
             });
         case type.SET_REPS:

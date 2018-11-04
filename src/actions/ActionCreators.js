@@ -42,7 +42,8 @@ const ActionCreators = {
                 }
                 // User exists BUT no program
                 else if (user) {
-                    // dispatch(ActionCreators.setActiveView('Manage'));
+                    // Delete after test
+                    dispatch(ActionCreators.setActiveView('Manage'));
                     setTimeout(() => {
                         dispatch(ActionCreators.setIsLoading(false));
                     }, loadTimeout);
@@ -345,6 +346,13 @@ const ActionCreators = {
     setActiveSet(id) {
         return {
             type: type.SET_ACTIVE_SET,
+            id: id
+        }
+    },
+    setEditingExercise(status, id) {
+        return {
+            type: type.SET_EDITING_EXERCISE,
+            status: status,
             id: id
         }
     },

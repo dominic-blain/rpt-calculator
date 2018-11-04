@@ -27,6 +27,7 @@ export const SET_ACTIVE_VIEW = 'set active view';
 export const SET_ACTIVE_DAY = 'set active day';
 export const SET_ACTIVE_EXERCISE = 'set active exercise';
 export const SET_ACTIVE_SET = 'set active set';
+export const SET_EDITING_EXERCISE = 'set editing exercise';
 export const SET_REPS = 'set reps';
 export const GET_SET_BY_START = 'get set by strat';
 export const LOG_EXERCISE_START = 'log exercise start';
