@@ -50,7 +50,14 @@ const ActionCreators = {
                 }
                 // User does NOT exist
                 else {
-                    dispatch(ActionCreators.createUser(id));
+                    // Delete after test
+                    dispatch(ActionCreators.createUser(id))
+                    .then(() => {
+                        dispatch(ActionCreators.setActiveView('Manage'));
+                        setTimeout(() => {
+                            dispatch(ActionCreators.setIsLoading(false));
+                        }, loadTimeout);
+                    });
                 }
             });
         }
@@ -70,15 +77,15 @@ const ActionCreators = {
             database.collection('programs').doc(programId).set({
                 id: programId
             });
-            database.collection('users').doc(id).set({
+            return database.collection('users').doc(id).set({
                 id: id,
-                program: 'programs/'+ programId
+                program: programRef
             })
             .then(() => {
-                dispatch(ActionCreators.createUserSuccess());
+                return dispatch(ActionCreators.createUserSuccess());
             })
             .catch(() => {
-                dispatch(ActionCreators.createUserError());
+                return dispatch(ActionCreators.createUserError());
             })
         }
     },

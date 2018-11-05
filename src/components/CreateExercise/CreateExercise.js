@@ -32,7 +32,7 @@ class CreateExercise extends React.Component {
             return {
                 newExercise: {...prevState.newExercise, [name]: value}
             }
-        }, () => console.log(this.state.newExercise));
+        }, () => console.log(this.state));
     }
 
     handleSubmit(event) {
