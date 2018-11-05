@@ -65,9 +65,14 @@ const ActionCreators = {
         return dispatch => {
             dispatch(ActionCreators.createUserStart(id));
             const database = store.firestore;
+            const programRef = database.collection('programs').doc();
+            const programId = programRef.id;
+            database.collection('programs').doc(programId).set({
+                id: programId
+            });
             database.collection('users').doc(id).set({
                 id: id,
-                program: null
+                program: 'programs/'+ programId
             })
             .then(() => {
                 dispatch(ActionCreators.createUserSuccess());
