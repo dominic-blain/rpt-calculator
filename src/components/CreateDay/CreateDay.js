@@ -41,7 +41,7 @@ class CreateDay extends React.Component {
                     type="text" 
                     name="name" 
                     placeholder="Name this new day"
-                    value={this.state.name.value}
+                    value={this.state.name}
                     onChange={this.handleInputChange}
                 />
                 <button type="button" onClick={this.handleAddExercise}>
