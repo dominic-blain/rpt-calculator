@@ -1,0 +1,29 @@
+.emptyProgram {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    color: @main-text;
+    padding: @unit-10 @unit-5;
+    box-sizing: border-box;
+
+    .title {
+        .font--title;
+        margin-bottom: @unit-2;
+    }
+    .description {
+        .font--text;
+        margin-bottom: @unit-15;
+    }
+    .buttonNew {
+        .font--title-small;
+        height: @unit-15;
+        width: 100%;
+        text-align: center;
+        background-color: @accent-reversed-fill;
+        color: @accent-reversed-text;
+    }
+}

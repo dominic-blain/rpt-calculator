@@ -1,5 +1,6 @@
 @font-family-main: 'Roboto', Helvetica, Arial, sans;
 @line-height-tightest: 1.12em;
+@line-height-normal: 1.5em;
 
 @font-size-hugest: 27vw;
 @font-size-tallest: 12vw;
@@ -29,6 +30,16 @@
     font-style: normal;
     font-weight: 900;
     line-height: @line-height-tightest;
+    font-size: @font-size-current;
+}
+
+
+// Texts
+.font--text {
+    font-family: @font-family-main;
+    font-style: normal;
+    font-weight: 400;
+    line-height: @line-height-normal;
     font-size: @font-size-current;
 }
 
