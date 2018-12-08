@@ -41,10 +41,25 @@ class ManageView extends React.Component {
             }
         }
         
-        if (days) {
-            days.forEach(dayId => {
+        if (days.lenght !== 0) {
+            days.forEach((dayId, index) => {
+                const day = days[index];
+                let exercisesList = [];
+                
+                day.exercises.forEach(exerciseId => {
+                    const exercise = exercises[exerciseId];
+                    exercisesList.push(
+                        <li>{exercise.name}</li>
+                    );
+                });
+
                 editDaysTemplate.push(
-                    <h2>Day</h2>
+                    <div>
+                        <h2>Day</h2>
+                        <ol>
+                            {exercisesList}
+                        </ol>
+                    </div>
                 );
             });
         }

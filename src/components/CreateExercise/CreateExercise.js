@@ -10,7 +10,7 @@ class CreateExercise extends React.Component {
                 name: '',
                 strategy: 'rpt',
                 goal: '',
-                setCount: '',
+                sets: '',
                 breakdown: ''
             },
             messages: {
@@ -43,7 +43,7 @@ class CreateExercise extends React.Component {
             exercise.name.length &&
             exercise.strategy.length &&
             exercise.goal.length &&
-            exercise.setCount.length &&
+            exercise.sets.length &&
             exercise.breakdown.length
         );
 
@@ -95,12 +95,12 @@ class CreateExercise extends React.Component {
                         value={this.state.newExercise.goal}
                         onChange={this.handleInputChange}
                     />
-                    <label htmlFor="setCount">Sets</label>
+                    <label htmlFor="sets">Sets</label>
                     <input 
                         type="number" 
-                        name="setCount" 
+                        name="sets" 
                         placeholder="Total number of sets"
-                        value={this.state.newExercise.setCount}
+                        value={this.state.newExercise.sets}
                         onChange={this.handleInputChange}
                     />
                     <label htmlFor="breakdown">Breakdown</label>

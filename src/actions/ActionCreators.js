@@ -128,16 +128,23 @@ const ActionCreators = {
                 .collection('programs').doc(programId)
                 .collection('days').doc(lastDayId)
                 .collection('exercises').doc();
-            exercise.id = exerciseRef.id;
-            exercise.dayId = lastDayId;
-            exercise.order = exerciseOrder;
+            const newExercise = {
+                id: exerciseRef.id,
+                dayId: lastDayId,
+                order: exerciseOrder,
+                breakdown: parseFloat(exercise.breakdown),
+                goal: parseInt(exercise.goal),
+                name: exercise.name,
+                sets: parseInt(exercise.sets),
+                strategy: exercise.strategy
+            }
 
             // Add exercise ID to last day
-            dispatch(ActionCreators.addExerciseToDay(daysLength - 1, exercise.id));
+            dispatch(ActionCreators.addExerciseToDay(daysLength - 1, newExercise.id));
             // Add exercise to state
-            dispatch(ActionCreators.addExercise(exercise));
+            dispatch(ActionCreators.addExercise(newExercise));
             // Save day to database
-            dispatch(ActionCreators.saveExercise(programId, lastDayId, exercise));
+            dispatch(ActionCreators.saveExercise(programId, lastDayId, newExercise));
             // Back to days list
             dispatch(ActionCreators.unsetEditingExercise());
         }
@@ -385,12 +392,14 @@ const ActionCreators = {
                 .limit(1);
 
             return logRef.get().then(results => {
-                const result = results.docs[0];
-                let log = {};
-                if (result.exists) {
-                    log = result.data();
-                    return dispatch(ActionCreators.getLastLogSuccess(log));
+                let log;
+                if (!results.empty) {
+                    const result = results.docs[0];
+                    if (result.exists) {
+                        log = result.data();
+                    }
                 }
+                return dispatch(ActionCreators.getLastLogSuccess(log));
             }).catch(error => {
                 // Manage error
                 dispatch(ActionCreators.getLastLogError(error));
@@ -420,7 +429,8 @@ const ActionCreators = {
                     .then(response => {
                         const sets = [];
                         const setCount = exercise.sets;
-                        if (!!response) {
+                        debugger;
+                        if (!!response.log) {
                             const log = response.log;
                             const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
                             for (let i = 0; i < setCount; i++) {
