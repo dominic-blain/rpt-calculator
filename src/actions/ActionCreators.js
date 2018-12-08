@@ -110,36 +110,114 @@ const ActionCreators = {
         return (dispatch, getState) => {
             const database = store.firestore;
             const state = getState();
+            const programId = state.root.program.id;
             const days = state.root.days;
             let daysLength = days.length;
             let lastDayId;
+            let exerciseOrder = 0;
             
             // No existing days, create first one
             if (days.length === 0) {
-                const dayRef = database.collection('days').doc();
-                lastDayId = dayRef.id;
-                const newDay = {
-                    id: lastDayId,
-                    isCompleted: false,
-                    order: 0,
-                    exercises: []
-                }
-                dispatch(ActionCreators.addDay(newDay));
+                lastDayId = dispatch(ActionCreators.createDay(programId));   
                 daysLength += 1;
             } else {
                 lastDayId = days[daysLength - 1].id;
+                exerciseOrder = days.exercises.length;
             }
-            const exerciseRef = database.collection('days').doc(lastDayId)
+            const exerciseRef = database
+                .collection('programs').doc(programId)
+                .collection('days').doc(lastDayId)
                 .collection('exercises').doc();
-            const exerciseId = exerciseRef.id;
-            exercise.id = exerciseId;
+            exercise.id = exerciseRef.id;
+            exercise.dayId = lastDayId;
+            exercise.order = exerciseOrder;
 
             // Add exercise ID to last day
             dispatch(ActionCreators.addExerciseToDay(daysLength - 1, exercise.id));
             // Add exercise to state
             dispatch(ActionCreators.addExercise(exercise));
+            // Save day to database
+            dispatch(ActionCreators.saveExercise(programId, lastDayId, exercise));
             // Back to days list
             dispatch(ActionCreators.unsetEditingExercise());
+        }
+    },
+    createDay(programId) {
+        return dispatch => {
+            const database = store.firestore;
+            const dayRef = database
+                .collection('programs').doc(programId)
+                .collection('days').doc();
+            const day = {
+                id: dayRef.id,
+                isCompleted: false,
+                order: 0,
+                exercises: []
+            }
+            dispatch(ActionCreators.addDay(day));
+            dispatch(ActionCreators.saveDay(programId, day));
+            return dayRef.id;
+        }
+    },
+    saveDay(programId, day) {
+        return dispatch => {
+            dispatch(ActionCreators.saveDayStart());
+            const database = store.firestore;
+            database
+                .collection('programs').doc(programId)
+                .collection('days').doc(day.id)
+                .set({
+                    id: day.id,
+                    isCompleted: day.isCompleted,
+                    order: day.order
+                })
+            .then(() => {
+                dispatch(ActionCreators.saveDaySuccess());
+            })
+            .catch(error => {
+                dispatch(ActionCreators.saveDayError(error));
+            });
+        }
+    },
+    saveDayStart() {
+        return { type: type.SAVE_DAY_START }
+    },
+    saveDaySuccess() {
+        return { type: type.SAVE_DAY_SUCCESS }
+    },
+    saveDayError(error) {
+        return {
+            type: type.SAVE_DAY_ERROR,
+            error: error
+        }
+    },
+    saveExercise(programId, dayId, exercise) {
+        return dispatch => {
+            dispatch(ActionCreators.saveExerciseStart());
+            const database = store.firestore;
+            database
+                .collection('programs').doc(programId)
+                .collection('days').doc(dayId)
+                .collection('exercises').doc(exercise.id)
+                .set(exercise)
+            .then(() => {
+                dispatch(ActionCreators.saveExerciseSuccess());
+            })
+            .catch(error => {
+                dispatch(ActionCreators.saveExerciseError(error));
+            });
+        }
+    },
+    saveExerciseStart() {
+        return { type: type.SAVE_EXERCISE_START }
+    },
+    saveExerciseSuccess() {
+        return { type: type.SAVE_EXERCISE_SUCCESS }
+    },
+    saveExerciseError(error) {
+        return {
+            type: type.SAVE_EXERCISE_ERROR,
+            error: error
         }
     },
     addExerciseToDay(dayOrder, exerciseId) {

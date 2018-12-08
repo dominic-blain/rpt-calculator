@@ -8,10 +8,15 @@ class ManageView extends React.Component {
     constructor(props) {
         super(props);
         this.handleCreateExercise = this.handleCreateExercise.bind(this);
+        this.handleSaveProgram = this.handleSaveProgram.bind(this);
     }
 
     handleCreateExercise() {
         this.props.onCreateExerciseClick();
+    }
+
+    handleSaveProgram() {
+        this.props.onSaveChangesClick();
     }
 
     render() {
@@ -22,7 +27,7 @@ class ManageView extends React.Component {
         const manageViewClasses = styles.manageView + ' ' +
             (!!editingExercise ? styles.isExercise : styles.isDays);
 
-        let editDaysTemplate;
+        let editDaysTemplate = [];
         let editExerciseTemplate;
 
         if (editingExercise && editingExercise.status) {
@@ -38,12 +43,11 @@ class ManageView extends React.Component {
         
         if (days) {
             days.forEach(dayId => {
-                // console.log(dayId);
-                // Add day to template list
+                editDaysTemplate.push(
+                    <h2>Day</h2>
+                );
             });
         }
-
-        console.log(days);
 
         return (
           <div className={manageViewClasses}>
@@ -53,7 +57,7 @@ class ManageView extends React.Component {
                 </div>
                 <div className={styles.buttonsCtn}>
                     <button onClick={this.handleCreateExercise}>Create Exercise</button>
-                    <button>Save changes</button>
+                    <button onClick={this.handleSaveProgram}>Save changes</button>
                 </div>
             </div>
             <div className={styles.exerciseCtn}>
@@ -65,8 +69,9 @@ class ManageView extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null))
-})
+    onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null)),
+    onSaveChangesClick: () => dispatch(ActionCreators.saveProgram())
+});
 
 const mapStateToProps = state => ({
     days: state.root.days,
