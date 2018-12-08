@@ -429,7 +429,7 @@ const ActionCreators = {
                     .then(response => {
                         const sets = [];
                         const setCount = exercise.sets;
-                        debugger;
+    
                         if (!!response.log) {
                             const log = response.log;
                             const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
