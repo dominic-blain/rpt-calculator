@@ -29,7 +29,10 @@ class EmptyProgram extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onCreateButtonClick: () => {dispatch(ActionCreators.setActiveView('Manage'))}
+    onCreateButtonClick: () => {
+        dispatch(ActionCreators.setActiveView('Manage'));
+        // dispatch(ActionCreators.setEditingExercise('new', null));
+    }
 });
 
 export default connect(null, mapDispatchToProps)(EmptyProgram);

@@ -8,15 +8,15 @@ class ManageView extends React.Component {
     constructor(props) {
         super(props);
         this.handleCreateExercise = this.handleCreateExercise.bind(this);
-        this.handleSaveProgram = this.handleSaveProgram.bind(this);
+        this.handleDone = this.handleDone.bind(this);
     }
 
     handleCreateExercise() {
         this.props.onCreateExerciseClick();
     }
 
-    handleSaveProgram() {
-        this.props.onSaveChangesClick();
+    handleDone() {
+        this.props.onDoneClick();
     }
 
     render() {
@@ -72,7 +72,7 @@ class ManageView extends React.Component {
                 </div>
                 <div className={styles.buttonsCtn}>
                     <button onClick={this.handleCreateExercise}>Create Exercise</button>
-                    <button onClick={this.handleSaveProgram}>Save changes</button>
+                    <button onClick={this.handleDone}>Done</button>
                 </div>
             </div>
             <div className={styles.exerciseCtn}>
@@ -85,7 +85,7 @@ class ManageView extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null)),
-    onSaveChangesClick: () => dispatch(ActionCreators.saveProgram())
+    onDoneClick: () => dispatch(ActionCreators.setActiveView('Training'))
 });
 
 const mapStateToProps = state => ({
