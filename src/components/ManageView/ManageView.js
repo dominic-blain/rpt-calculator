@@ -71,8 +71,16 @@ class ManageView extends React.Component {
                     {editDaysTemplate}
                 </div>
                 <div className={styles.buttonsCtn}>
-                    <button onClick={this.handleCreateExercise}>Create Exercise</button>
-                    <button onClick={this.handleDone}>Done</button>
+                    <button
+                        className={styles.buttonCreateExercise} 
+                        onClick={this.handleCreateExercise}>
+                        Create Exercise
+                    </button>
+                    <button 
+                        className={styles.buttonDone}
+                        onClick={this.handleDone}>
+                        Done
+                    </button>
                 </div>
             </div>
             <div className={styles.exerciseCtn}>

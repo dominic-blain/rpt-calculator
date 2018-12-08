@@ -5,6 +5,7 @@
     position: relative;
     background-color: @purple-dark;
     color: @darker-black;
+
     .daysCtn,
     .exerciseCtn {
         width: 100vw;
@@ -12,9 +13,15 @@
         position: absolute;
         top: 0;
         left: 0;
+        transition: transform @duration-faster @ease-out-standard;
+    }
+    .daysCtn {
+        display: flex;
+        flex-direction: column;
+    }
+    .exerciseCtn {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        transition: transform @duration-faster @ease-out-standard;
     }
     // ~> IS EXERCISE
     &.isExercise {
@@ -34,4 +41,31 @@
             transform: translateX(100%);
         }
     }
+    .daysList {
+        width: 100%;
+        flex-grow: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .buttonsCtn {
+        margin: @unit-10 @unit-3;
+    }
+    .buttonCreateExercise {
+        .font--title-small;
+        height: @unit-15;
+        width: 100%;
+        text-align: center;
+        background-color: @darker-black;
+        color: @accent-reversed-text;
+        margin-bottom: @unit-2;
+    }
+    .buttonDone {
+        .font--title-small;
+        height: @unit-15;
+        width: 100%;
+        text-align: center;
+        background-color: @accent-reversed-fill;
+        color: @accent-reversed-text;
+    }
 }
+
