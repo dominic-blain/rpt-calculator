@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ActionCreators from '../../actions/ActionCreators';
 
 class CreateExercise extends React.Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class CreateExercise extends React.Component {
         );
 
         if (isComplete) {
-            console.log('COMPLETE', exercise);
+            this.props.onCreateExercise(exercise);
         }
         else {
             console.log('INCOMPLETE', exercise);
@@ -122,5 +123,8 @@ class CreateExercise extends React.Component {
         );
     }
 }
+const mapDispatchToProps = dispatch => ({
+    onCreateExercise: (exercise) => dispatch(ActionCreators.createExercise(exercise))
+});
 
-export default CreateExercise;
+export default connect(null, mapDispatchToProps)(CreateExercise);

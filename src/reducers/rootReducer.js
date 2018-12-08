@@ -12,8 +12,8 @@ const initialState = {
     },
     user: null,
     program: null,
-    days: null,
-    exercises: null
+    days: [],
+    exercises: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -37,6 +37,24 @@ const rootReducer = (state = initialState, action) => {
         case type.ADD_DAY:
             return update(state, {
                 days: {$push: [action.day]}
+            });
+        case type.ADD_EXERCISE:
+            return update(state, {
+                exercises: {
+                    [action.exercise.id]: {
+                        $set: action.exercise
+                    }
+                }
+            });
+        case type.ADD_EXERCISE_TO_DAY:
+            return update(state, {
+                days: {
+                    [action.dayOrder]: {
+                        exercises: {
+                            $push: [action.exerciseId]
+                        }
+                    }
+                } 
             });
         case type.SET_IS_LOADING:
             return update (state, {
@@ -88,6 +106,12 @@ const rootReducer = (state = initialState, action) => {
                             id: action.id
                         }
                     }
+                }
+            });
+        case type.UNSET_EDITING_EXERCISE:
+            return update (state, {
+                ui: {
+                    editingExercise: {$set: null}
                 }
             });
         case type.SET_REPS:

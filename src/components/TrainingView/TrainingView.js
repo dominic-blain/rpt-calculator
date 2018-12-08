@@ -11,7 +11,7 @@ class TrainingView extends React.Component {
         const activeDayRef = this.props.activeDayRef;
         const days = this.props.days;
         const exercises = this.props.exercises;
-        const hasProgram = days && exercises;
+        const hasProgram = days.length !== 0;
         const trainingViewClasses = styles.trainingView + ' ' +
             (!!activeDayRef ? styles.isExercises : styles.isDays);
 

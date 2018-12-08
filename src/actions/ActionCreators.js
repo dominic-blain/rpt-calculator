@@ -106,6 +106,49 @@ const ActionCreators = {
             error: error
         }
     },
+    createExercise(exercise) {
+        return (dispatch, getState) => {
+            const database = store.firestore;
+            const state = getState();
+            const days = state.root.days;
+            let daysLength = days.length;
+            let lastDayId;
+            
+            // No existing days, create first one
+            if (days.length === 0) {
+                const dayRef = database.collection('days').doc();
+                lastDayId = dayRef.id;
+                const newDay = {
+                    id: lastDayId,
+                    isCompleted: false,
+                    order: 0,
+                    exercises: []
+                }
+                dispatch(ActionCreators.addDay(newDay));
+                daysLength += 1;
+            } else {
+                lastDayId = days[daysLength - 1].id;
+            }
+            const exerciseRef = database.collection('days').doc(lastDayId)
+                .collection('exercises').doc();
+            const exerciseId = exerciseRef.id;
+            exercise.id = exerciseId;
+
+            // Add exercise ID to last day
+            dispatch(ActionCreators.addExerciseToDay(daysLength - 1, exercise.id));
+            // Add exercise to state
+            dispatch(ActionCreators.addExercise(exercise));
+            // Back to days list
+            dispatch(ActionCreators.unsetEditingExercise());
+        }
+    },
+    addExerciseToDay(dayOrder, exerciseId) {
+        return {
+            type: type.ADD_EXERCISE_TO_DAY,
+            dayOrder: dayOrder,
+            exerciseId: exerciseId
+        }
+    },
     getProgram(id) {
         return dispatch => {
             dispatch(ActionCreators.getProgramStart());
@@ -223,10 +266,12 @@ const ActionCreators = {
                 });
                 return Promise.all(exercisesPromises).then(() => {
                     return dispatch(ActionCreators.getExercisesSuccess(exercises));
+                }).catch(error => {
+                    // Manage error
+                    dispatch(ActionCreators.getExercisesError(error));
                 });
             }).catch(error => {
-                // Manage error
-                dispatch(ActionCreators.getExercisesError(error));
+                console.log('Error getting exercises');
             })
         }
     },
@@ -329,6 +374,12 @@ const ActionCreators = {
             day: day
         }
     },
+    addExercise(exercise) {
+        return {
+            type: type.ADD_EXERCISE,
+            exercise: exercise
+        }
+    },
     setIsLoading(value) {
         return {
             type: type.SET_IS_LOADING,
@@ -366,6 +417,11 @@ const ActionCreators = {
             type: type.SET_EDITING_EXERCISE,
             status: status,
             id: id
+        }
+    },
+    unsetEditingExercise() {
+        return {
+            type: type.UNSET_EDITING_EXERCISE
         }
     },
     setReps(exerciseId, set, reps) {

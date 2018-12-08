@@ -1,11 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CreateDay from '../CreateDay/CreateDay';
 import CreateExercise from '../CreateExercise/CreateExercise';
 import styles from './ManageView.less';
 import ActionCreators from '../../actions/ActionCreators';
 
 class ManageView extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleCreateExercise = this.handleCreateExercise.bind(this);
+    }
+
+    handleCreateExercise() {
+        this.props.onCreateExerciseClick();
+    }
+
     render() {
         const editingExercise = this.props.editingExercise;
         const days = this.props.days;
@@ -27,15 +35,26 @@ class ManageView extends React.Component {
                     break;
             }
         }
+        
+        if (days) {
+            days.forEach(dayId => {
+                // console.log(dayId);
+                // Add day to template list
+            });
+        }
 
-        console.log(editingExercise);
+        console.log(days);
 
         return (
           <div className={manageViewClasses}>
             <div className={styles.daysCtn}>
-                {editDaysTemplate}
-                <CreateDay
-                    onAddExercise={this.props.onAddExercise} />
+                <div className={styles.daysList}>
+                    {editDaysTemplate}
+                </div>
+                <div className={styles.buttonsCtn}>
+                    <button onClick={this.handleCreateExercise}>Create Exercise</button>
+                    <button>Save changes</button>
+                </div>
             </div>
             <div className={styles.exerciseCtn}>
                 {editExerciseTemplate}
@@ -46,7 +65,7 @@ class ManageView extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onAddExercise: () => dispatch(ActionCreators.setEditingExercise('new', null))
+    onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null))
 })
 
 const mapStateToProps = state => ({
