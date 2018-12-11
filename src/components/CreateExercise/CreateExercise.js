@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ActionCreators from '../../actions/ActionCreators';
+import styles from './CreateExercise.less';
 
 class CreateExercise extends React.Component {
     constructor(props) {
@@ -67,9 +68,9 @@ class CreateExercise extends React.Component {
         }
 
         return (
-            <div className="createExercise">
-                <h2 className="title">
-                    New
+            <div className={styles.createExercise}>
+                <h2 className={styles.title}>
+                    New exercise
                 </h2>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="name">Name</label>
@@ -89,9 +90,10 @@ class CreateExercise extends React.Component {
                     </select>
                     <label htmlFor="goal">Goal</label>
                     <input 
-                        type="text" 
+                        type="number" 
                         name="goal" 
                         placeholder="Reps to achieve on first set"
+                        min="0"
                         value={this.state.newExercise.goal}
                         onChange={this.handleInputChange}
                     />
@@ -100,6 +102,7 @@ class CreateExercise extends React.Component {
                         type="number" 
                         name="sets" 
                         placeholder="Total number of sets"
+                        min="0"
                         value={this.state.newExercise.sets}
                         onChange={this.handleInputChange}
                     />
@@ -114,7 +117,7 @@ class CreateExercise extends React.Component {
                         value={this.state.newExercise.breakdown}
                         onChange={this.handleInputChange}
                     />
-                    <button>
+                    <button class={styles.buttonCreate}>
                         Create exercise
                     </button>
                     {messageTemplate}
