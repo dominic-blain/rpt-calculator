@@ -1,0 +1,36 @@
+.navigation {
+    position: fixed;
+    z-index: 1000;
+    bottom: -@unit-3;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: @unit-15;
+
+    button {
+        width: @unit-15;
+        height: @unit-15;
+        background-color: white;
+        border-radius: 100%;
+        outline: none;
+        .box-shadow-main;
+        margin: @unit;
+        cursor: pointer;
+        transition: @duration-fastest @ease-out-standard;
+        transition-property: width, height, background-color;
+
+        // ~> IS ACTIVE
+        &.isActive {
+            width: @unit-20;
+            height: @unit-20;
+        }
+    }
+
+    &.isReversed {
+        button {
+            background-color: @accent-reversed-fill;
+        } 
+    }
+}

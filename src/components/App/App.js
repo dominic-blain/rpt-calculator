@@ -6,6 +6,7 @@ import { auth } from '../../firebase';
 import TrainingView from '../TrainingView/TrainingView';
 import ManageView from '../ManageView/ManageView';
 import Loading from '../Loading/Loading';
+import Navigation from '../Navigation/Navigation';
 import Signup from '../Signup/Signup';
 import styles from './App.less';
 
@@ -26,7 +27,6 @@ class App extends React.Component {
     }
 
     handleUserChange(user) {
-        console.log('USER ID:', user.uid);
         if (user) {
             this.props.onUserChange(user.uid);
             store.dispatch(ActionCreators.setIsLoading(true));
@@ -43,7 +43,7 @@ class App extends React.Component {
         let viewTemplate;
         
         switch (activeView) {
-            case 'Training':
+            case 'Workout':
                 viewTemplate = <TrainingView />;
                 break;
             case 'Manage':
@@ -58,6 +58,7 @@ class App extends React.Component {
             <main className={styles.app}>
                 <Loading />
                 {viewTemplate}
+                <Navigation />
             </main>
         );
     }
