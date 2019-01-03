@@ -84,5 +84,5 @@ const mapStateToProps = state => ({
 
 export default flow(
     connect(mapStateToProps, mapDispatchToProps),
-    DragDropContext(TouchBackend)
+    DragDropContext(TouchBackend({ enableMouseEvents: true }))
 )(App);
