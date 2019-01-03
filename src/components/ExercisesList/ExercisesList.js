@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Exercise from '../Exercise/Exercise';
+import styles from './ExercisesList.less';
 
 class ExercisesList extends React.Component {
     render() {
@@ -38,6 +39,9 @@ class ExercisesList extends React.Component {
         }
         return (
             <div className="exercisesList">
+                <nav className={styles.topNav}>
+                    <button>← Back</button>
+                </nav>
                 {exercisesTemplate}
             </div>
         )

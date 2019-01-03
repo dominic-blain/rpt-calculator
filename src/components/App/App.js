@@ -57,8 +57,9 @@ class App extends React.Component {
         return (
             <main className={styles.app}>
                 <Loading />
+                {/* <Navigation /> */}
                 {viewTemplate}
-                <Navigation />
+                
             </main>
         );
     }
