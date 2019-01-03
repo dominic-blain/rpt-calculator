@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CreateExercise from '../CreateExercise/CreateExercise';
+import EditDayCard from '../EditDayCard/EditDayCard';
 import styles from './ManageView.less';
 import ActionCreators from '../../actions/ActionCreators';
 
@@ -49,22 +50,24 @@ class ManageView extends React.Component {
         if (days.lenght !== 0) {
             days.forEach((dayId, index) => {
                 const day = days[index];
-                let exercisesList = [];
-                
-                day.exercises.forEach(exerciseId => {
+                const name = 'Day ' + index;
+                const exercisesData = day.exercises.map(exerciseId => {
                     const exercise = exercises[exerciseId];
-                    exercisesList.push(
-                        <li key={exerciseId}>{exercise.name}</li>
-                    );
+                    return {
+                        id: exercise.id,
+                        name: exercise.name,
+                        sets: exercise.sets
+                    }
                 });
 
                 editDaysTemplate.push(
-                    <div key={index}>
-                        <h2>Day</h2>
-                        <ol>
-                            {exercisesList}
-                        </ol>
-                    </div>
+                    <EditDayCard
+                        key={day.id}
+                        id={day.id}
+                        order={day.order}
+                        name={name}
+                        exercises={exercisesData}
+                    />
                 );
             });
         }
