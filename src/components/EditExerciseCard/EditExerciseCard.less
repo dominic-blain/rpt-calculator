@@ -3,13 +3,18 @@
     .font--label; 
     padding: @unit-4;
     border-bottom: 1px solid @black-10-alpha;
+    background-color: @purple;
+    color: white;
 
     .name {
         font-weight: 900;
         margin-right: @unit-2;
     }
+    transition: 100ms ease-out;
+    transition-property: transform, box-shadow;
     // IS DRAGGING
     &.isDragging {
-        opacity: 0.5;
+        transform: scale(1.01);
+        .box-shadow-main;
     }
 }
