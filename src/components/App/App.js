@@ -29,8 +29,6 @@ class App extends React.Component {
     handleUserChange(user) {
         if (user) {
             this.props.onUserChange(user.uid);
-            store.dispatch(ActionCreators.setIsLoading(true));
-            store.dispatch(ActionCreators.loadUser(user.uid));
         }
         else {
             store.dispatch(ActionCreators.resetState());
@@ -40,24 +38,26 @@ class App extends React.Component {
 
     render() {
         const activeView = this.props.activeView;
-        let viewTemplate;
+        const isLogged = this.props.isLogged;
+        let viewTemplate = <Signup />;
         
-        switch (activeView) {
-            case 'Workout':
-                viewTemplate = <TrainingView />;
-                break;
-            case 'Manage':
-                viewTemplate = <ManageView />;
-                break;
-            default:
-                viewTemplate = <Signup />;
-                break;
+        if (isLogged) {
+            switch (activeView) {
+                case 'Workout':
+                    viewTemplate = <TrainingView />;
+                    break;
+                case 'Manage':
+                    viewTemplate = <ManageView />;
+                    break;
+                default:
+                    viewTemplate = <Signup />;
+                    break;
+            }
         }
 
         return (
             <main className={styles.app}>
                 <Loading />
-                {/* <Navigation /> */}
                 {viewTemplate}
                 
             </main>
@@ -66,11 +66,16 @@ class App extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onUserChange: id => dispatch(ActionCreators.setUser(id))
+    onUserChange: id => {
+        dispatch(ActionCreators.setUser(id));
+        dispatch(ActionCreators.setIsLoading(true));
+        dispatch(ActionCreators.loadUser(id));
+    }
 })
 
 const mapStateToProps = state => ({
     userId: state.root.user,
+    isLogged: !state.firebase.auth.isEmpty,
     activeView: state.root.ui.activeView
 });
 

@@ -29,31 +29,43 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
-                // User exists AND has program
-                if (user && user.program !== null) {
-                    dispatch(ActionCreators.getProgram(user.program.id))
-                    .then(() => {
-                        setTimeout(() => {
-                            dispatch(ActionCreators.setIsLoading(false));
-                        }, loadTimeout);
-                    }).catch(error => {
-                        // Manage error  
-                    });
-                }
-                // User exists BUT no program
-                else if (user) {
-                    // Delete after test
-                    dispatch(ActionCreators.setActiveView('Manage'));
-                    setTimeout(() => {
-                        dispatch(ActionCreators.setIsLoading(false));
-                    }, loadTimeout);
+                // User exists
+                if (user) {
+                    // Program exists
+                    if (!!user.program) {
+                        console.log('USER AND PROGRAM');
+                        dispatch(ActionCreators.getProgram(user.program.id))
+                        .then(() => {
+                            setTimeout(() => {
+                                dispatch(ActionCreators.setIsLoading(false));
+                            }, loadTimeout);
+                        }).catch(error => {
+                            // Manage error  
+                        });
+                    // Program DOES NOT exist
+                    } else {
+                        console.log('USER NO PROGRAM')
+                        const programRef = database.collection('programs').doc();
+                        const programId = programRef.id;
+                        database.collection('programs').doc(programId).set({
+                            id: programId
+                        });
+                        database.collection('users').doc(user.id).update({
+                            program: programRef
+                        })
+                        .then(() => {
+                            setTimeout(() => {
+                                dispatch(ActionCreators.setIsLoading(false));
+                            }, loadTimeout);
+                        })
+                    }
                 }
                 // User does NOT exist
                 else {
+                    console.log('NO USER')
                     // Delete after test
                     dispatch(ActionCreators.createUser(id))
                     .then(() => {
-                        dispatch(ActionCreators.setActiveView('Manage'));
                         setTimeout(() => {
                             dispatch(ActionCreators.setIsLoading(false));
                         }, loadTimeout);
@@ -138,8 +150,6 @@ const ActionCreators = {
                 sets: parseInt(exercise.sets),
                 strategy: exercise.strategy
             }
-
-            
 
             // Get sets data
             dispatch(ActionCreators.getSetsByStrat('rpt', newExercise, lastDayId, programId))
