@@ -2,8 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Exercise from '../Exercise/Exercise';
 import styles from './ExercisesList.less';
+import ActionCreators from '../../actions/ActionCreators';
 
 class ExercisesList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleBack = this.handleBack.bind(this);
+    }
+
+    handleBack() {
+        this.props.onBackClick();
+    }
+
     render() {
         const activeDayRef = this.props.activeDayRef;
         const exercisesTemplate = [];
@@ -22,8 +32,6 @@ class ExercisesList extends React.Component {
                 
                 const exercise = exercises[exerciseId];
                 const isCompleted = exercise.isCompleted;
-                // TODO: remove line below and uncomment line above
-                // const isCompleted = false;
                 const isActive = activeExerciseRef.id == exercise.id && !isCompleted;
                 exercisesTemplate.push(
                     <Exercise 
@@ -40,7 +48,7 @@ class ExercisesList extends React.Component {
         return (
             <div className="exercisesList">
                 <nav className={styles.topNav}>
-                    <button>← Back</button>
+                    <button onClick={this.handleBack}>← Back</button>
                 </nav>
                 {exercisesTemplate}
             </div>
@@ -56,4 +64,10 @@ const mapStateToProps = (state, props) => {
     })
 };
 
-export default connect(mapStateToProps)(ExercisesList);
+const mapDispatchToProps = dispatch => {
+    return ({
+        onBackClick: () => dispatch(ActionCreators.clearActiveDay())
+    })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExercisesList);

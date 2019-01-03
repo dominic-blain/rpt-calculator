@@ -108,7 +108,19 @@ const rootReducer = (state = initialState, action) => {
                     }
                 }
             });
-        case type.UNSET_EDITING_EXERCISE:
+        case type.CLEAR_ACTIVE_DAY:
+            return update (state, {
+                ui: {
+                    activeDay: {$set: null}
+                }
+            });
+        case type.CLEAR_ACTIVE_EXERCISE:
+            return update (state, {
+                ui: {
+                    activeExercise: {$set: null}
+                }
+            });
+        case type.CLEAR_EDITING_EXERCISE:
             return update (state, {
                 ui: {
                     editingExercise: {$set: null}

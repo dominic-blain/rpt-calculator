@@ -152,7 +152,7 @@ const ActionCreators = {
                 // Add exercise ID to last day
                 dispatch(ActionCreators.addExerciseToDay(daysLength - 1, newExercise.id));
                 // Back to days list
-                dispatch(ActionCreators.unsetEditingExercise());
+                dispatch(ActionCreators.clearEditingExercise());
             });
         }
     },
@@ -501,6 +501,7 @@ const ActionCreators = {
             order: order
         }
     },
+
     setActiveSet(id) {
         return {
             type: type.SET_ACTIVE_SET,
@@ -514,9 +515,19 @@ const ActionCreators = {
             id: id
         }
     },
-    unsetEditingExercise() {
+    clearActiveDay() {
         return {
-            type: type.UNSET_EDITING_EXERCISE
+            type: type.CLEAR_ACTIVE_DAY
+        }
+    },
+    clearActiveExercise() {
+        return {
+            type: type.CLEAR_ACTIVE_EXERCISE
+        }
+    },
+    clearEditingExercise() {
+        return {
+            type: type.CLEAR_EDITING_EXERCISE
         }
     },
     setReps(exerciseId, set, reps) {

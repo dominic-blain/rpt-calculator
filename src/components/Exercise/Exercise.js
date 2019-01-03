@@ -38,8 +38,6 @@ class Exercise extends React.Component {
 
         const exerciseStyles = 
             styles.exercise +' '+
-            // (isActive ? styles.isActive : '');
-            // TODO: remove line above and uncomment lines below
             (isActive ? styles.isActive : '') +' '+
             (isCompleted ? styles.isCompleted : '');
         const dotsCtnStyles = 
@@ -118,7 +116,9 @@ class Exercise extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onButtonStartClick: (id, order) => dispatch(ActionCreators.setActiveExercise(id, order)),
-    onExerciseEnd: (id, dayId, sets) => dispatch(ActionCreators.logExercise(id, dayId, sets))
+    onExerciseEnd: (id, dayId, sets) => {
+        dispatch(ActionCreators.logExercise(id, dayId, sets));
+    }
 });
 
 const mapStateToProps = state => ({
