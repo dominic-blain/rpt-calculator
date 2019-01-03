@@ -21,9 +21,9 @@ class ExercisesList extends React.Component {
             activeDay.exercises.forEach(exerciseId => {
                 
                 const exercise = exercises[exerciseId];
-                // const isCompleted = exercise.isCompleted;
+                const isCompleted = exercise.isCompleted;
                 // TODO: remove line below and uncomment line above
-                const isCompleted = false;
+                // const isCompleted = false;
                 const isActive = activeExerciseRef.id == exercise.id && !isCompleted;
                 exercisesTemplate.push(
                     <Exercise 

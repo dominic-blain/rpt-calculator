@@ -117,7 +117,7 @@ class CreateExercise extends React.Component {
                         value={this.state.newExercise.breakdown}
                         onChange={this.handleInputChange}
                     />
-                    <button class={styles.buttonCreate}>
+                    <button className={styles.buttonCreate}>
                         Create exercise
                     </button>
                     {messageTemplate}

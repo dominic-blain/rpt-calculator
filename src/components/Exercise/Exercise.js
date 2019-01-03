@@ -38,10 +38,10 @@ class Exercise extends React.Component {
 
         const exerciseStyles = 
             styles.exercise +' '+
-            (isActive ? styles.isActive : '');
+            // (isActive ? styles.isActive : '');
             // TODO: remove line above and uncomment lines below
-            // (isActive ? styles.isActive : '') +' '+
-            // (isCompleted ? styles.isCompleted : '');
+            (isActive ? styles.isActive : '') +' '+
+            (isCompleted ? styles.isCompleted : '');
         const dotsCtnStyles = 
             styles.dotsCtn +' '+
             (isActive ? styles.isActive : '');

@@ -122,7 +122,7 @@ const ActionCreators = {
                 daysLength += 1;
             } else {
                 lastDayId = days[daysLength - 1].id;
-                exerciseOrder = days.exercises.length;
+                exerciseOrder = days.length;
             }
             const exerciseRef = database
                 .collection('programs').doc(programId)
@@ -139,14 +139,21 @@ const ActionCreators = {
                 strategy: exercise.strategy
             }
 
-            // Add exercise ID to last day
-            dispatch(ActionCreators.addExerciseToDay(daysLength - 1, newExercise.id));
-            // Add exercise to state
-            dispatch(ActionCreators.addExercise(newExercise));
-            // Save day to database
-            dispatch(ActionCreators.saveExercise(programId, lastDayId, newExercise));
-            // Back to days list
-            dispatch(ActionCreators.unsetEditingExercise());
+            
+
+            // Get sets data
+            dispatch(ActionCreators.getSetsByStrat('rpt', newExercise, lastDayId, programId))
+            .then(response => {
+                newExercise['setsData'] = response;
+                // Save day to database
+                dispatch(ActionCreators.saveExercise(programId, lastDayId, newExercise));
+                // Add exercise to state
+                dispatch(ActionCreators.addExercise(newExercise));
+                // Add exercise ID to last day
+                dispatch(ActionCreators.addExerciseToDay(daysLength - 1, newExercise.id));
+                // Back to days list
+                dispatch(ActionCreators.unsetEditingExercise());
+            });
         }
     },
     createDay(programId) {
