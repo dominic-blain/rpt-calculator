@@ -9,6 +9,7 @@ class ManageView extends React.Component {
         super(props);
         this.handleCreateExercise = this.handleCreateExercise.bind(this);
         this.handleDone = this.handleDone.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
 
     handleCreateExercise() {
@@ -17,6 +18,10 @@ class ManageView extends React.Component {
 
     handleDone() {
         this.props.onDoneClick();
+    }
+
+    handleBack() {
+        this.props.onBackClick();
     }
 
     render() {
@@ -49,12 +54,12 @@ class ManageView extends React.Component {
                 day.exercises.forEach(exerciseId => {
                     const exercise = exercises[exerciseId];
                     exercisesList.push(
-                        <li>{exercise.name}</li>
+                        <li key={exerciseId}>{exercise.name}</li>
                     );
                 });
 
                 editDaysTemplate.push(
-                    <div>
+                    <div key={index}>
                         <h2>Day</h2>
                         <ol>
                             {exercisesList}
@@ -67,6 +72,9 @@ class ManageView extends React.Component {
         return (
           <div className={manageViewClasses}>
             <div className={styles.daysCtn}>
+                <nav className={styles.topNav}>
+                    <button onClick={this.handleBack}>← Back</button>
+                </nav>
                 <div className={styles.daysList}>
                     {editDaysTemplate}
                 </div>
@@ -93,7 +101,8 @@ class ManageView extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null)),
-    onDoneClick: () => dispatch(ActionCreators.setActiveView('Training'))
+    onDoneClick: () => dispatch(ActionCreators.setActiveView('Workout')),
+    onBackClick: () => dispatch(ActionCreators.setActiveView('Workout'))
 });
 
 const mapStateToProps = state => ({
