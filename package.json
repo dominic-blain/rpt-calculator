@@ -51,7 +51,10 @@
   "dependencies": {
     "firebase": "^5.4.0",
     "firebaseui": "^3.4.1",
+    "lodash.flow": "^3.5.0",
     "normalize.css": "^8.0.0",
+    "react-dnd": "^7.0.2",
+    "react-dnd-touch-backend": "^0.7.1",
     "react-firebaseui": "^3.1.2",
     "react-redux-firebase": "^2.2.0-alpha",
     "redux-firestore": "^0.5.7"

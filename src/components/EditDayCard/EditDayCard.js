@@ -1,5 +1,7 @@
 import React from 'react';
+import EditExerciseCard from '../EditExerciseCard/EditExerciseCard';
 import styles from './EditDayCard.less';
+
 
 class EditDayCard extends React.Component {
     render() {
@@ -10,10 +12,12 @@ class EditDayCard extends React.Component {
 
         const exerciseTemplates = exercises.map(exercise => {
             return (
-                <div key={exercise.id} className={styles.exercise}>
-                    <div className={styles.exerciseName}>{exercise.name}</div>
-                    <div className={styles.exerciseSets}>× {exercise.sets}</div>
-                </div>
+                <EditExerciseCard
+                    key={exercise.id}
+                    id={exercise.id}
+                    name={exercise.name}
+                    sets={exercise.sets}
+                />
             )
         });
 
@@ -26,6 +30,5 @@ class EditDayCard extends React.Component {
         )
     }
 }
-
 
 export default EditDayCard;

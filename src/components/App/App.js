@@ -9,6 +9,9 @@ import Loading from '../Loading/Loading';
 import Navigation from '../Navigation/Navigation';
 import Signup from '../Signup/Signup';
 import styles from './App.less';
+import TouchBackend from 'react-dnd-touch-backend';
+import { DragDropContext } from 'react-dnd';
+import flow from 'lodash/flow';
 
 class App extends React.Component {
     constructor(props) {
@@ -79,4 +82,7 @@ const mapStateToProps = state => ({
     activeView: state.root.ui.activeView
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default flow(
+    connect(mapStateToProps, mapDispatchToProps),
+    DragDropContext(TouchBackend)
+)(App);
