@@ -10,7 +10,9 @@ const sourceSpecs = {
         return {
             id: props.id,
             name: props.name,
-            order: props.order
+            order: props.order,
+            dayId: props.dayId,
+            dayOrder: props.dayOrder
         }
     }
 }
@@ -20,24 +22,37 @@ const targetSpecs = {
         if(!component) {
             return
         }
-        const sourceIndex = monitor.getItem().order;
-        const targetIndex = props.order;
+        const sourceItem = monitor.getItem();
+        const source = {
+            dayOrder: sourceItem.dayOrder,
+            order: sourceItem.order,
+            dayId: sourceItem.dayId,
+            id: sourceItem.id
+        }
+        const target = {
+            dayOrder: props.dayOrder,
+            order: props.order,
+            dayId: props.dayId,
+            id: props.id
+        }
 
-        if (sourceIndex === targetIndex) {
+        if (source.order === target.order) {
             return
         }
 
         const targetBox = findDOMNode(component).getBoundingClientRect();
         const targetMiddleY = targetBox.top + targetBox.height / 2;
         const mousePosition = monitor.getClientOffset();
-        const dragDirection = sourceIndex < targetIndex ? "down" : "up";
+        const dragDirection = source.order < target.order ? "down" : "up";
         
 
         if  ((dragDirection === "up" && mousePosition.y < targetMiddleY) ||
             (dragDirection === "down" && mousePosition.y > targetMiddleY )) {
-            console.log(monitor.getItem().name + '('+sourceIndex+') : ' + props.name+ '('+targetIndex+') : ' + dragDirection);
-            props.onReorder(sourceIndex, targetIndex);
-            monitor.getItem().order = targetIndex;
+            console.log(source, target);
+            props.onReorder(source, target);
+            monitor.getItem().order = target.order;
+            monitor.getItem().dayId = target.dayId;
+            monitor.getItem().dayOrder = target.dayOrder;
         } else {
             return
         }

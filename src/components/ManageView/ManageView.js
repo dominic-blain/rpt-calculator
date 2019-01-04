@@ -11,6 +11,7 @@ class ManageView extends React.Component {
         super(props);
         this.handleCreateExercise = this.handleCreateExercise.bind(this);
         this.handleEditExercise = this.handleEditExercise.bind(this);
+        this.handleReorderExercise = this.handleReorderExercise.bind(this);
         this.handleDone = this.handleDone.bind(this);
         this.handleBack = this.handleBack.bind(this);
     }
@@ -21,6 +22,10 @@ class ManageView extends React.Component {
 
     handleEditExercise(id) {
         this.props.onEditExerciseClick(id);
+    }
+
+    handleReorderExercise(source, target) {
+        this.props.onReorderExercise(source, target);
     }
 
     handleDone() {
@@ -74,6 +79,7 @@ class ManageView extends React.Component {
                         order={day.order}
                         name={name}
                         exercises={exercisesData}
+                        onExerciseReorder={this.handleReorderExercise}
                         onExerciseEdit={this.handleEditExercise}
                     />
                 );
@@ -84,7 +90,7 @@ class ManageView extends React.Component {
           <div className={manageViewClasses}>
             <div className={styles.daysCtn}>
                 <nav className={styles.topNav}>
-                    <button onClick={this.handleBack}>← Cancel</button>
+                    <button onClick={this.handleBack}>← Back</button>
                 </nav>
                 <div className={styles.daysList}>
                     {editDaysTemplate}
@@ -113,6 +119,7 @@ class ManageView extends React.Component {
 const mapDispatchToProps = dispatch => ({
     onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null)),
     onEditExerciseClick: (id) => dispatch(ActionCreators.setEditingExercise('edit', id)),
+    onReorderExercise: (source, target) => dispatch(ActionCreators.reorderExercise(source, target)),
     onDoneClick: () => dispatch(ActionCreators.setActiveView('Workout')),
     onBackClick: () => dispatch(ActionCreators.setActiveView('Workout'))
 });

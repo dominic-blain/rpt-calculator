@@ -205,6 +205,22 @@ const ActionCreators = {
             exercise: exercise
         }
     },
+    reorderExercise(source, target) {
+        return (dispatch, getState) => {
+            const state = getState();
+            const days = state.days;
+            const exercises = state.exercises;
+
+            if (source.dayId === target.dayId) {
+                const spliceArray = [
+                    [source.order, 1], 
+                    [target.order, 0, source.id]
+                ];
+                dispatch(ActionCreators.reorderExercisesInDay(source.dayOrder, spliceArray))
+            }
+
+        }
+    },
     createDay(programId) {
         return dispatch => {
             const database = store.firestore;
@@ -288,6 +304,13 @@ const ActionCreators = {
             type: type.ADD_EXERCISE_TO_DAY,
             dayOrder: dayOrder,
             exerciseId: exerciseId
+        }
+    },
+    reorderExercisesInDay(dayOrder, spliceArray){
+        return {
+            type: type.REORDER_EXERCISES_IN_DAY,
+            dayOrder: dayOrder,
+            spliceArray: spliceArray
         }
     },
     getProgram(id) {

@@ -62,6 +62,17 @@ const rootReducer = (state = initialState, action) => {
                     }
                 } 
             });
+        case type.REORDER_EXERCISES_IN_DAY:
+        console.log(action.dayOrder, action.spliceArray)
+            return update(state, {
+                days: {
+                    [action.dayOrder]: {
+                        exercises: {
+                            $splice: action.spliceArray
+                        }
+                    }
+                }
+            });
         case type.SET_IS_LOADING:
             return update (state, {
                 ui: {
