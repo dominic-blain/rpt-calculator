@@ -1,20 +1,40 @@
 .editExerciseCard {
+    position: relative;
+    transition: 200ms ease-out;
+    transition-property: transform, box-shadow;
+
     .wrapper {
         display: flex;
         .font--label; 
-        padding: @unit-4;
         border-bottom: 1px solid @black-10-alpha;
         background-color: @purple;
         color: white;
     }
 
+    .buttonEdit {
+        padding: @unit-4;
+        flex-grow: 1;
+    }
+
     .name {
         font-weight: 900;
         margin-right: @unit-2;
+        display: inline;
     }
-    position: relative;
-    transition: 200ms ease-out;
-    transition-property: transform, box-shadow;
+
+    .sets {
+        display: inline;
+    }
+
+    .handle {
+        background-color: @purple-medium;
+        width: 19.6551724%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: ns-resize;
+    }
+    
     // IS DRAGGING
     &.isDragging {
         transform: scale(1.02);

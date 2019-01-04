@@ -77,16 +77,27 @@ class EditExerciseCard extends React.Component {
         const editExerciseCardStyles = styles.editExerciseCard + ' ' +
         (isDragging ? styles.isDragging : '') + ' ' +
         (isOver ? styles.isOver : '');
-        
-        return connectDragSource(
+
+        const handleTemplate = (
+            connectDragSource(
             connectDropTarget(
-                <div key={id} className={editExerciseCardStyles}>
-                    <div ref={this.ref} className={styles.wrapper}>
+                <div className={styles.handle}>
+                    <svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1H15M0 5.5H15M0 10H15" stroke="white"/>
+                        </svg>
+                </div>
+        )));
+        
+        return (
+            <div key={id} className={editExerciseCardStyles}>
+                <div ref={this.ref} className={styles.wrapper}>
+                    <div className={styles.buttonEdit}>
                         <div className={styles.name}>{name}</div>
                         <div className={styles.sets}>× {sets} sets</div>
                     </div>
+                    {handleTemplate}
                 </div>
-            )
+            </div>
         )
     }
 }
