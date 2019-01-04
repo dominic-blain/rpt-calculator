@@ -45,6 +45,7 @@ class EditDayCard extends React.Component {
                     name={exercise.name}
                     sets={exercise.sets}
                     onReorder={this.handleReorder}
+                    onEdit={this.props.onExerciseEdit}
                 />
             )
         });

@@ -125,17 +125,22 @@ const ActionCreators = {
             const programId = state.root.program.id;
             const days = state.root.days;
             let daysLength = days.length;
+            let lastDay;
             let lastDayId;
             let exerciseOrder = 0;
+
+            debugger;
             
             // No existing days, create first one
             if (days.length === 0) {
                 lastDayId = dispatch(ActionCreators.createDay(programId));   
                 daysLength += 1;
             } else {
-                lastDayId = days[daysLength - 1].id;
-                exerciseOrder = days.length;
+                lastDay = days[daysLength - 1];
+                lastDayId = lastDay.id;
+                exerciseOrder = lastDay.exercises.length;
             }
+            
             const exerciseRef = database
                 .collection('programs').doc(programId)
                 .collection('days').doc(lastDayId)

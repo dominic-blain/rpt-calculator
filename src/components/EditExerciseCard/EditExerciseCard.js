@@ -69,6 +69,7 @@ class EditExerciseCard extends React.Component {
         const id = this.props.id;
         const name = this.props.name;
         const sets = this.props.sets;
+        const handleEdit = this.props.onEdit;
         const connectDragSource = this.props.connectDragSource;
         const connectDropTarget = this.props.connectDropTarget;
         const isDragging = this.props.isDragging;
@@ -91,7 +92,7 @@ class EditExerciseCard extends React.Component {
         return (
             <div key={id} className={editExerciseCardStyles}>
                 <div ref={this.ref} className={styles.wrapper}>
-                    <div className={styles.buttonEdit}>
+                    <div className={styles.buttonEdit} onClick={handleEdit}>
                         <div className={styles.name}>{name}</div>
                         <div className={styles.sets}>× {sets} sets</div>
                     </div>

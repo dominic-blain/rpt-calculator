@@ -9,12 +9,17 @@ class ManageView extends React.Component {
     constructor(props) {
         super(props);
         this.handleCreateExercise = this.handleCreateExercise.bind(this);
+        this.handleEditExercise = this.handleEditExercise.bind(this);
         this.handleDone = this.handleDone.bind(this);
         this.handleBack = this.handleBack.bind(this);
     }
 
     handleCreateExercise() {
         this.props.onCreateExerciseClick();
+    }
+
+    handleEditExercise() {
+        this.props.onEditExerciseClick();
     }
 
     handleDone() {
@@ -67,6 +72,7 @@ class ManageView extends React.Component {
                         order={day.order}
                         name={name}
                         exercises={exercisesData}
+                        onExerciseEdit={this.handleEditExercise}
                     />
                 );
             });
@@ -104,6 +110,7 @@ class ManageView extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null)),
+    onEditExerciseClick: (id) => dispatch(ActionCreators.setEditingExercise('edit', id)),
     onDoneClick: () => dispatch(ActionCreators.setActiveView('Workout')),
     onBackClick: () => dispatch(ActionCreators.setActiveView('Workout'))
 });
