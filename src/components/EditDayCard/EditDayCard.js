@@ -13,6 +13,14 @@ class EditDayCard extends React.Component {
         this.handleReorder = this.handleReorder.bind(this);
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.exercises !== prevProps.exercises) {
+            this.setState(update(prevState, {
+                exercises: {$set: this.props.exercises}
+            }));
+        }
+    }
+
     handleReorder(sourceIndex, targetIndex) {
         const sourceExercise = this.state.exercises[sourceIndex];
         this.setState(update(this.state, {

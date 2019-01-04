@@ -76,7 +76,7 @@ class ManageView extends React.Component {
           <div className={manageViewClasses}>
             <div className={styles.daysCtn}>
                 <nav className={styles.topNav}>
-                    <button onClick={this.handleBack}>← Back</button>
+                    <button onClick={this.handleBack}>← Cancel</button>
                 </nav>
                 <div className={styles.daysList}>
                     {editDaysTemplate}
@@ -90,7 +90,7 @@ class ManageView extends React.Component {
                     <button 
                         className={styles.buttonDone}
                         onClick={this.handleDone}>
-                        Done
+                        Save
                     </button>
                 </div>
             </div>
