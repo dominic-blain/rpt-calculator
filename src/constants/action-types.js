@@ -10,6 +10,7 @@ export const CREATE_PROGRAM_START = 'create program start';
 export const CREATE_PROGRAM_SUCCESS = 'create program success';
 export const CREATE_PROGRAM_ERROR = 'create program error';
 export const CREATE_EXERCISE = 'create exercise';
+export const UPDATE_EXERCISE = 'update exercise';
 export const SAVE_DAY = 'save day';
 export const SAVE_DAY_START = 'save day start';
 export const SAVE_DAY_SUCCESS = 'save day success';

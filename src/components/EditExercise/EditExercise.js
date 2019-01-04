@@ -1,18 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ActionCreators from '../../actions/ActionCreators';
-import styles from './CreateExercise.less';
+import styles from './EditExercise.less';
 
-class CreateExercise extends React.Component {
+class EditExercise extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            newExercise: {
-                name: '',
-                strategy: 'rpt',
-                goal: '',
-                sets: '',
-                breakdown: ''
+            editedExercise: {
+                name: `${props.exercise.name}`,
+                strategy: `${props.exercise.strategy}`,
+                goal: `${props.exercise.goal}`,
+                sets: `${props.exercise.sets}`,
+                breakdown: `${props.exercise.breakdown}`,
+                order: `${props.exercise.order}`,
+                dayId: `${props.exercise.dayId}`,
+                id: `${props.exercise.id}`
             },
             messages: {
                 incomplete: 'Please fill all data'
@@ -32,14 +35,14 @@ class CreateExercise extends React.Component {
 
         this.setState(prevState => {
             return {
-                newExercise: {...prevState.newExercise, [name]: value}
+                editedExercise: {...prevState.editedExercise, [name]: value}
             }
         }, () => console.log(this.state));
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const exercise = this.state.newExercise;
+        const exercise = this.state.editedExercise;
         const isComplete = ( 
             exercise.name.length != 0 &&
             exercise.strategy.length != 0 &&
@@ -49,7 +52,7 @@ class CreateExercise extends React.Component {
         );
 
         if (isComplete) {
-            this.props.onCreateExercise(exercise);
+            this.props.onEditExercise(exercise);
         }
         else {
             console.log('INCOMPLETE', exercise);
@@ -68,9 +71,9 @@ class CreateExercise extends React.Component {
         }
 
         return (
-            <div className={styles.createExercise}>
+            <div className={styles.editExercise}>
                 <h2 className={styles.title}>
-                    New exercise
+                    Edit exercise
                 </h2>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="name">Name</label>
@@ -78,7 +81,7 @@ class CreateExercise extends React.Component {
                         type="text" 
                         name="name" 
                         placeholder="Name this new day"
-                        value={this.state.newExercise.name}
+                        value={this.state.editedExercise.name}
                         onChange={this.handleInputChange}
                     />
                     <label htmlFor="strategy">Strategy</label>
@@ -94,7 +97,7 @@ class CreateExercise extends React.Component {
                         name="goal" 
                         placeholder="Reps to achieve on first set"
                         min="0"
-                        value={this.state.newExercise.goal}
+                        value={this.state.editedExercise.goal}
                         onChange={this.handleInputChange}
                     />
                     <label htmlFor="sets">Sets</label>
@@ -103,7 +106,7 @@ class CreateExercise extends React.Component {
                         name="sets" 
                         placeholder="Total number of sets"
                         min="0"
-                        value={this.state.newExercise.sets}
+                        value={this.state.editedExercise.sets}
                         onChange={this.handleInputChange}
                     />
                     <label htmlFor="breakdown">Breakdown</label>
@@ -114,11 +117,11 @@ class CreateExercise extends React.Component {
                         step="0.05"
                         name="breakdown" 
                         placeholder="Weight % to remove after each set"
-                        value={this.state.newExercise.breakdown}
+                        value={this.state.editedExercise.breakdown}
                         onChange={this.handleInputChange}
                     />
-                    <button className={styles.buttonCreate}>
-                        Create exercise
+                    <button className={styles.buttonSave}>
+                        Save exercise
                     </button>
                     {messageTemplate}
                 </form>
@@ -127,7 +130,7 @@ class CreateExercise extends React.Component {
     }
 }
 const mapDispatchToProps = dispatch => ({
-    onCreateExercise: (exercise) => dispatch(ActionCreators.createExercise(exercise))
+    onEditExercise: (exercise) => dispatch(ActionCreators.editExercise(exercise))
 });
 
-export default connect(null, mapDispatchToProps)(CreateExercise);
+export default connect(null, mapDispatchToProps)(EditExercise);

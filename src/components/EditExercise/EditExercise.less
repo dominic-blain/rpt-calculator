@@ -1,0 +1,49 @@
+.editExercise {
+    margin: @unit-10 @unit-5;
+    
+    .title {
+        .font--title;
+        margin-bottom: @unit-5;
+    }
+    input,
+    select {
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: initial;
+        border: none;
+        width: 100%;
+        box-sizing: border-box;
+        .font--label;
+        text-transform: none;
+        border-bottom: 1px solid @darker-black;
+        padding: 0px @unit 3px @unit;
+        margin-bottom: @unit-2;
+        outline: none;
+
+        &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            color: @darker-black-50;
+        }
+        &::-moz-placeholder { /* Firefox 19+ */
+            color: @darker-black-50;
+        }
+        &:-ms-input-placeholder { /* IE 10+ */
+            color: @darker-black-50;
+        }
+        &:-moz-placeholder { /* Firefox 18- */
+            color: @darker-black-50;
+        }
+    }
+    label {
+        .font--label-small;
+        padding: 0 @unit;
+    }
+    .buttonSave {
+        .font--title-small;
+        height: @unit-15;
+        margin-top: @unit-10;
+        width: 100%;
+        text-align: center;
+        background-color: @accent-reversed-fill;
+        color: @accent-reversed-text;
+    }
+}

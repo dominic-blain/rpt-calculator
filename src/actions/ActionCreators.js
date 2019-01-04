@@ -1,6 +1,7 @@
 import * as type from '../constants/action-types';
 import { auth } from '../firebase';
 import store from '../store/store';
+import { types } from 'util';
 
 const ActionCreators = {
     init() {
@@ -128,8 +129,6 @@ const ActionCreators = {
             let lastDay;
             let lastDayId;
             let exerciseOrder = 0;
-
-            debugger;
             
             // No existing days, create first one
             if (days.length === 0) {
@@ -160,7 +159,7 @@ const ActionCreators = {
             dispatch(ActionCreators.getSetsByStrat('rpt', newExercise, lastDayId, programId))
             .then(response => {
                 newExercise['setsData'] = response;
-                // Save day to database
+                // Save exercise to database
                 dispatch(ActionCreators.saveExercise(programId, lastDayId, newExercise));
                 // Add exercise to state
                 dispatch(ActionCreators.addExercise(newExercise));
@@ -169,6 +168,41 @@ const ActionCreators = {
                 // Back to days list
                 dispatch(ActionCreators.clearEditingExercise());
             });
+        }
+    },
+    editExercise(exercise) {
+        return (dispatch, getState) => {
+            const state = getState();
+            const programId = state.root.program.id;
+
+            const editedExercise = {
+                id: exercise.id,
+                dayId: exercise.dayId,
+                order: parseInt(exercise.order),
+                breakdown: parseFloat(exercise.breakdown),
+                goal: parseInt(exercise.goal),
+                name: exercise.name,
+                sets: parseInt(exercise.sets),
+                strategy: exercise.strategy
+            }
+
+            // Get sets data
+            dispatch(ActionCreators.getSetsByStrat(exercise.strategy, editedExercise, exercise.dayId, programId))
+            .then(response => {
+                editedExercise['setsData'] = response;
+                // Save exercise to database
+                dispatch(ActionCreators.saveExercise(programId, exercise.dayId, editedExercise));
+                // Update exercise in state
+                dispatch(ActionCreators.updateExercise(editedExercise));
+                // Back to days list
+                dispatch(ActionCreators.clearEditingExercise());
+            });
+        }
+    },
+    updateExercise(exercise) {
+        return {
+            type: type.UPDATE_EXERCISE,
+            exercise: exercise
         }
     },
     createDay(programId) {
@@ -228,7 +262,7 @@ const ActionCreators = {
                 .collection('programs').doc(programId)
                 .collection('days').doc(dayId)
                 .collection('exercises').doc(exercise.id)
-                .set(exercise)
+                .update(exercise)
             .then(() => {
                 dispatch(ActionCreators.saveExerciseSuccess());
             })

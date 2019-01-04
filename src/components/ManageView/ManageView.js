@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CreateExercise from '../CreateExercise/CreateExercise';
+import EditExercise from '../EditExercise/EditExercise';
 import EditDayCard from '../EditDayCard/EditDayCard';
 import styles from './ManageView.less';
 import ActionCreators from '../../actions/ActionCreators';
@@ -18,8 +19,8 @@ class ManageView extends React.Component {
         this.props.onCreateExerciseClick();
     }
 
-    handleEditExercise() {
-        this.props.onEditExerciseClick();
+    handleEditExercise(id) {
+        this.props.onEditExerciseClick(id);
     }
 
     handleDone() {
@@ -47,7 +48,8 @@ class ManageView extends React.Component {
                     editExerciseTemplate = <CreateExercise />
                     break;
                 case 'edit':
-                    // editExerciseTemplate = <EditExercise />
+                    const editExerciseData = exercises[editingExercise.id]
+                    editExerciseTemplate = <EditExercise exercise={editExerciseData} />
                     break;
             }
         }

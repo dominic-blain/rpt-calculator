@@ -64,7 +64,13 @@ class EditExerciseCard extends React.Component {
     constructor(props) {
         super(props);
         this.ref = React.createRef();
+        this.handleEditClick = this.handleEditClick.bind(this);
     }
+
+    handleEditClick() {
+        this.props.onEdit(this.props.id);
+    }
+
     render() {
         const id = this.props.id;
         const name = this.props.name;
@@ -92,7 +98,7 @@ class EditExerciseCard extends React.Component {
         return (
             <div key={id} className={editExerciseCardStyles}>
                 <div ref={this.ref} className={styles.wrapper}>
-                    <div className={styles.buttonEdit} onClick={handleEdit}>
+                    <div className={styles.buttonEdit} onClick={this.handleEditClick}>
                         <div className={styles.name}>{name}</div>
                         <div className={styles.sets}>× {sets} sets</div>
                     </div>
