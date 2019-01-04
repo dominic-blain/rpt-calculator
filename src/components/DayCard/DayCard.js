@@ -18,7 +18,7 @@ class DayCard extends React.Component {
             return (
                 <div key={exercise.id} className={styles.exercise}>
                     <div className={styles.exerciseName}>{exercise.name}</div>
-                    <div className={styles.exerciseSets}>× {exercise.sets}</div>
+                    <div className={styles.exerciseSets}>× {exercise.sets} sets</div>
                 </div>
             )
         });

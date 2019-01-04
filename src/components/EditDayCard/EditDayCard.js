@@ -1,22 +1,42 @@
 import React from 'react';
 import EditExerciseCard from '../EditExerciseCard/EditExerciseCard';
 import styles from './EditDayCard.less';
+import update from 'immutability-helper';
 
 
 class EditDayCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            exercises: props.exercises
+        }
+        this.handleReorder = this.handleReorder.bind(this);
+    }
+
+    handleReorder(sourceIndex, targetIndex) {
+        const sourceExercise = this.state.exercises[sourceIndex];
+        this.setState(update(this.state, {
+            exercises: {
+                $splice: [[sourceIndex, 1], [targetIndex, 0, sourceExercise]]
+            }
+        }));
+    }
+
     render() {
         const id = this.props.id;
         const order = this.props.order;
         const name = this.props.name;
-        const exercises = this.props.exercises;
+        const exercises = this.state.exercises;
 
-        const exerciseTemplates = exercises.map(exercise => {
+        const exerciseTemplates = exercises.map((exercise, index) => {
             return (
                 <EditExerciseCard
                     key={exercise.id}
                     id={exercise.id}
+                    order={index}
                     name={exercise.name}
                     sets={exercise.sets}
+                    onReorder={this.handleReorder}
                 />
             )
         });
