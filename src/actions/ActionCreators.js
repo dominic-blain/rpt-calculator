@@ -278,7 +278,7 @@ const ActionCreators = {
                 .collection('programs').doc(programId)
                 .collection('days').doc(dayId)
                 .collection('exercises').doc(exercise.id)
-                .update(exercise)
+                .set(exercise)
             .then(() => {
                 dispatch(ActionCreators.saveExerciseSuccess());
             })
