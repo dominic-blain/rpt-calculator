@@ -122,15 +122,13 @@ const ActionCreators = {
             const state = getState();
             const programId = state.root.program.id;
             const days = state.root.days;
-            let daysLength = days.length;
             let lastDay;
             let lastDayId;
             let exerciseOrder = 0;
             
             // Create exercise into new day
             if (dayId === null) {
-                lastDayId = dispatch(ActionCreators.createDay(programId));   
-                daysLength += 1;
+                lastDayId = dispatch(ActionCreators.createDay(programId));
             // Or into existing day
             } else {
                 lastDay = days.find(day => {
@@ -164,7 +162,7 @@ const ActionCreators = {
                 // Add exercise to state
                 dispatch(ActionCreators.addExercise(newExercise));
                 // Add exercise ID to last day
-                dispatch(ActionCreators.addExerciseToDay(daysLength - 1, newExercise.id));
+                dispatch(ActionCreators.addExerciseToDay(lastDay.order, newExercise.id));
                 // Back to days list
                 dispatch(ActionCreators.clearEditingExercise());
             });
