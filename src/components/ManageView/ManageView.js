@@ -114,10 +114,10 @@ class ManageView extends React.Component {
         return (
           <div className={manageViewClasses}>
             <div className={styles.daysCtn}>
-                <nav className={styles.topNav}>
-                    <button onClick={this.handleBack}>← Back</button>
-                </nav>
                 <div className={styles.daysList}>
+                    <nav className={styles.topNav}>
+                        <button onClick={this.handleBack}>← Back</button>
+                    </nav>
                     {editDaysTemplate}
                 </div>
                {createButtonTemplate}

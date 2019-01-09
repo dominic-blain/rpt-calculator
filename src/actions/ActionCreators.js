@@ -34,7 +34,6 @@ const ActionCreators = {
                 if (user) {
                     // Program exists
                     if (!!user.program) {
-                        console.log('USER AND PROGRAM');
                         dispatch(ActionCreators.getProgram(user.program.id))
                         .then(() => {
                             setTimeout(() => {
@@ -45,7 +44,6 @@ const ActionCreators = {
                         });
                     // Program DOES NOT exist
                     } else {
-                        console.log('USER NO PROGRAM')
                         const programRef = database.collection('programs').doc();
                         const programId = programRef.id;
                         database.collection('programs').doc(programId).set({
@@ -63,7 +61,6 @@ const ActionCreators = {
                 }
                 // User does NOT exist
                 else {
-                    console.log('NO USER')
                     // Delete after test
                     dispatch(ActionCreators.createUser(id))
                     .then(() => {
@@ -210,9 +207,6 @@ const ActionCreators = {
     },
     reorderExercise(source, target) {
         return (dispatch, getState) => {
-            const state = getState();
-            const days = state.days;
-            const exercises = state.exercises;
 
             if (source.dayId === target.dayId) {
                 const spliceArray = [
@@ -225,15 +219,17 @@ const ActionCreators = {
         }
     },
     createDay(programId) {
-        return dispatch => {
+        return (dispatch, getState) => {
             const database = store.firestore;
+            const state = getState();
+            const days = state.root.days;
             const dayRef = database
                 .collection('programs').doc(programId)
                 .collection('days').doc();
             const day = {
                 id: dayRef.id,
                 isCompleted: false,
-                order: 0,
+                order: days.length,
                 exercises: []
             }
             dispatch(ActionCreators.addDay(day));
@@ -356,7 +352,8 @@ const ActionCreators = {
             const daysRef = database
                 .collection('programs')
                 .doc(programId)
-                .collection('days');
+                .collection('days')
+                .orderBy('order', 'desc');
 
             return daysRef.get().then(results => {
                 const days = [];
