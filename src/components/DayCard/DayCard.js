@@ -27,7 +27,9 @@ class DayCard extends React.Component {
         return (
             <section className={dayCardClasses}>
                 <h2 className={styles.title}>{name}</h2>
-                <div className={styles.exercisesCtn}>{exerciseTemplates}</div>
+                <div className={styles.exercisesCtn}>
+                    {exerciseTemplates}
+                </div>
                 <button 
                     className={styles.startButton}
                     data-id={id}

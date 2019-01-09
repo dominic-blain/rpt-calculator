@@ -16,8 +16,8 @@ class ManageView extends React.Component {
         this.handleBack = this.handleBack.bind(this);
     }
 
-    handleCreateExercise() {
-        this.props.onCreateExerciseClick();
+    handleCreateExercise(dayId) {
+        this.props.onCreateExerciseClick(dayId);
     }
 
     handleEditExercise(id) {
@@ -44,13 +44,14 @@ class ManageView extends React.Component {
         const manageViewClasses = styles.manageView + ' ' +
             (!!editingExercise ? styles.isExercise : styles.isDays);
 
+        let createButtonTemplate;
         let editDaysTemplate = [];
         let editExerciseTemplate;
 
         if (editingExercise && editingExercise.status) {
             switch(editingExercise.status) {
                 case 'new':
-                    editExerciseTemplate = <CreateExercise />
+                    editExerciseTemplate = <CreateExercise dayId={editingExercise.dayId} />
                     break;
                 case 'edit':
                     const editExerciseData = exercises[editingExercise.id]
@@ -59,7 +60,8 @@ class ManageView extends React.Component {
             }
         }
         
-        if (days.lenght !== 0) {
+        // Create Day cards
+        if (days.length !== 0) {
             days.forEach((dayId, index) => {
                 const day = days[index];
                 const name = 'Day ' + index;
@@ -74,17 +76,40 @@ class ManageView extends React.Component {
 
                 editDaysTemplate.push(
                     <EditDayCard
-                        key={day.id}
+                        key={index}
                         id={day.id}
                         order={day.order}
                         name={name}
                         exercises={exercisesData}
                         onExerciseReorder={this.handleReorderExercise}
                         onExerciseEdit={this.handleEditExercise}
+                        onExerciseCreate={this.handleCreateExercise}
                     />
                 );
             });
+            // Add new day
+            editDaysTemplate.push(
+                <EditDayCard
+                    key={days.length}
+                    id={null}
+                    order={days.length}
+                    name={'Day ' + days.length}
+                    onExerciseCreate={this.handleCreateExercise}
+                />
+            );
+        // Create button template
+        } else {
+            createButtonTemplate = (
+                <div className={styles.buttonsCtn}>
+                    <button
+                        className={styles.buttonCreateExercise} 
+                        onClick={this.handleCreateExercise}>
+                        Add exercise
+                    </button>
+                </div>
+            );
         }
+        
 
         return (
           <div className={manageViewClasses}>
@@ -95,18 +120,7 @@ class ManageView extends React.Component {
                 <div className={styles.daysList}>
                     {editDaysTemplate}
                 </div>
-                <div className={styles.buttonsCtn}>
-                    <button
-                        className={styles.buttonCreateExercise} 
-                        onClick={this.handleCreateExercise}>
-                        Create Exercise
-                    </button>
-                    <button 
-                        className={styles.buttonDone}
-                        onClick={this.handleDone}>
-                        Save
-                    </button>
-                </div>
+               {createButtonTemplate}
             </div>
             <div className={styles.exerciseCtn}>
                 {editExerciseTemplate}
@@ -117,7 +131,7 @@ class ManageView extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onCreateExerciseClick: () => dispatch(ActionCreators.setEditingExercise('new', null)),
+    onCreateExerciseClick: (dayId) => dispatch(ActionCreators.setEditingExercise('new', null, dayId)),
     onEditExerciseClick: (id) => dispatch(ActionCreators.setEditingExercise('edit', id)),
     onReorderExercise: (source, target) => dispatch(ActionCreators.reorderExercise(source, target)),
     onDoneClick: () => dispatch(ActionCreators.setActiveView('Workout')),

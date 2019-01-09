@@ -44,6 +44,7 @@ class CreateExercise extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const exercise = this.state.newExercise;
+        const dayId = this.props.dayId;
         const isComplete = ( 
             exercise.name.length != 0 &&
             exercise.strategy.length != 0 &&
@@ -53,7 +54,7 @@ class CreateExercise extends React.Component {
         );
 
         if (isComplete) {
-            this.props.onCreateExercise(exercise);
+            this.props.onCreateExercise(exercise, dayId);
         }
         else {
             console.log('INCOMPLETE', exercise);
@@ -136,7 +137,7 @@ class CreateExercise extends React.Component {
     }
 }
 const mapDispatchToProps = dispatch => ({
-    onCreateExercise: (exercise) => dispatch(ActionCreators.createExercise(exercise)),
+    onCreateExercise: (exercise, dayId) => dispatch(ActionCreators.createExercise(exercise, dayId)),
     onBackClick: () => dispatch(ActionCreators.clearEditingExercise())
 });
 

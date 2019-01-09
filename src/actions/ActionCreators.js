@@ -119,7 +119,7 @@ const ActionCreators = {
             error: error
         }
     },
-    createExercise(exercise) {
+    createExercise(exercise, dayId) {
         return (dispatch, getState) => {
             const database = store.firestore;
             const state = getState();
@@ -130,13 +130,16 @@ const ActionCreators = {
             let lastDayId;
             let exerciseOrder = 0;
             
-            // No existing days, create first one
-            if (days.length === 0) {
+            // Create exercise into new day
+            if (dayId === null) {
                 lastDayId = dispatch(ActionCreators.createDay(programId));   
                 daysLength += 1;
+            // Or into existing day
             } else {
-                lastDay = days[daysLength - 1];
-                lastDayId = lastDay.id;
+                lastDay = days.find(day => {
+                    return day.id == dayId;
+                });
+                lastDayId = dayId;
                 exerciseOrder = lastDay.exercises.length;
             }
             
@@ -580,11 +583,12 @@ const ActionCreators = {
             id: id
         }
     },
-    setEditingExercise(status, id) {
+    setEditingExercise(status, id, dayId) {
         return {
             type: type.SET_EDITING_EXERCISE,
             status: status,
-            id: id
+            id: id,
+            dayId: dayId
         }
     },
     clearActiveDay() {

@@ -120,7 +120,8 @@ const rootReducer = (state = initialState, action) => {
                     editingExercise: {$set:
                         {
                             status: action.status,
-                            id: action.id
+                            id: action.id,
+                            dayId: action.dayId
                         }
                     }
                 }
