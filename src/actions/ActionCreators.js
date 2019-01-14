@@ -118,53 +118,56 @@ const ActionCreators = {
     },
     createExercise(exercise, dayId) {
         return (dispatch, getState) => {
-            const database = store.firestore;
-            const state = getState();
-            const programId = state.root.program.id;
-            const days = state.root.days;
-            let lastDay;
-            let lastDayId;
-            let exerciseOrder = 0;
+            const programId = getState().root.program.id;
             
-            // Create exercise into new day
-            if (dayId === null) {
-                lastDayId = dispatch(ActionCreators.createDay(programId));
-            // Or into existing day
-            } else {
-                lastDay = days.find(day => {
-                    return day.id == dayId;
+            // Await last day id
+            new Promise(resolve => {
+                if (dayId === null) {
+                    // New day if it does not exist
+                    dispatch(ActionCreators.createDay(programId)).then(result => {
+                        resolve(result);
+                    })
+                } else {
+                    // Current day if it exists
+                    return resolve(dayId);   
+                }
+            }).then(lastDayId => {
+                const database = store.firestore;
+                const state = getState();
+                const days = state.root.days;
+                // Add exercise to it
+                const lastDay = days.find(day => {
+                    return day.id == lastDayId;
                 });
-                lastDayId = dayId;
-                exerciseOrder = lastDay.exercises.length;
-            }
-            
-            const exerciseRef = database
-                .collection('programs').doc(programId)
-                .collection('days').doc(lastDayId)
-                .collection('exercises').doc();
-            const newExercise = {
-                id: exerciseRef.id,
-                dayId: lastDayId,
-                order: exerciseOrder,
-                breakdown: parseFloat(exercise.breakdown),
-                goal: parseInt(exercise.goal),
-                name: exercise.name,
-                sets: parseInt(exercise.sets),
-                strategy: exercise.strategy
-            }
+                const exerciseOrder = lastDay.exercises.length;
+                const exerciseRef = database
+                    .collection('programs').doc(programId)
+                    .collection('days').doc(lastDayId)
+                    .collection('exercises').doc();
+                const newExercise = {
+                    id: exerciseRef.id,
+                    dayId: lastDayId,
+                    order: exerciseOrder,
+                    breakdown: parseFloat(exercise.breakdown),
+                    goal: parseInt(exercise.goal),
+                    name: exercise.name,
+                    sets: parseInt(exercise.sets),
+                    strategy: exercise.strategy
+                }
 
-            // Get sets data
-            dispatch(ActionCreators.getSetsByStrat('rpt', newExercise, lastDayId, programId))
-            .then(response => {
-                newExercise['setsData'] = response;
-                // Save exercise to database
-                dispatch(ActionCreators.saveExercise(programId, lastDayId, newExercise));
-                // Add exercise to state
-                dispatch(ActionCreators.addExercise(newExercise));
-                // Add exercise ID to last day
-                dispatch(ActionCreators.addExerciseToDay(lastDay.order, newExercise.id));
-                // Back to days list
-                dispatch(ActionCreators.clearEditingExercise());
+                // Get sets data
+                dispatch(ActionCreators.getSetsByStrat('rpt', newExercise, lastDayId, programId))
+                .then(response => {
+                    newExercise['setsData'] = response;
+                    // Save exercise to database
+                    dispatch(ActionCreators.saveExercise(programId, lastDayId, newExercise));
+                    // Add exercise to state
+                    dispatch(ActionCreators.addExercise(newExercise));
+                    // Add exercise ID to last day
+                    dispatch(ActionCreators.addExerciseToDay(lastDay.order, newExercise.id));
+                    // Back to days list
+                    dispatch(ActionCreators.clearEditingExercise());
+                });
             });
         }
     },
@@ -230,16 +233,20 @@ const ActionCreators = {
                 order: days.length,
                 exercises: []
             }
-            dispatch(ActionCreators.addDay(day));
-            dispatch(ActionCreators.saveDay(programId, day));
-            return dayRef.id;
+            const awaitOperations = [
+                dispatch(ActionCreators.addDay(day)),
+                dispatch(ActionCreators.saveDay(programId, day))
+            ];
+            return Promise.all(awaitOperations).then(() => {
+                return Promise.resolve(dayRef.id);
+            });
         }
     },
     saveDay(programId, day) {
         return dispatch => {
             dispatch(ActionCreators.saveDayStart());
             const database = store.firestore;
-            database
+            return database
                 .collection('programs').doc(programId)
                 .collection('days').doc(day.id)
                 .set({
@@ -248,10 +255,10 @@ const ActionCreators = {
                     order: day.order
                 })
             .then(() => {
-                dispatch(ActionCreators.saveDaySuccess());
+                return dispatch(ActionCreators.saveDaySuccess());
             })
             .catch(error => {
-                dispatch(ActionCreators.saveDayError(error));
+                return dispatch(ActionCreators.saveDayError(error));
             });
         }
     },

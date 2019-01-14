@@ -7,7 +7,7 @@ class DayCard extends React.Component {
         const order = this.props.order;
         const name = this.props.name;
         const exercises = this.props.exercises;
-        const firstExerciseId = exercises[0].id;
+        const firstExerciseId = exercises.length !== 0 ? exercises[0].id : null;
         const isCompleted = this.props.isCompleted;
         const onStartButtonClick = this.props.onStartButtonClick;
 
