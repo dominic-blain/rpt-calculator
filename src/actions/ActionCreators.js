@@ -207,16 +207,62 @@ const ActionCreators = {
         }
     },
     reorderExercise(source, target) {
-        return (dispatch, getState) => {
-
+        return dispatch => {
             if (source.dayId === target.dayId) {
                 const spliceArray = [
                     [source.order, 1], 
                     [target.order, 0, source.id]
                 ];
-                dispatch(ActionCreators.reorderExercisesInDay(source.dayOrder, spliceArray))
-            }
 
+                dispatch(ActionCreators.reorderExercisesInDay(source.dayOrder, spliceArray));
+            }
+        }
+    },
+    confirmExerciseReorder() {
+        return (dispatch, getState) => {
+            dispatch(ActionCreators.confirmExerciseReorderStart());
+            const database = store.firestore;
+            const batch = database.batch();
+            const state = getState();
+            const programId = state.root.program.id;
+            const days = state.root.days;
+            const exercises = state.root.exercises;
+
+            days.forEach(day => {
+                const exerciseList = day.exercises;
+                exerciseList.forEach((exerciseId, index) => {
+                    const exercise = exercises[exerciseId];
+                    const exerciseRef = database
+                        .collection('programs')
+                        .doc(programId)
+                        .collection('days')
+                        .doc(day.id)
+                        .collection('exercises')
+                        .doc(exerciseId);
+
+                    exercise.order = index;
+                    dispatch(ActionCreators.updateExercise(exercise));
+                    batch.set(exerciseRef, exercise);
+                });
+            });
+
+            batch.commit().then(() => {
+                dispatch(ActionCreators.confirmExerciseReorderSuccess());
+            }).catch((error) => {
+                dispatch(ActionCreators.confirmExerciseReorderError(error));
+            });
+        }
+    },
+    confirmExerciseReorderStart() {
+        return { type: type.CONFIRM_EXERCISE_REORDER_START }
+    },
+    confirmExerciseReorderSuccess() {
+        return { type: type.CONFIRM_EXERCISE_REORDER_SUCCESS }
+    },
+    confirmExerciseReorderError(error) {
+        return {
+            type: type.CONFIRM_EXERCISE_REORDER_ERROR,
+            error: error
         }
     },
     createDay(programId) {
