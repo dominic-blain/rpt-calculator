@@ -88,6 +88,12 @@ const rootReducer = (state = initialState, action) => {
                     $unset: [action.id]
                 }
             });
+        case type.REMOVE_DAY_FROM_LIST:
+            return update(state, {
+                days: {
+                    $splice: [[action.order, 1]]
+                }
+            });
         case type.SET_IS_LOADING:
             return update (state, {
                 ui: {

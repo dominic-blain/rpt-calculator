@@ -270,13 +270,21 @@ const ActionCreators = {
             const state = getState();
             const days = state.root.days;
             const exercises = state.root.exercises;
-
             const day = days.find(d => {
                 return d.id === dayId;
             });
             const exercise = exercises[id];
-            dispatch(ActionCreators.removeExerciseFromDay(day.order, exercise.order));
+            // Remove day if empty
+            if (day.exercises.length <= 1) {
+                dispatch(ActionCreators.removeDay(day.id, day.order));
+            }
+            // Otherwise, remove exercise from day
+            else {
+                dispatch(ActionCreators.removeExerciseFromDay(day.order, exercise.order));
+            }
+            // Remove exercise from list and delete from db
             dispatch(ActionCreators.removeExerciseFromList(id));
+            dispatch(ActionCreators.deleteExercise(dayId, id));
         }
     },
     removeExerciseFromDay(dayOrder, exerciseOrder) {
@@ -290,6 +298,84 @@ const ActionCreators = {
         return {
             type: type.REMOVE_EXERCISE_FROM_LIST,
             id: id
+        }
+    },
+    deleteExercise(dayId, id) {
+        return (dispatch, getState) => {
+            dispatch(ActionCreators.deleteExerciseStart());
+            const database = store.firestore;
+            const programId = getState().root.program.id;
+            
+            return database
+                .collection('programs')
+                .doc(programId)
+                .collection('days')
+                .doc(dayId)
+                .collection('exercises')
+                .doc(id)
+                .delete().then(() => {
+                    return dispatch(ActionCreators.deleteExerciseSuccess());
+                }).catch(error => {
+                    return dispatch(ActionCreators.deleteExerciseError(error));
+                });
+        }
+    },
+    deleteExerciseStart() {
+        return { type: type.DELETE_EXERCISE_START }
+    },
+    deleteExerciseSuccess() {
+        return { type: type.DELETE_EXERCISE_SUCCESS }
+    },
+    deleteExerciseError(error) {
+        return {
+            type: type.DELETE_EXERCISE_ERROR,
+            error: error
+        }
+    },
+    removeDay(id, order) {
+        return (dispatch, getState) => {
+            const state = getState();
+            const day = state.root.days[order];
+            
+            // Remove day from day, list and delete from db
+            dispatch(ActionCreators.removeDayFromList(order));
+            dispatch(ActionCreators.deleteDay(id));
+        }
+    },
+    removeDayFromList(order) {
+        return {
+            type: type.REMOVE_DAY_FROM_LIST,
+            order: order
+        }
+    },
+    deleteDay(id) {
+        return (dispatch, getState) => {
+            dispatch(ActionCreators.deleteDayStart());
+            const database = store.firestore;
+            const programId = getState().root.program.id;
+            
+            return database
+                .collection('programs')
+                .doc(programId)
+                .collection('days')
+                .doc(id)
+                .delete().then(() => {
+                    return dispatch(ActionCreators.deleteDaySuccess());
+                }).catch(error => {
+                    return dispatch(ActionCreators.deleteDayError(error));
+                });
+        }
+    },
+    deleteDayStart() {
+        return { type: type.DELETE_DAY_START }
+    },
+    deleteDaySuccess() {
+        return { type: type.DELETE_DAY_SUCCESS }
+    },
+    deleteDayError(error) {
+        return {
+            type: type.DELETE_DAY_ERROR,
+            error: error
         }
     },
     createDay(programId) {
