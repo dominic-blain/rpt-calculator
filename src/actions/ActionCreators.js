@@ -265,6 +265,33 @@ const ActionCreators = {
             error: error
         }
     },
+    removeExercise(dayId, id) {
+        return (dispatch, getState) => {
+            const state = getState();
+            const days = state.root.days;
+            const exercises = state.root.exercises;
+
+            const day = days.find(d => {
+                return d.id === dayId;
+            });
+            const exercise = exercises[id];
+            dispatch(ActionCreators.removeExerciseFromDay(day.order, exercise.order));
+            dispatch(ActionCreators.removeExerciseFromList(id));
+        }
+    },
+    removeExerciseFromDay(dayOrder, exerciseOrder) {
+        return {
+            type: type.REMOVE_EXERCISE_FROM_DAY,
+            dayOrder: dayOrder,
+            exerciseOrder: exerciseOrder
+        }
+    },
+    removeExerciseFromList(id) {
+        return {
+            type: type.REMOVE_EXERCISE_FROM_LIST,
+            id: id
+        }
+    },
     createDay(programId) {
         return (dispatch, getState) => {
             const database = store.firestore;

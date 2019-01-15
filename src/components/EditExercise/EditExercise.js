@@ -26,10 +26,17 @@ class EditExercise extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleBack = this.handleBack.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleBack() {
         this.props.onBackClick();
+    }
+
+    handleDelete() {
+        const id = this.props.exercise.id;
+        const dayId = this.props.exercise.dayId;
+        this.props.onDeleteClick(dayId, id);
     }
 
     handleInputChange(event) {
@@ -78,6 +85,7 @@ class EditExercise extends React.Component {
             <div className={styles.editExercise}>
                 <nav className={styles.topNav}>
                     <button onClick={this.handleBack}>← Cancel</button>
+                    <button onClick={this.handleDelete}>Delete</button>
                 </nav>
                 <div className={styles.content}>
                     <h2 className={styles.title}>
@@ -140,7 +148,11 @@ class EditExercise extends React.Component {
 }
 const mapDispatchToProps = dispatch => ({
     onEditExercise: (exercise) => dispatch(ActionCreators.editExercise(exercise)),
-    onBackClick: () => dispatch(ActionCreators.clearEditingExercise())
+    onBackClick: () => dispatch(ActionCreators.clearEditingExercise()),
+    onDeleteClick: (dayId, id) => {
+        dispatch(ActionCreators.clearEditingExercise());
+        dispatch(ActionCreators.removeExercise(dayId, id));
+    }
 });
 
 export default connect(null, mapDispatchToProps)(EditExercise);
