@@ -775,6 +775,18 @@ const ActionCreators = {
             reps: reps
         }
     },
+    completeDay(dayId) {
+        return dispatch => {
+            // TODO
+        }
+    },
+    setExerciseComplete(id, isCompleted) {
+        return {
+            type: type.SET_EXERCISE_COMPLETE,
+            id: id,
+            isCompleted: isCompleted
+        }
+    },
     logExercise(id, dayId, sets) {
         return (dispatch, getState) => {
             dispatch(ActionCreators.logExerciseStart());
@@ -799,9 +811,7 @@ const ActionCreators = {
                 );
             });
 
-            batch.update(exerciseRef, {
-                isCompleted: true
-            });
+            dispatch(ActionCreators.setExerciseComplete(id, true));
 
             batch.commit().then(() => {
                 dispatch(ActionCreators.logExerciseSuccess(id));

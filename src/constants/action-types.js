@@ -49,6 +49,7 @@ export const GET_EXERCISES = 'get exercises';
 export const GET_EXERCISES_START = 'get exercises start';
 export const GET_EXERCISES_SUCCESS = 'get exercises success';
 export const GET_EXERCISES_ERROR = 'get exercises error';
+export const SET_EXERCISE_COMPLETE = 'set exercise complete';
 export const GET_LAST_LOG = 'get lasts log';
 export const GET_LAST_LOG_START = 'get last log start';
 export const GET_LAST_LOG_SUCCESS = 'get last log success';

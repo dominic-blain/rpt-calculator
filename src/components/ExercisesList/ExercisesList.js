@@ -8,14 +8,24 @@ class ExercisesList extends React.Component {
     constructor(props) {
         super(props);
         this.handleBack = this.handleBack.bind(this);
+        this.handleEnd = this.handleEnd.bind(this);
     }
 
     handleBack() {
         this.props.onBackClick();
     }
 
+    handleEnd(event) {
+        // const dayId = event.target.dataset.id;
+        // this.props.onEndButtonClick(dayId);
+        this.props.onBackClick();
+    }
+
     render() {
         const activeDayRef = this.props.activeDayRef;
+        const completedExercises = this.props.completedExercises;
+        let dayId = 0;
+        let dayOrder = 0;
         const exercisesTemplate = [];
 
         if (!!activeDayRef) {
@@ -28,10 +38,12 @@ class ExercisesList extends React.Component {
                 id: nextExerciseId,
                 order: nextExerciseOrder
             }
+            dayId = activeDay.id;
+            dayOrder = activeDay.order;
             activeDay.exercises.forEach(exerciseId => {
                 
                 const exercise = exercises[exerciseId];
-                const isCompleted = exercise.isCompleted;
+                const isCompleted = completedExercises[exerciseId];
                 const isActive = activeExerciseRef.id == exercise.id && !isCompleted;
                 exercisesTemplate.push(
                     <Exercise 
@@ -51,6 +63,13 @@ class ExercisesList extends React.Component {
                     <button onClick={this.handleBack}>← Back</button>
                 </nav>
                 {exercisesTemplate}
+                <button 
+                    className={styles.endButton}
+                    data-day-id={dayId}
+                    data-order={dayOrder}
+                    onClick={this.handleEnd}>
+                    Finish workout
+                </button>
             </div>
         )
     }
@@ -60,13 +79,15 @@ const mapStateToProps = (state, props) => {
     return ({
         days: state.root.days,
         exercises: state.root.exercises,
-        activeExerciseRef: state.root.ui.activeExercise
+        activeExerciseRef: state.root.ui.activeExercise,
+        completedExercises: state.root.completedExercises
     })
 };
 
 const mapDispatchToProps = dispatch => {
     return ({
-        onBackClick: () => dispatch(ActionCreators.clearActiveDay())
+        onBackClick: () => dispatch(ActionCreators.clearActiveDay()),
+        onEndButtonClick: (dayId) => dispatch(ActionCreators.completeDay(dayId))
     })
 }
 

@@ -10,6 +10,7 @@ const initialState = {
         activeSet: 1,
         editingExercise: null
     },
+    completedExercises: {},
     user: null,
     program: null,
     days: [],
@@ -175,6 +176,12 @@ const rootReducer = (state = initialState, action) => {
                             }    
                         }
                     }
+                }
+            });
+        case type.SET_EXERCISE_COMPLETE:
+            return update(state, {
+                completedExercises: {
+                    [action.id]: {$set: action.isCompleted}
                 }
             });
         case type.LOG_EXERCISE_SUCCESS:
