@@ -676,12 +676,12 @@ const ActionCreators = {
                         if (!!response.log) {
                             const log = response.log;
                             const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
+                            const breakdownWeight = Math.max(Math.round(startingWeight * exercise.breakdown / 5) * 5, 5);
                             for (let i = 0; i < setCount; i++) {
-                                const breakdownWeight = startingWeight * (1 - exercise.breakdown * i);
-                                const roundedWeight = Math.floor(breakdownWeight /5) *5;
+                                const setWeight = Math.max(startingWeight - (breakdownWeight * i), 0);
                                 sets.push({
                                     reps: exercise.goal,
-                                    weight: roundedWeight
+                                    weight: setWeight
                                 });
                             }
                         }
