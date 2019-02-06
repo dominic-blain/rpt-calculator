@@ -59,7 +59,7 @@ class ManageView extends React.Component {
         if (days.length !== 0) {
             days.forEach((dayId, index) => {
                 const day = days[index];
-                const name = 'Day ' + index;
+                const name = 'Day ' + (index + 1);
                 const exercisesData = day.exercises.map(exerciseId => {
                     const exercise = exercises[exerciseId];
                     return {
@@ -89,7 +89,7 @@ class ManageView extends React.Component {
                 key={days.length}
                 id={null}
                 order={days.length}
-                name={'Day ' + days.length}
+                name={'Day ' +(days.length + 1)}
                 onExerciseCreate={this.handleCreateExercise}
             />
         );
