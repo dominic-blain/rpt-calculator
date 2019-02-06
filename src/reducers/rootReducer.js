@@ -178,6 +178,18 @@ const rootReducer = (state = initialState, action) => {
                     }
                 }
             });
+        case type.SET_WEIGHT:
+            return update (state, {
+                exercises: {
+                    [action.exerciseId]: {
+                        setsData: {
+                            [action.set]: {
+                                weight: {$set: action.weight}
+                            }    
+                        }
+                    }
+                }
+            });
         case type.SET_EXERCISE_COMPLETE:
             return update(state, {
                 completedExercises: {

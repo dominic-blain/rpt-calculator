@@ -65,6 +65,7 @@ export const SET_ACTIVE_EXERCISE = 'set active exercise';
 export const SET_ACTIVE_SET = 'set active set';
 export const SET_EDITING_EXERCISE = 'set editing exercise';
 export const SET_REPS = 'set reps';
+export const SET_WEIGHT = 'set weight';
 export const CLEAR_ACTIVE_DAY = 'clear active day';
 export const CLEAR_ACTIVE_EXERCISE = 'clear active exercise';
 export const CLEAR_EDITING_EXERCISE = 'clear editing exercise';

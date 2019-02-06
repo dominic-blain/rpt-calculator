@@ -48,7 +48,7 @@ class EditExercise extends React.Component {
             return {
                 editedExercise: {...prevState.editedExercise, [name]: value}
             }
-        }, () => console.log(this.state));
+        });
     }
 
     handleSubmit(event) {

@@ -6,9 +6,11 @@ import styles from './Set.less';
 class Set extends React.Component {
     constructor(props) {
         super(props);
+
         this.handleButtonNextClick = this.handleButtonNextClick.bind(this);
         this.handleButtonAddRepClick = this.handleButtonAddRepClick.bind(this);
         this.handleButtonRemRepClick = this.handleButtonRemRepClick.bind(this);
+        this.handleWeightChange = this.handleWeightChange.bind(this);
     }
 
     handleButtonNextClick(event) {
@@ -47,6 +49,14 @@ class Set extends React.Component {
         this.props.onButtonChangeRepClick(exercise.id, currentSet, reps);
     }
 
+    handleWeightChange(event) {
+        const exercise = this.props.exercise;
+        const currentSet = this.props.order - 1;
+        const weight = parseInt(event.target.value);
+        this.props.onWeightChange(exercise.id, currentSet, weight);
+        
+    }
+
     render() {
         const reps = this.props.reps;
         const weight = this.props.weight;
@@ -62,7 +72,13 @@ class Set extends React.Component {
                         {reps}
                     </div>
                     <div className={styles.setWeight}>
-                        {`${weight} lbs`}
+                        <input
+                            type="number"
+                            name="weight"
+                            value={weight}
+                            onChange={this.handleWeightChange}
+                        />
+                        lbs
                     </div>
                 </div>
                 <div className={styles.setButtons}>
@@ -96,7 +112,8 @@ class Set extends React.Component {
 const mapDispatchToProps = dispatch => ({
     onButtonNextClick: nextSet => dispatch(ActionCreators.setActiveSet(nextSet)),
     onButtonNextClickEnd: (id, order) => dispatch(ActionCreators.setActiveExercise(id, order)),
-    onButtonChangeRepClick: (exerciseId, set, reps) => dispatch(ActionCreators.setReps(exerciseId, set, reps))
+    onButtonChangeRepClick: (exerciseId, set, reps) => dispatch(ActionCreators.setReps(exerciseId, set, reps)),
+    onWeightChange: (exerciseId, set, weight) => dispatch(ActionCreators.setWeight(exerciseId, set, weight))
 });
 
 export default connect(null, mapDispatchToProps)(Set);

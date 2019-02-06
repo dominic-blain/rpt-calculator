@@ -775,6 +775,14 @@ const ActionCreators = {
             reps: reps
         }
     },
+    setWeight(exerciseId, set, weight) {
+        return {
+            type: type.SET_WEIGHT,
+            exerciseId: exerciseId,
+            set: set,
+            weight: weight
+        }
+    },
     completeDay(dayId) {
         return dispatch => {
             // TODO
