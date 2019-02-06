@@ -36,6 +36,28 @@
     .font--title-small;
     letter-spacing: -0.05em;
     color: @accent-text;
+    display: flex;
+    align-items: baseline;
+    border-bottom: 2px dotted @accent-text;
+
+    input {
+        display: inline-block;
+        width: var(--chars);
+        outline: none;
+        -ms-progress-appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: none;
+        background-color: transparent;
+        .font--title-small;
+        color: @accent-text;
+        letter-spacing: -0.05em;
+        margin-right: 0.2em;
+        &::-webkit-inner-spin-button {
+            display: none;
+        }
+    }
 }
 
 .setButtons {

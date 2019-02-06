@@ -71,7 +71,7 @@ class Set extends React.Component {
                     <div className={styles.setReps}>
                         {reps}
                     </div>
-                    <div className={styles.setWeight}>
+                    <label className={styles.setWeight} style={{'--chars': weight.toString().length + 'ch'}}>
                         <input
                             type="number"
                             name="weight"
@@ -79,7 +79,7 @@ class Set extends React.Component {
                             onChange={this.handleWeightChange}
                         />
                         lbs
-                    </div>
+                    </label>
                 </div>
                 <div className={styles.setButtons}>
                     <button 
