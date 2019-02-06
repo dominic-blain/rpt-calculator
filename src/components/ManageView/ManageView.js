@@ -82,28 +82,18 @@ class ManageView extends React.Component {
                     />
                 );
             });
-            // Add new day
-            editDaysTemplate.push(
-                <EditDayCard
-                    key={days.length}
-                    id={null}
-                    order={days.length}
-                    name={'Day ' + days.length}
-                    onExerciseCreate={this.handleCreateExercise}
-                />
-            );
-        // Create button template
-        } else {
-            createButtonTemplate = (
-                <div className={styles.buttonsCtn}>
-                    <button
-                        className={styles.buttonCreateExercise} 
-                        onClick={this.handleCreateExercise}>
-                        Add exercise
-                    </button>
-                </div>
-            );
         }
+        // Add new day
+        editDaysTemplate.push(
+            <EditDayCard
+                key={days.length}
+                id={null}
+                order={days.length}
+                name={'Day ' + days.length}
+                onExerciseCreate={this.handleCreateExercise}
+            />
+        );
+        
         
 
         return (
