@@ -40,7 +40,7 @@ const ActionCreators = {
                                 dispatch(ActionCreators.setIsLoading(false));
                             }, loadTimeout);
                         }).catch(error => {
-                            // Manage error  
+                            dispatch(ActionCreators.setErrorMessage('Error:' + error));
                         });
                     // Program DOES NOT exist
                     } else {
@@ -94,7 +94,8 @@ const ActionCreators = {
             .then(() => {
                 return dispatch(ActionCreators.createUserSuccess());
             })
-            .catch(() => {
+            .catch((error) => {
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 return dispatch(ActionCreators.createUserError());
             })
         }
@@ -249,6 +250,7 @@ const ActionCreators = {
             batch.commit().then(() => {
                 dispatch(ActionCreators.confirmExerciseReorderSuccess());
             }).catch((error) => {
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 dispatch(ActionCreators.confirmExerciseReorderError(error));
             });
         }
@@ -316,6 +318,7 @@ const ActionCreators = {
                 .delete().then(() => {
                     return dispatch(ActionCreators.deleteExerciseSuccess());
                 }).catch(error => {
+                    dispatch(ActionCreators.setErrorMessage('Error:' + error));
                     return dispatch(ActionCreators.deleteExerciseError(error));
                 });
         }
@@ -362,6 +365,7 @@ const ActionCreators = {
                 .delete().then(() => {
                     return dispatch(ActionCreators.deleteDaySuccess());
                 }).catch(error => {
+                    dispatch(ActionCreators.setErrorMessage('Error:' + error));
                     return dispatch(ActionCreators.deleteDayError(error));
                 });
         }
@@ -417,6 +421,7 @@ const ActionCreators = {
                 return dispatch(ActionCreators.saveDaySuccess());
             })
             .catch(error => {
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 return dispatch(ActionCreators.saveDayError(error));
             });
         }
@@ -446,6 +451,7 @@ const ActionCreators = {
                 dispatch(ActionCreators.saveExerciseSuccess());
             })
             .catch(error => {
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 dispatch(ActionCreators.saveExerciseError(error));
             });
         }
@@ -490,6 +496,7 @@ const ActionCreators = {
                 }
             }).catch(error => {
                 // Manage error
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 dispatch(ActionCreators.getProgramError(error));
             })
         }
@@ -545,6 +552,7 @@ const ActionCreators = {
                 
             }).catch(error => {
                 // Manage error
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 dispatch(ActionCreators.getDaysError(error));
             })
         }
@@ -596,10 +604,11 @@ const ActionCreators = {
                     return dispatch(ActionCreators.getExercisesSuccess(exercises));
                 }).catch(error => {
                     // Manage error
+                    dispatch(ActionCreators.setErrorMessage('Error:' + error));
                     dispatch(ActionCreators.getExercisesError(error));
                 });
             }).catch(error => {
-                console.log('Error getting exercises');
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
             })
         }
     },
@@ -645,6 +654,7 @@ const ActionCreators = {
                 return dispatch(ActionCreators.getLastLogSuccess(log));
             }).catch(error => {
                 // Manage error
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 dispatch(ActionCreators.getLastLogError(error));
             })
         }
@@ -824,6 +834,7 @@ const ActionCreators = {
             batch.commit().then(() => {
                 dispatch(ActionCreators.logExerciseSuccess(id));
             }).catch((error) => {
+                dispatch(ActionCreators.setErrorMessage('Error:' + error));
                 dispatch(ActionCreators.logExerciseError(error));
             });
         }
@@ -843,6 +854,12 @@ const ActionCreators = {
         return {
             type: type.LOG_EXERCISE_ERROR,
             error: error
+        }
+    },
+    setErrorMessage(message) {
+        return {
+            type: type.SET_ERROR_MSG,
+            message: message
         }
     }
 };

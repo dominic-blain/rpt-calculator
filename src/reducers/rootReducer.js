@@ -205,6 +205,12 @@ const rootReducer = (state = initialState, action) => {
                     }
                 }
             });
+        case type.SET_ERROR_MSG:
+            return update(state, {
+                ui: {
+                    errorMsg: {$set: action.message}
+                }
+            });
         case type.RESET_STATE:
             return update(state, {$set: initialState});
         default:
