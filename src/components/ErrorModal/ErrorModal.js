@@ -19,7 +19,7 @@ class ErrorModal extends React.Component {
             (!!errorMsg ? styles.isVisible : '');
         
         return (
-            <div className={classes}>
+            <div className={classes} onClick={this.handleClose}>
                 {errorMsg}
             </div>
         )
@@ -31,4 +31,8 @@ const mapStateToProps = state => ({
     errorMsg: state.root.ui.errorMsg
 });
 
-export default connect(mapStateToProps)(ErrorModal);
+const mapDispatchToProps = dispatch => ({
+    onClose: () => dispatch(ActionCreators.setErrorMessage())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorModal);
