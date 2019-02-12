@@ -8,7 +8,8 @@ const initialState = {
         actviveDay: null,
         activeExercise: null,
         activeSet: 1,
-        editingExercise: null
+        editingExercise: null,
+        errorMsg: ''
     },
     completedExercises: {},
     user: null,

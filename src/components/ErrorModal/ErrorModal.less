@@ -1,0 +1,27 @@
+.errorModal {
+    .font--label-small;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: @unit-3;
+    margin: @unit-2;
+    background-color: @error-reversed-fill;
+    color: @error-reversed-text;
+    .box-shadow-main;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition: 
+        visibility 0ms linear @duration-faster, 
+        opacity @duration-faster @ease-out-standard;
+
+    // ~> IS VISIBLE
+    &.isVisible {
+        visibility: visible;
+        opacity: 1;
+        transition-delay: 0ms;
+    }
+}

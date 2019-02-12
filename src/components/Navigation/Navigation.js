@@ -23,7 +23,6 @@ class Navigation extends React.Component {
         const navStyles = styles.navigation + ' ' + 
             (activeView === 'Manage' ? styles.isReversed : '');
 
-        styles.analyse
         return (
             <nav className={navStyles}>
                 <button 

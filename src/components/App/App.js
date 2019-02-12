@@ -6,6 +6,7 @@ import { auth } from '../../firebase';
 import TrainingView from '../TrainingView/TrainingView';
 import ManageView from '../ManageView/ManageView';
 import Loading from '../Loading/Loading';
+import ErrorModal from '../ErrorModal/ErrorModal';
 import Signup from '../Signup/Signup';
 import styles from './App.less';
 import TouchBackend from 'react-dnd-touch-backend';
@@ -60,6 +61,7 @@ class App extends React.Component {
         return (
             <main className={styles.app}>
                 <Loading />
+                <ErrorModal />
                 {viewTemplate}
             </main>
         );
