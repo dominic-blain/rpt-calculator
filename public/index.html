@@ -22,7 +22,7 @@
 
   </head>
   <body>
-
+    <textarea id="exportLogs"></textarea>
   <header>
     
   </header>
@@ -406,7 +406,20 @@
           });
         };
 
+        var exportLogs = function () {
+          var textarea = $('#exportLogs');
+          var logsRef = db.collection('logs');
+          logsRef.get().then(function (logsSnapshot) {
+            logsSnapshot.forEach(function (log) {
+              var data = log.data();
+              console.log(data);
+              textarea.val(textarea.val() + JSON.stringify(data));
+            });
+          });
+        }
+
         var init = function () {
+          // exportLogs();
           populatePlaceholders();
           $('.js-button-done').on('click', completeDay);
         };
