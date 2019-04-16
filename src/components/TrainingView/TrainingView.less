@@ -1,0 +1,51 @@
+.trainingView {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    background-color: @main-fill-lighter;
+
+    .daysListCtn,
+    .exercisesListCtn {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        transition: transform @duration-faster @ease-out-standard;
+    }
+    // ~> IS EXERCISES
+    &.isExercises {
+        .daysListCtn {
+            transform: translateX(-100%);
+        }
+        .exercisesListCtn {
+            transform: translateX(0%);
+        }
+    }
+    // ~> IS DAYS
+    &.isDays {
+        .daysListCtn {
+            transform: translateX(0%);
+        }
+        .exercisesListCtn {
+            transform: translateX(100%);
+        }
+    }
+}
+
+.signOutCtn {
+    
+    position: fixed;
+    bottom: @unit-2;
+    right: @unit-2;
+    
+    button {
+        .font--label;
+        color: @black-60;
+        background-color: transparent;
+    }
+}

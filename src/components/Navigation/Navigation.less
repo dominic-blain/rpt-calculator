@@ -1,0 +1,17 @@
+.navigation {
+    position: fixed;
+    z-index: 1000;
+    top: @unit-3;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: @unit-15;
+
+    &.isReversed {
+        button {
+            background-color: @accent-reversed-fill;
+        } 
+    }
+}

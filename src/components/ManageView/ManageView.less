@@ -1,0 +1,76 @@
+.manageView {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    background-color: @purple-dark;
+    color: @darker-black;
+
+    .daysCtn,
+    .exerciseCtn {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: transform @duration-faster @ease-out-standard;
+    }
+    .daysCtn {
+        display: flex;
+        flex-direction: column;
+    }
+    .exerciseCtn {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    // ~> IS EXERCISE
+    &.isExercise {
+        .daysCtn {
+            transform: translateX(-100%);
+        }
+        .exerciseCtn {
+            transform: translateX(0%);
+        }
+    }
+    // ~> IS DAYS
+    &.isDays {
+        .daysCtn {
+            transform: translateX(0%);
+        }
+        .exerciseCtn {
+            transform: translateX(100%);
+        }
+    }
+    .daysList {
+        width: 100%;
+        flex-grow: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .topNav {
+        #topnav;
+    }
+
+    .buttonsCtn {
+        margin: @unit-3;
+    }
+    .buttonCreateExercise {
+        .font--title-small;
+        height: @unit-15;
+        width: 100%;
+        text-align: center;
+        background-color: @darker-black;
+        color: @accent-reversed-text;
+    }
+    .buttonDone {
+        .font--title-small;
+        height: @unit-15;
+        width: 100%;
+        text-align: center;
+        background-color: @accent-reversed-fill;
+        color: @accent-reversed-text;
+    }
+}
+

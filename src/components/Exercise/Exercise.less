@@ -1,0 +1,168 @@
+.exercise {
+    color: @main-text;
+    margin: @unit-10 @unit-3
+}
+
+.name {
+    .font--title;
+    margin-bottom: @unit-2;
+}
+
+.cardCtn {
+    padding-bottom: @unit-15;
+    position: relative;
+    background-color: @white;
+    .box-shadow-main;
+    transition: padding-bottom @duration-faster @ease-out-standard;
+    
+    // ~> IS ACTIVE
+    .exercise.isActive & {
+        padding-bottom: @golden-padding-bottom;
+    }
+}
+
+.card {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: @duration-faster @ease-out-standard;
+    transition-property: opacity, visibility;
+    transition-delay: 0ms;
+
+    // ~> IS ACTIVE
+    .exercise.isActive & {
+        opacity: 0;
+        visibility: hidden;
+        transition-delay: 0ms, @duration-faster;
+    }
+}
+
+.cardDetails {
+    .font--label;
+    padding: 0 @unit-4;
+    flex-grow: 1;
+}
+
+.cardSets {
+    margin-right: @unit-4;
+}
+
+.cardGoal {
+    font-weight: 900;
+}
+
+
+.button {
+    width: 19.6551724%;
+    height: 100%;
+    box-sizing: border-box;
+    .font--label;
+}
+
+.buttonLogs {
+    .button;
+    background-color: @main-fill;
+}
+
+.buttonStart {
+    .button;
+    background-color: @accent-reversed-fill;
+}
+
+.cardCompleted {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: @green;
+    transition: @duration-faster @ease-out-standard;
+    transition-property: opacity, visibility;
+
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0ms, @duration-faster;
+
+    // ~> IS COMPLETED
+    .exercise.isCompleted & {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0ms;
+    }
+
+    .label {
+        .font--label;
+        padding: 0 @unit-4;
+        flex-grow: 1;
+    }
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 19.6551724%;
+        height: 100%;
+        box-sizing: border-box;
+        .font--label;
+        background-color: @main-fill-alpha;
+    }
+}
+
+.setsCtn {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: @duration-faster @ease-out-standard;
+    transition-property: opacity, visibility;
+
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0ms, @duration-faster;
+
+    // ~> IS ACTIVE
+    .exercise.isActive & {
+        transition-delay: 0ms;
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.dotsCtn {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        transform @duration-faster @ease-out-standard 0ms,
+        opacity @duration-faster @ease-out-standard 0ms,
+        visibility 0ms @duration-faster;
+
+    // ~> IS ACTIVE
+    &.isActive {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(100%);
+        transition-delay: 0ms;
+    }
+
+    .dot {
+        margin-top: @unit-2;
+        margin-right: @unit;
+        width: @unit-3;
+        height: @unit-3;
+        border-radius: 100%;
+        border: 1px solid @accent-stroke;
+        
+        transition: background-color @duration-faster @ease-out-standard;
+        // ~> IS ACTIVE
+        &.isActive {
+            background-color: @accent-reversed-fill;
+        }
+    }
+}
