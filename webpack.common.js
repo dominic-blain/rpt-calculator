@@ -6,6 +6,7 @@ const inputPath = path.resolve(__dirname, 'src', 'index.js');
 const outputPath = path.resolve(__dirname, 'public');
 const templatePath = path.resolve(__dirname, 'src', 'index.html');
 
+
 const common = {
   entry: {
     main: inputPath
@@ -40,9 +41,9 @@ const common = {
         ]
       },
       // Less
-			{
-				test: /\.less$/,
-				use: [
+      {
+        test: /\.less$/,
+        use: [
           {
             loader: 'style-loader'
           },
@@ -63,7 +64,7 @@ const common = {
               patterns: path.resolve(__dirname, 'src/styles/theme/*.less')
             }
           }
-				]
+        ]
       }
     ]
   },
