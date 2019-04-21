@@ -12,7 +12,8 @@ class CreateExercise extends React.Component {
                 strategy: 'rpt',
                 goal: '',
                 sets: '',
-                breakdown: ''
+                breakdown: '',
+                rest: 0
             },
             messages: {
                 incomplete: 'Please fill all data'
@@ -50,7 +51,8 @@ class CreateExercise extends React.Component {
             exercise.strategy.length != 0 &&
             exercise.goal.length != 0 &&
             exercise.sets.length != 0 &&
-            exercise.breakdown.length != 0
+            exercise.breakdown.length != 0 &&
+            exercise.rest.length != 0
         );
 
         if (isComplete) {
@@ -124,6 +126,16 @@ class CreateExercise extends React.Component {
                             name="breakdown" 
                             placeholder="Weight % to remove after each set"
                             value={this.state.newExercise.breakdown}
+                            onChange={this.handleInputChange}
+                        />
+                        <label htmlFor="rest">Rest time</label>
+                         <input 
+                            type="number"
+                            min="0"
+                            step="0.25"
+                            name="rest" 
+                            placeholder="2.5"
+                            value={this.state.newExercise.rest}
                             onChange={this.handleInputChange}
                         />
                         <button className={styles.buttonCreate}>

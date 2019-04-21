@@ -13,6 +13,7 @@ class EditExercise extends React.Component {
                 goal: `${props.exercise.goal}`,
                 sets: `${props.exercise.sets}`,
                 breakdown: `${props.exercise.breakdown}`,
+                rest: `${props.exercise.rest}`,
                 order: `${props.exercise.order}`,
                 dayId: `${props.exercise.dayId}`,
                 id: `${props.exercise.id}`
@@ -59,14 +60,14 @@ class EditExercise extends React.Component {
             exercise.strategy.length != 0 &&
             exercise.goal.length != 0 &&
             exercise.sets.length != 0 &&
-            exercise.breakdown.length != 0
+            exercise.breakdown.length != 0 &&
+            exercise.rest.length != 0
         );
 
         if (isComplete) {
             this.props.onEditExercise(exercise);
         }
         else {
-            console.log('INCOMPLETE', exercise);
             this.setState({
                 isIncomplete: true
             });
@@ -134,6 +135,16 @@ class EditExercise extends React.Component {
                             name="breakdown" 
                             placeholder="Weight % to remove after each set"
                             value={this.state.editedExercise.breakdown}
+                            onChange={this.handleInputChange}
+                        />
+                        <label htmlFor="rest">Rest time</label>
+                         <input 
+                            type="number"
+                            min="0"
+                            step="0.25"
+                            name="rest" 
+                            placeholder="2.5"
+                            value={this.state.editedExercise.rest}
                             onChange={this.handleInputChange}
                         />
                         <button className={styles.buttonSave}>
