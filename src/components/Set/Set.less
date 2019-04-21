@@ -4,7 +4,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    display: flex;
+    overflow: hidden;
 
     opacity: 0;
     visibility: hidden;
@@ -17,6 +17,25 @@
         transition-delay: 0ms;
         opacity: 1;
         visibility: visible;
+    }
+
+    .setCtn {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+
+    .restCtn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(100%);
+        transition: transform @duration-faster;
+        &.isResting {
+            transform: translateX(0);
+        }
     }
 }
 

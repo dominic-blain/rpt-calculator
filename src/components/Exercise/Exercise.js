@@ -11,7 +11,7 @@ class Exercise extends React.Component {
         this.handleExerciseEnd = this.handleExerciseEnd.bind(this);
     }
 
-    handleButtonStartClick(event) {
+    handleButtonStartClick() {
         const id = this.props.exercise.id;
         const order = this.props.exercise.order;
         this.props.onButtonStartClick(id, order);
@@ -33,6 +33,7 @@ class Exercise extends React.Component {
         const exercise = this.props.exercise;
         const name = exercise.name;
         const setCount = exercise.sets;
+        const rest = exercise.rest;
         const sets = exercise.setsData;
         const exerciseCount = this.props.exerciseCount;
 
@@ -65,6 +66,7 @@ class Exercise extends React.Component {
                     exerciseCount={exerciseCount}
                     nextExerciseRef={nextExerciseRef}
                     inlineStyle={inlineStyle}
+                    rest={rest}
                     onExerciseEnd={this.handleExerciseEnd}
                 />
             );
