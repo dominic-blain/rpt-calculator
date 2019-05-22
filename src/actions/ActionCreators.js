@@ -47,7 +47,8 @@ const ActionCreators = {
                         const programRef = database.collection('programs').doc();
                         const programId = programRef.id;
                         database.collection('programs').doc(programId).set({
-                            id: programId
+                            id: programId,
+                            userId: user.id
                         });
                         database.collection('users').doc(user.id).update({
                             program: programRef
