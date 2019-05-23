@@ -63,6 +63,7 @@ class DaysList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onStartButtonClick: (dayId, dayOrder, exerciseId) => {
+        dispatch(ActionCreators.setDayProgress(dayOrder));
         dispatch(ActionCreators.setActiveDay(dayId, dayOrder));
         dispatch(ActionCreators.setActiveExercise(exerciseId, 0));
     },

@@ -8,6 +8,7 @@ const initialState = {
         actviveDay: null,
         activeExercise: null,
         activeSet: 1,
+        progress: null,
         editingExercise: null,
         errorMsg: ''
     },
@@ -134,7 +135,29 @@ const rootReducer = (state = initialState, action) => {
         case type.SET_ACTIVE_SET:
             return update (state, {
                 ui: {
-                    activeSet: {$set: action.id}
+                    progress: {
+                        [action.exerciseId]: {
+                            activeSet: {$set: action.setOrder}
+                        }
+                    }
+                }
+            });
+        case type.SET_PROGRESS:
+            return update (state, {
+                ui: {
+                    progress: {$set: action.progress}
+                }
+            });
+        case type.UPDATE_SET_PROGRESS:
+            return update (state, {
+                ui: {
+                    progress: {
+                        [action.exerciseId]: {
+                            sets: {
+                                [action.setOrder]: {$set: action.progress}
+                            }
+                        }
+                    }
                 }
             });
         case type.SET_EDITING_EXERCISE:
