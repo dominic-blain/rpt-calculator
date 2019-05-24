@@ -28,7 +28,6 @@ class Exercise extends React.Component {
         
         const isCompleted = this.props.isCompleted;
         const isActive = this.props.isActive;
-        const activeSetRef = this.props.activeSetRef;
         const nextExerciseRef = this.props.nextExerciseRef;
         const exercise = this.props.exercise;
         const name = exercise.name;
@@ -36,6 +35,7 @@ class Exercise extends React.Component {
         const rest = exercise.rest;
         const sets = exercise.setsData;
         const exerciseCount = this.props.exerciseCount;
+        const progress = this.props.progress[exercise.id];
 
         const exerciseStyles = 
             styles.exercise +' '+
@@ -49,15 +49,16 @@ class Exercise extends React.Component {
         const dotsTemplate = [];
         sets.forEach((set, index) => {
             const order = index + 1;
-            const isSetActive = order == activeSetRef && isActive;
-            const offsetX = (order - activeSetRef) * 100;
-            const inlineStyle = {transform: `translateX(${offsetX}%)`}
+            const setProgress = progress.sets[index];
+            const isSetActive = order == progress.activeSet && isActive;
+            const offsetX = (order - progress.activeSet) * 100;
+            const inlineStyle = {transform: `translateX(${offsetX}%)`};
             const dotStyles = 
                 styles.dot +' '+
                 (isSetActive ? styles.isActive : '');
             setsTemplate.push(
                <Set
-                    key={index}
+                    key={exercise.id + '-' + index}
                     order={order}
                     reps={set.reps}
                     weight={set.weight}
@@ -67,6 +68,7 @@ class Exercise extends React.Component {
                     nextExerciseRef={nextExerciseRef}
                     inlineStyle={inlineStyle}
                     rest={rest}
+                    progress={setProgress}
                     onExerciseEnd={this.handleExerciseEnd}
                 />
             );
@@ -124,7 +126,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-    activeSetRef: state.root.ui.activeSet
+    activeSetRef: state.root.ui.activeSet,
+    progress: state.root.ui.progress
 });
 
 

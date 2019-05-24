@@ -6,31 +6,30 @@ class RestCard extends React.Component {
         super(props);
 
         this.state = {
-            time: this.props.time * 60,
-            isRunning: false,
-            isDone: false
+            time: this.props.time * 60
         }
 
         this.updateCountdown = this.updateCountdown.bind(this);
     }
 
+    componentWillUnmount() {
+        clearInterval(this.updatingCountdown);
+    }
+
     updateCountdown() {
         if (this.state.time === 0) {
+            clearInterval(this.updatingCountdown);
             this.setState(prevState => {
                 return {
-                    time: prevState.time,
-                    isRunning: prevState.isRunning,
-                    isDone: true
+                    time: prevState.time
                 }
             });
-            this.props.onEndRest();
+            this.props.onEndRest(this.updatingCountdown);
         }
         else {
             this.setState(prevState => {
                 return {
-                    time: prevState.time - 1,
-                    isRunning: true,
-                    isDone: prevState.isDone
+                    time: prevState.time - 1
                 }
             });
         }
@@ -43,12 +42,8 @@ class RestCard extends React.Component {
         seconds = seconds < 10 ? '0' + seconds : seconds;
         const displayTime = minutes + ':' + seconds;
 
-
-        if (!!this.props.isRunning && !this.state.isRunning) {
+        if (!!this.props.isRunning && !this.updatingCountdown) {
             this.updatingCountdown = setInterval(this.updateCountdown, 1000);
-        }
-        if (!!this.state.isDone) {
-            clearInterval(this.updatingCountdown);
         }
 
         return (

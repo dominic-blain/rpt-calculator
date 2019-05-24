@@ -8,11 +8,6 @@ class Set extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            isResting: false,
-            doneResting: false
-        }
-
         this.handleEndRest = this.handleEndRest.bind(this);
         this.handleButtonNextClick = this.handleButtonNextClick.bind(this);
         this.handleButtonAddRepClick = this.handleButtonAddRepClick.bind(this);
@@ -21,11 +16,10 @@ class Set extends React.Component {
     }
 
     handleEndRest() {
-        this.setState(prevState => {
-            return {
-                isResting: true,
-                doneResting: true
-            }
+        const exercise = this.props.exercise;
+        this.props.onSetProgressChange(exercise.id, this.props.order - 1, {
+            isResting: false,
+            isCompleted: true
         });
         this.handleButtonNextClick();
     }
@@ -37,17 +31,22 @@ class Set extends React.Component {
         const hasReachedEnd = this.props.order + 1 > maxSet;
         const nextSet = this.props.order + 1 <= maxSet ? this.props.order + 1 : 1;
         const nextExerciseRef = this.props.nextExerciseRef;
+        const progress = this.props.progress;
 
-        if (!!this.props.rest && !this.state.doneResting) {
-            this.setState(prevState => {
-                return {
-                    isResting: true
-                }
+        if (!!this.props.rest && !progress.isCompleted) {
+            this.props.onSetProgressChange(exercise.id, this.props.order - 1, {
+                isResting: true,
+                isCompleted: false
             });
         }
         else if (hasReachedEnd) {
             this.props.onExerciseEnd();
             if  (nextExerciseRef.order < exerciseCount) {
+                // Reset next set progress to prevent weird behavior
+                this.props.onSetProgressChange(exercise.id, this.props.order, {
+                    isResting: false,
+                    isCompleted: false
+                });
                 this.props.onButtonNextClickEnd(nextExerciseRef.id, nextExerciseRef.order);
             }
             else {
@@ -55,7 +54,7 @@ class Set extends React.Component {
             }
         }
         else {
-            this.props.onButtonNextClick(nextSet);
+            this.props.onButtonNextClick(exercise.id, nextSet);
         }
     }
 
@@ -85,6 +84,7 @@ class Set extends React.Component {
         const reps = this.props.reps;
         const weight = this.props.weight;
         const rest = this.props.rest;
+        const progress = this.props.progress;
         const isActive = this.props.isActive;
         const inlineStyle = this.props.inlineStyle;
         const setStyles = 
@@ -92,12 +92,14 @@ class Set extends React.Component {
                 (isActive ? styles.isActive : '');
         const restCtnStyles = 
                 styles.restCtn +' '+
-                (this.state.isResting ? styles.isResting : '');
+                (progress.isResting || progress.isCompleted ? styles.isResting : '');
         
         const restTemplate = !!rest ? (
             <RestCard 
-                time={rest} 
-                isRunning={this.state.isResting}
+                exercise={this.props.exercise}
+                order={this.props.order}
+                time={rest}
+                isRunning={progress.isResting && !progress.isCompleted}
                 onEndRest={this.handleEndRest} />
         ) : null;
 
@@ -151,7 +153,8 @@ class Set extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onButtonNextClick: nextSet => dispatch(ActionCreators.setActiveSet(nextSet)),
+    onSetProgressChange: (exerciseId, setOrder, progress) => dispatch(ActionCreators.updateSetProgress(exerciseId, setOrder, progress)),
+    onButtonNextClick: (exerciseId, nextSet) => dispatch(ActionCreators.setActiveSet(exerciseId, nextSet)),
     onButtonNextClickEnd: (id, order) => dispatch(ActionCreators.setActiveExercise(id, order)),
     onButtonChangeRepClick: (exerciseId, set, reps) => dispatch(ActionCreators.setReps(exerciseId, set, reps)),
     onWeightChange: (exerciseId, set, weight) => dispatch(ActionCreators.setWeight(exerciseId, set, weight))

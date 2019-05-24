@@ -141,7 +141,7 @@ class EditExercise extends React.Component {
                          <input 
                             type="number"
                             min="0"
-                            step="0.25"
+                            step="0.1"
                             name="rest" 
                             placeholder="2.5"
                             value={this.state.editedExercise.rest}

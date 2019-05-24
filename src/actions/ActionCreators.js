@@ -751,10 +751,50 @@ const ActionCreators = {
         }
     },
 
-    setActiveSet(id) {
+    setActiveSet(exerciseId, setOrder) {
         return {
             type: type.SET_ACTIVE_SET,
-            id: id
+            exerciseId: exerciseId,
+            setOrder: setOrder
+        }
+    },
+    setDayProgress(dayOrder) {
+        return (dispatch, getState) => {
+            const state = getState();
+            const exercisesIds = state.root.days[dayOrder].exercises;
+            const progress = {};
+
+            exercisesIds.forEach(exerciseId => {
+                const exercise = state.root.exercises[exerciseId];
+                const sets = [];
+
+                for (let i = 0; i < exercise.sets; i++) {
+                    sets.push({
+                        isResting: false,
+                        isCompleted: false
+                    });
+                }
+
+                progress[exerciseId] = {
+                    sets: sets,
+                    activeSet: 1
+                };
+            });
+            dispatch(ActionCreators.setProgress(progress));
+        }
+    },
+    setProgress(progress) {
+        return {
+            type: type.SET_PROGRESS,
+            progress: progress
+        }
+    },
+    updateSetProgress(exerciseId, setOrder, progress) {
+        return {
+            type: type.UPDATE_SET_PROGRESS,
+            exerciseId: exerciseId,
+            setOrder: setOrder,
+            progress: progress
         }
     },
     setEditingExercise(status, id, dayId) {
