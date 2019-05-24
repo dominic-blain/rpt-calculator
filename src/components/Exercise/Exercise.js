@@ -49,16 +49,16 @@ class Exercise extends React.Component {
         const dotsTemplate = [];
         sets.forEach((set, index) => {
             const order = index + 1;
-            const setProgress = progress.sets[index]
+            const setProgress = progress.sets[index];
             const isSetActive = order == progress.activeSet && isActive;
             const offsetX = (order - progress.activeSet) * 100;
-            const inlineStyle = {transform: `translateX(${offsetX}%)`}
+            const inlineStyle = {transform: `translateX(${offsetX}%)`};
             const dotStyles = 
                 styles.dot +' '+
                 (isSetActive ? styles.isActive : '');
             setsTemplate.push(
                <Set
-                    key={index}
+                    key={exercise.id + '-' + index}
                     order={order}
                     reps={set.reps}
                     weight={set.weight}

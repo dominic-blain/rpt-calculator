@@ -42,6 +42,11 @@ class Set extends React.Component {
         else if (hasReachedEnd) {
             this.props.onExerciseEnd();
             if  (nextExerciseRef.order < exerciseCount) {
+                // Reset next set progress to prevent weird behavior
+                this.props.onSetProgressChange(exercise.id, this.props.order, {
+                    isResting: false,
+                    isCompleted: false
+                });
                 this.props.onButtonNextClickEnd(nextExerciseRef.id, nextExerciseRef.order);
             }
             else {
@@ -91,8 +96,10 @@ class Set extends React.Component {
         
         const restTemplate = !!rest ? (
             <RestCard 
-                time={rest} 
-                isRunning={progress.isResting}
+                exercise={this.props.exercise}
+                order={this.props.order}
+                time={rest}
+                isRunning={progress.isResting && !progress.isCompleted}
                 onEndRest={this.handleEndRest} />
         ) : null;
 
