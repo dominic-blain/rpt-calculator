@@ -188,6 +188,8 @@ const ActionCreators = {
                 goal: parseInt(exercise.goal),
                 name: exercise.name,
                 sets: parseInt(exercise.sets),
+                reps: parseInt(exercise.reps),
+                weight: parseInt(exercise.weight),
                 strategy: exercise.strategy
             }
 
@@ -595,7 +597,7 @@ const ActionCreators = {
                         const exercise = result.data();
                         exercise['dayId'] = dayId;
                         exercisesPromises.push(
-                            dispatch(ActionCreators.getSetsByStrat('rpt', exercise, dayId, programId))
+                            dispatch(ActionCreators.getSetsByStrat(exercise.strategy, exercise, dayId, programId))
                             .then(response => {
                                 exercise['setsData'] = response;
                                 exercises[exercise.id] = exercise;
@@ -692,23 +694,32 @@ const ActionCreators = {
                             const breakdownWeight = Math.max(Math.round(startingWeight * exercise.breakdown / 5) * 5, 5);
                             for (let i = 0; i < setCount; i++) {
                                 const setWeight = Math.max(startingWeight - (breakdownWeight * i), 0);
-                                sets.push({
+                                sets[i] = {
                                     reps: exercise.goal,
                                     weight: setWeight
-                                });
+                                };
                             }
                         }
                         else {
                             for (let i = 0; i < setCount; i++) {
-                                sets.push({
+                                sets[i] = {
                                     reps: exercise.goal,
                                     weight: 0
-                                });
+                                };
                             }
                         }
 
                         return Promise.resolve(sets);
                     });
+                case 'manual':
+                    const sets = [];
+                    for (let i = 0; i < exercise.sets; i++) {
+                        sets[i] = {
+                            reps: exercise.reps,
+                            weight: exercise.weight
+                        };
+                    }
+                    return Promise.resolve(sets);
             }
         }
     },
