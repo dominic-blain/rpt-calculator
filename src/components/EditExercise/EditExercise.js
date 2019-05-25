@@ -6,6 +6,7 @@ import styles from './EditExercise.less';
 class EditExercise extends React.Component {
     constructor(props) {
         super(props);
+        debugger;
         this.state = {
             editedExercise: {
                 name: props.exercise.name || '',
@@ -16,7 +17,7 @@ class EditExercise extends React.Component {
                 reps: props.exercise.reps || '',
                 rest: props.exercise.rest || '',
                 weight: props.exercise.weight || '',
-                order: props.exercise.order || '',
+                order: props.exercise.order || '0',
                 dayId: props.exercise.dayId || '',
                 id: props.exercise.id
             },

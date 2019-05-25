@@ -543,8 +543,10 @@ const ActionCreators = {
                             dispatch(ActionCreators.getExercises(day.id, programId))
                             .then(response => {
                                 const exercises = response.exercises;
+                                
                                 for (let exerciseId in exercises) {
-                                    day.exercises.unshift(exerciseId);
+                                    const exercise = exercises[exerciseId];
+                                    day.exercises[exercise.order] = exerciseId;
                                 }
                                 days.unshift(day);
                             })
