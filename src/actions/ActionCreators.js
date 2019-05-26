@@ -62,7 +62,6 @@ const ActionCreators = {
                 }
                 // User does NOT exist
                 else {
-                    // Delete after test
                     dispatch(ActionCreators.createUser(id))
                     .then(() => {
                         setTimeout(() => {
@@ -86,7 +85,8 @@ const ActionCreators = {
             const programRef = database.collection('programs').doc();
             const programId = programRef.id;
             database.collection('programs').doc(programId).set({
-                id: programId
+                id: programId,
+                userId: id
             });
             return database.collection('users').doc(id).set({
                 id: id,
