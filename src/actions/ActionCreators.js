@@ -155,11 +155,13 @@ const ActionCreators = {
                     goal: parseInt(exercise.goal),
                     name: exercise.name,
                     sets: parseInt(exercise.sets),
+                    reps: parseInt(exercise.reps),
+                    weight: parseInt(exercise.weight),
                     strategy: exercise.strategy
                 }
 
                 // Get sets data
-                dispatch(ActionCreators.getSetsByStrat('rpt', newExercise, lastDayId, programId))
+                dispatch(ActionCreators.getSetsByStrat(exercise.strategy, newExercise, lastDayId, programId))
                 .then(response => {
                     newExercise['setsData'] = response;
                     // Save exercise to database

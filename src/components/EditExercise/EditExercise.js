@@ -14,7 +14,7 @@ class EditExercise extends React.Component {
                 sets: props.exercise.sets || '',
                 breakdown: props.exercise.breakdown || '',
                 reps: props.exercise.reps || '',
-                rest: props.exercise.rest || '',
+                rest: props.exercise.rest || '0',
                 weight: props.exercise.weight || '',
                 order: props.exercise.order || '0',
                 dayId: props.exercise.dayId || '',
