@@ -6,7 +6,6 @@ import styles from './EditExercise.less';
 class EditExercise extends React.Component {
     constructor(props) {
         super(props);
-        debugger;
         this.state = {
             editedExercise: {
                 name: props.exercise.name || '',
