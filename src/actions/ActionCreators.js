@@ -30,18 +30,22 @@ const ActionCreators = {
                 const loadTimeout = Math.max(0, loadMin - loadDuration);
                 const user = result.data();
 
+                const getProgramCallback = function (id) {
+                    dispatch(ActionCreators.getProgram(id))
+                    .then(() => {
+                        setTimeout(() => {
+                            dispatch(ActionCreators.setIsLoading(false));
+                        }, loadTimeout);
+                    }).catch(error => {
+                        dispatch(ActionCreators.setErrorMessage('Error:' + error));
+                    });
+                }
+
                 // User exists
                 if (user) {
                     // Program exists
                     if (!!user.program) {
-                        dispatch(ActionCreators.getProgram(user.program.id))
-                        .then(() => {
-                            setTimeout(() => {
-                                dispatch(ActionCreators.setIsLoading(false));
-                            }, loadTimeout);
-                        }).catch(error => {
-                            dispatch(ActionCreators.setErrorMessage('Error:' + error));
-                        });
+                        getProgramCallback(user.program.id);
                     // Program DOES NOT exist
                     } else {
                         const programRef = database.collection('programs').doc();
@@ -54,19 +58,15 @@ const ActionCreators = {
                             program: programRef
                         })
                         .then(() => {
-                            setTimeout(() => {
-                                dispatch(ActionCreators.setIsLoading(false));
-                            }, loadTimeout);
+                           getProgramCallback(programId);
                         })
                     }
                 }
                 // User does NOT exist
                 else {
                     dispatch(ActionCreators.createUser(id))
-                    .then(() => {
-                        setTimeout(() => {
-                            dispatch(ActionCreators.setIsLoading(false));
-                        }, loadTimeout);
+                    .then((programId) => {
+                        getProgramCallback(programId);
                     });
                 }
             });
@@ -93,7 +93,8 @@ const ActionCreators = {
                 program: programRef
             })
             .then(() => {
-                return dispatch(ActionCreators.createUserSuccess());
+                dispatch(ActionCreators.createUserSuccess());
+                return programId;
             })
             .catch((error) => {
                 dispatch(ActionCreators.setErrorMessage('Error:' + error));
