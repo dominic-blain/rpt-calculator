@@ -32,7 +32,7 @@ class EditExercise extends React.Component {
                 'sets',
                 'breakdown'
             ],
-            manual: [
+            linear: [
                 'reps',
                 'sets',
                 'weight'
@@ -136,7 +136,7 @@ class EditExercise extends React.Component {
                             value={values.strategy} 
                             onChange={this.handleInputChange}>
                             <option value="rpt">Reverse Pyramid Training</option>
-                            <option value="manual">Manual</option>
+                            <option value="linear">Linear</option>
                         </select>
                         {this.strategyFields[currentStrategy].includes('goal') &&
                             <div>

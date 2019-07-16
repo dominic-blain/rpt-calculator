@@ -715,7 +715,7 @@ const ActionCreators = {
 
                         return Promise.resolve(sets);
                     });
-                case 'manual':
+                case 'linear':
                     const sets = [];
                     for (let i = 0; i < exercise.sets; i++) {
                         sets[i] = {
