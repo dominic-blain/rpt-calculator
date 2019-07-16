@@ -29,7 +29,7 @@ class DaysList extends React.Component {
         const dayCardTemplates = [];
         days.forEach((day, index) => {
             const isCompleted = false;
-            const name = 'Day ' + index;
+            const name = 'Day ' + (index + 1);
             const exercisesData = day.exercises.map(exerciseId => {
                 const exercise = exercises[exerciseId];
                 return {
