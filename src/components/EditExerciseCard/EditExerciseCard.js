@@ -48,7 +48,6 @@ const targetSpecs = {
 
         if  ((dragDirection === "up" && mousePosition.y < targetMiddleY) ||
             (dragDirection === "down" && mousePosition.y > targetMiddleY )) {
-            console.log(source, target);
             props.onReorder(source, target);
             monitor.getItem().order = target.order;
             monitor.getItem().dayId = target.dayId;
@@ -90,7 +89,6 @@ class EditExerciseCard extends React.Component {
         const id = this.props.id;
         const name = this.props.name;
         const sets = this.props.sets;
-        const handleEdit = this.props.onEdit;
         const connectDragSource = this.props.connectDragSource;
         const connectDropTarget = this.props.connectDropTarget;
         const isDragging = this.props.isDragging;
