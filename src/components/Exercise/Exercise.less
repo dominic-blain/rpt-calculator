@@ -166,3 +166,42 @@
         }
     }
 }
+
+.lastLogsCtn {
+    .font--label;
+    color: @main-text-lighter;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        transform @duration-faster @ease-out-standard 0ms,
+        opacity @duration-faster @ease-out-standard 0ms,
+        visibility 0ms @duration-faster;
+
+    // ~> IS ACTIVE
+    &.isActive {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(100%);
+        transition-delay: 0ms;
+    }
+
+    .log {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        margin-top: @unit-2;
+        white-space: nowrap;
+        opacity: 0;
+        
+        transition: opacity @duration-faster @ease-out-standard;
+        // ~> IS ACTIVE
+        &.isActive {
+            opacity: 1;
+        }
+    }
+}

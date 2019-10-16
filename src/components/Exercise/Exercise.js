@@ -34,6 +34,7 @@ class Exercise extends React.Component {
         const setCount = exercise.sets;
         const rest = exercise.rest;
         const sets = exercise.setsData;
+        const lastLogs = exercise.lastLogs;
         const exerciseCount = this.props.exerciseCount;
         const progress = this.props.progress[exercise.id];
 
@@ -44,17 +45,26 @@ class Exercise extends React.Component {
         const dotsCtnStyles = 
             styles.dotsCtn +' '+
             (isActive ? styles.isActive : '');
+        const lastLogsCtnStyles = 
+            styles.lastLogsCtn +' '+
+            (isActive ? styles.isActive : '');
 
         const setsTemplate = [];
         const dotsTemplate = [];
+        const lastLogsTemplate = [];
         sets.forEach((set, index) => {
             const order = index + 1;
+            const lastLog = lastLogs[order];
+            const lastLogLabel = !!lastLog ? `${lastLog.reps} × ${lastLog.weight} lbs` : '';
             const setProgress = progress.sets[index];
             const isSetActive = order == progress.activeSet && isActive;
             const offsetX = (order - progress.activeSet) * 100;
             const inlineStyle = {transform: `translateX(${offsetX}%)`};
             const dotStyles = 
                 styles.dot +' '+
+                (isSetActive ? styles.isActive : '');
+            const logStyles = 
+                styles.log +' '+
                 (isSetActive ? styles.isActive : '');
             setsTemplate.push(
                <Set
@@ -69,11 +79,15 @@ class Exercise extends React.Component {
                     inlineStyle={inlineStyle}
                     rest={rest}
                     progress={setProgress}
+                    lastLog={lastLog}
                     onExerciseEnd={this.handleExerciseEnd}
                 />
             );
             dotsTemplate.push(
                 <div key={index} className={dotStyles}></div>
+            );
+            lastLogsTemplate.push(
+                <div key={index} className={logStyles}>{lastLogLabel}</div>
             );
         });
         return (
@@ -111,6 +125,9 @@ class Exercise extends React.Component {
                     </div>
                     <div className={dotsCtnStyles}>
                         {dotsTemplate}
+                    </div>
+                    <div className={lastLogsCtnStyles}>
+                        {lastLogsTemplate}
                     </div>
                 </div>
             </section>

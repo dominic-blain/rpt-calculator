@@ -596,21 +596,44 @@ const ActionCreators = {
 
             return exercisesRef.get().then(results => {
                 const exercises = {};
-                const exercisesPromises = [];
-                results.docs.forEach(result => {
+                return Promise.all(results.docs.map(result => {
                     if (result.exists) {
                         const exercise = result.data();
+                        const lastLogs = [];
+                        const exercisePromises = [];
+
                         exercise['dayId'] = dayId;
-                        exercisesPromises.push(
+
+                        for (let i=1; i <= exercise.sets; i++) {
+                            exercisePromises.push(
+                                dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId, i))
+                                .then(response => {
+                                    lastLogs[i] = response.log;
+                                    console.log('get last log DONE')
+                                })
+                            );
+                        }
+
+                        exercisePromises.push(
                             dispatch(ActionCreators.getSetsByStrat(exercise.strategy, exercise, dayId, programId))
                             .then(response => {
+                                console.log('get strat DONE')
                                 exercise['setsData'] = response;
-                                exercises[exercise.id] = exercise;
                             })
                         );
+                        
+                        return Promise.all(exercisePromises).then(() => {
+                            console.log('exercise DONE')
+                            exercise['lastLogs'] = lastLogs;
+                            exercises[exercise.id] = exercise;
+                        });
                     }
-                });
-                return Promise.all(exercisesPromises).then(() => {
+                    else {
+                        return Promise.resolve();
+                    }
+                }))
+                .then(() => {
+                    console.log('all exercises DONE')
                     return dispatch(ActionCreators.getExercisesSuccess(exercises));
                 }).catch(error => {
                     // Manage error
@@ -637,7 +660,7 @@ const ActionCreators = {
             error: error
         }
     },
-    getLastLog(exerciseId, dayId, programId) {
+    getLastLog(exerciseId, dayId, programId, setOrder = 1) {
         return dispatch => {
             dispatch(ActionCreators.getLastLogStart());
             const database = store.firestore;
@@ -649,7 +672,7 @@ const ActionCreators = {
                 .collection('exercises')
                 .doc(exerciseId)
                 .collection('logs')
-                .where('set', '==', 1)
+                .where('set', '==', setOrder)
                 .orderBy('timestamp', 'desc')
                 .limit(1);
 

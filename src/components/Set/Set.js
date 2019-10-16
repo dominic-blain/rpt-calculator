@@ -84,6 +84,7 @@ class Set extends React.Component {
         const reps = this.props.reps;
         const weight = this.props.weight;
         const rest = this.props.rest;
+        const lastLog = this.props.lastLog;
         const progress = this.props.progress;
         const isActive = this.props.isActive;
         const inlineStyle = this.props.inlineStyle;
