@@ -608,7 +608,7 @@ const ActionCreators = {
                             exercisePromises.push(
                                 dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId, i))
                                 .then(response => {
-                                    lastLogs[i] = response.log;
+                                    lastLogs[i - 1] = response.log;
                                     console.log('get last log DONE')
                                 })
                             );

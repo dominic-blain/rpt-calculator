@@ -7,11 +7,29 @@ import Set from '../Set/Set';
 class Exercise extends React.Component {
     constructor(props) {
         super(props);
+        this.handleButtonLogsClick = this.handleButtonLogsClick.bind(this);
         this.handleButtonStartClick = this.handleButtonStartClick.bind(this);
         this.handleExerciseEnd = this.handleExerciseEnd.bind(this);
+
+        this.state = {
+            isLogsOpen: false
+        }
+    }
+
+    handleButtonLogsClick() {
+        this.setState(prevState => {
+            return {
+                isLogsOpen: !prevState.isLogsOpen
+            }
+        });
     }
 
     handleButtonStartClick() {
+        this.setState(() => {
+            return {
+                isLogsOpen: false
+            }
+        });
         const id = this.props.exercise.id;
         const order = this.props.exercise.order;
         this.props.onButtonStartClick(id, order);
@@ -21,6 +39,11 @@ class Exercise extends React.Component {
         const dayId = this.props.exercise.dayId;
         const id = this.props.exercise.id;
         const sets = this.props.exercise.setsData;
+        this.setState(() => {
+            return {
+                isLogsOpen: false
+            }
+        });
         this.props.onExerciseEnd(id, dayId, sets);
     }
 
@@ -38,6 +61,10 @@ class Exercise extends React.Component {
         const exerciseCount = this.props.exerciseCount;
         const progress = this.props.progress[exercise.id];
 
+        const lastLogsStyleObject = {
+            "--setCount": setCount
+        }
+
         const exerciseStyles = 
             styles.exercise +' '+
             (isActive ? styles.isActive : '') +' '+
@@ -45,16 +72,20 @@ class Exercise extends React.Component {
         const dotsCtnStyles = 
             styles.dotsCtn +' '+
             (isActive ? styles.isActive : '');
+        const lastLogCtnStyles = 
+            styles.lastLogCtn +' '+
+            (isActive ? styles.isActive : '');
         const lastLogsCtnStyles = 
             styles.lastLogsCtn +' '+
-            (isActive ? styles.isActive : '');
+            (this.state.isLogsOpen ? styles.isActive : '');
 
         const setsTemplate = [];
         const dotsTemplate = [];
+        const lastLogTemplate = [];
         const lastLogsTemplate = [];
         sets.forEach((set, index) => {
             const order = index + 1;
-            const lastLog = lastLogs[order];
+            const lastLog = lastLogs[index];
             const lastLogLabel = !!lastLog ? `${lastLog.reps} × ${lastLog.weight} lbs` : '';
             const setProgress = progress.sets[index];
             const isSetActive = order == progress.activeSet && isActive;
@@ -86,10 +117,17 @@ class Exercise extends React.Component {
             dotsTemplate.push(
                 <div key={index} className={dotStyles}></div>
             );
-            lastLogsTemplate.push(
+            lastLogTemplate.push(
                 <div key={index} className={logStyles}>{lastLogLabel}</div>
             );
+            lastLogsTemplate.push(
+                <div key={index} className={logStyles}>
+                    <span className={styles.logIndex}>{index + 1}</span>
+                    <span className={styles.logLabel}>{lastLogLabel}</span>
+                </div>
+            );
         });
+        
         return (
             <section className={exerciseStyles}>
                 <h2 className={styles.name}>{name}</h2>
@@ -103,7 +141,9 @@ class Exercise extends React.Component {
                                 {`${sets[0].reps} × ${sets[0].weight} lbs`}
                             </span>
                         </div>
-                        <button className={styles.buttonLogs}>
+                        <button 
+                            className={styles.buttonLogs}
+                            onClick={this.handleButtonLogsClick}>
                         📈
                         </button>
                         <button 
@@ -126,10 +166,14 @@ class Exercise extends React.Component {
                     <div className={dotsCtnStyles}>
                         {dotsTemplate}
                     </div>
-                    <div className={lastLogsCtnStyles}>
+                    <div className={lastLogCtnStyles}>
+                        {lastLogTemplate}
+                    </div>
+                    
+                </div>
+                <div className={lastLogsCtnStyles} style={lastLogsStyleObject}>
                         {lastLogsTemplate}
                     </div>
-                </div>
             </section>
         )
     }
