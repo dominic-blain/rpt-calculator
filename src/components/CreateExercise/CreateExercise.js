@@ -9,10 +9,11 @@ class CreateExercise extends React.Component {
         this.state = {
             newExercise: {
                 name: '',
-                strategy: 'manual',
+                strategy: 'linear',
                 goal: '',
                 sets: '',
                 breakdown: '',
+                progression: '',
                 reps: '',
                 rest: '',
                 weight: '',
@@ -28,6 +29,12 @@ class CreateExercise extends React.Component {
                 'goal',
                 'sets',
                 'breakdown'
+            ],
+            linear: [
+                'reps',
+                'sets',
+                'weight',
+                'progression'
             ],
             manual: [
                 'reps',
@@ -126,6 +133,7 @@ class CreateExercise extends React.Component {
                             value={values.strategy} 
                             onChange={this.handleInputChange}>
                             <option value="rpt">Reverse Pyramid Training</option>
+                            <option value="linear">Linear Progression</option>
                             <option value="manual">Manual</option>
                         </select>
                         {this.strategyFields[currentStrategy].includes('goal') &&
@@ -165,6 +173,20 @@ class CreateExercise extends React.Component {
                                     name="breakdown" 
                                     placeholder="Weight % to remove after each set"
                                     value={values.breakdown}
+                                    onChange={this.handleInputChange}
+                                />
+                            </div>
+                        }
+                        {this.strategyFields[currentStrategy].includes('progression') &&
+                            <div>
+                                <label htmlFor="progression">Progression</label>
+                                <input 
+                                    type="number"
+                                    min="0"
+                                    step="2.5"
+                                    name="progression" 
+                                    placeholder="Weight (lbs) to add after each successful workout"
+                                    value={values.progression}
                                     onChange={this.handleInputChange}
                                 />
                             </div>
