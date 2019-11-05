@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js --mode development",
     "staging": "webpack --env.ENVIRONMENT=staging --config webpack.prod.js --progress --mode production && firebase deploy -P staging",
-    "prod": "webpack --env.ENVIRONMENT=production --config webpack.prod.js --progress --mode production && firebase deploy"
+    "prod": "webpack --env.ENVIRONMENT=production --config webpack.prod.js --progress --mode production && firebase deploy -P prod"
   },
   "repository": {
     "type": "git",

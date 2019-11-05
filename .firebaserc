@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "dev-rpt-calculator",
-    "staging": "dev-rpt-calculator"
+    "staging": "dev-rpt-calculator",
+    "prod": "rpt-calculator"
   }
 }
