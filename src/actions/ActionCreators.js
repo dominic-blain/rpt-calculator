@@ -151,6 +151,7 @@ const ActionCreators = {
                     id: exerciseRef.id,
                     dayId: lastDayId,
                     order: exerciseOrder,
+                    lastLogs: exercise.lastLogs,
                     rest: parseFloat(exercise.rest),
                     breakdown: parseFloat(exercise.breakdown),
                     progression: parseFloat(exercise.progression),
@@ -163,7 +164,7 @@ const ActionCreators = {
                 }
 
                 // Get sets data
-                dispatch(ActionCreators.getSetsByStrat(exercise.strategy, newExercise, lastDayId, programId))
+                dispatch(ActionCreators.getSetsByStrat(exercise.strategy, newExercise))
                 .then(response => {
                     newExercise['setsData'] = response;
                     // Save exercise to database
@@ -182,10 +183,11 @@ const ActionCreators = {
         return (dispatch, getState) => {
             const state = getState();
             const programId = state.root.program.id;
-
+            debugger;
             const editedExercise = {
                 id: exercise.id,
                 dayId: exercise.dayId,
+                lastLogs: exercise.lastLogs,
                 order: parseInt(exercise.order),
                 rest: parseFloat(exercise.rest),
                 breakdown: parseFloat(exercise.breakdown),
@@ -197,9 +199,9 @@ const ActionCreators = {
                 weight: parseInt(exercise.weight),
                 strategy: exercise.strategy
             }
-
+            console.log(editedExercise.lastLogs)
             // Get sets data
-            dispatch(ActionCreators.getSetsByStrat(exercise.strategy, editedExercise, exercise.dayId, programId))
+            dispatch(ActionCreators.getSetsByStrat(exercise.strategy, editedExercise))
             .then(response => {
                 editedExercise['setsData'] = response;
                 // Save exercise to database
@@ -610,24 +612,23 @@ const ActionCreators = {
                             exercisePromises.push(
                                 dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId, i))
                                 .then(response => {
-                                    lastLogs[i - 1] = response.log;
+                                    lastLogs[i - 1] = !!response.log ? response.log : '';
                                     console.log('get last log DONE')
                                 })
                             );
                         }
-
-                        exercisePromises.push(
-                            dispatch(ActionCreators.getSetsByStrat(exercise.strategy, exercise, dayId, programId))
-                            .then(response => {
-                                console.log('get strat DONE')
-                                exercise['setsData'] = response;
-                            })
-                        );
                         
                         return Promise.all(exercisePromises).then(() => {
                             console.log('exercise DONE')
                             exercise['lastLogs'] = lastLogs;
-                            exercises[exercise.id] = exercise;
+                            dispatch(ActionCreators.getSetsByStrat(exercise.strategy, exercise))
+                            .then((response) => {
+                                console.log('get strat DONE')
+                                exercise['setsData'] = response;
+                                exercises[exercise.id] = exercise;
+                            });
+
+                            
                         });
                     }
                     else {
@@ -709,76 +710,76 @@ const ActionCreators = {
             error: error
         }
     },
-    getSetsByStrat(strategy, exercise, dayId, programId) {
+    getSetsByStrat(strategy, exercise) {
         return dispatch => {
-            switch(strategy) {
-                case 'rpt':
-                    return dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId))
-                    .then(response => {
-                        const sets = [];
-                        const setCount = exercise.sets;
-    
-                        if (!!response.log) {
-                            const log = response.log;
-                            const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
-                            const breakdownWeight = Math.max(Math.round(startingWeight * exercise.breakdown / 5) * 5, 5);
-                            for (let i = 0; i < setCount; i++) {
-                                const setWeight = Math.max(startingWeight - (breakdownWeight * i), 0);
-                                sets[i] = {
-                                    reps: exercise.goal,
-                                    weight: setWeight
-                                };
-                            }
-                        }
-                        else {
-                            for (let i = 0; i < setCount; i++) {
-                                sets[i] = {
-                                    reps: exercise.goal,
-                                    weight: 0
-                                };
-                            }
-                        }
+            const lastLogs = exercise.lastLogs;
+            const setCount = exercise.sets;
 
-                        return Promise.resolve(sets);
-                    });
-                    case 'linear':
-                        return dispatch(ActionCreators.getLastLog(exercise.id, dayId, programId))
-                        .then(response => {
-                            const sets = [];
-                            const setCount = exercise.sets;
-        
-                            if (!!response.log) {
-                                const log = response.log;
-                                const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
-                                const breakdownWeight = Math.max(Math.round(startingWeight * exercise.breakdown / 5) * 5, 5);
-                                for (let i = 0; i < setCount; i++) {
-                                    const setWeight = Math.max(startingWeight - (breakdownWeight * i), 0);
-                                    sets[i] = {
-                                        reps: exercise.goal,
-                                        weight: setWeight
-                                    };
-                                }
-                            }
-                            else {
-                                for (let i = 0; i < setCount; i++) {
-                                    sets[i] = {
-                                        reps: exercise.goal,
-                                        weight: 0
-                                    };
-                                }
-                            }
-    
-                            return Promise.resolve(sets);
-                        });
-                case 'manual':
+            switch(strategy) {
+                case 'rpt': {
+                    const log = lastLogs[0];
                     const sets = [];
-                    for (let i = 0; i < exercise.sets; i++) {
+                    const setCount = setCount;
+
+                    if (!!log) {
+                        const startingWeight = (log.reps >= exercise.goal) ? log.weight + 5 : log.weight;
+                        const breakdownWeight = Math.max(Math.round(startingWeight * exercise.breakdown / 5) * 5, 5);
+                        for (let i = 0; i < setCount; i++) {
+                            const setWeight = Math.max(startingWeight - (breakdownWeight * i), 0);
+                            sets[i] = {
+                                reps: exercise.goal,
+                                weight: setWeight
+                            };
+                        }
+                    }
+                    else {
+                        for (let i = 0; i < setCount; i++) {
+                            sets[i] = {
+                                reps: exercise.goal,
+                                weight: 0
+                            };
+                        }
+                    }
+                    return Promise.resolve(sets);
+                }
+                case 'linear': {
+                    debugger;
+                    const sets = [];
+                    let weightToBeat = !!lastLogs ? lastLogs[0].weight : exercise.weight;
+                    let hasPassed = true;
+                    
+                    if (!!lastLogs) {
+                        for (let i = 0; i < setCount; i++) {
+                            const log = lastLogs[i];
+                            if (log.weight < weightToBeat || log.reps < exercise.reps) {
+                                hasPassed = false;
+                            }
+                        }
+                    } else {
+                        hasPassed = false;
+                    }
+
+                    const newWeight = hasPassed ? weightToBeat + exercise.progression : weightToBeat;
+
+                    for (let i = 0; i < setCount; i++) {
+                        sets[i] = {
+                            reps: exercise.reps,
+                            weight: newWeight
+                        }
+                    }
+
+                    return Promise.resolve(sets);
+                }
+                case 'manual': {
+                    const sets = [];
+                    for (let i = 0; i < setCount; i++) {
                         sets[i] = {
                             reps: exercise.reps,
                             weight: exercise.weight
                         };
                     }
                     return Promise.resolve(sets);
+                }
             }
         }
     },

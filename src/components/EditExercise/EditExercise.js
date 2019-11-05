@@ -9,6 +9,7 @@ class EditExercise extends React.Component {
         this.state = {
             editedExercise: {
                 name: props.exercise.name || '',
+                lastLogs: props.exercise.lastLogs || '',
                 strategy: props.exercise.strategy || '',
                 goal: props.exercise.goal || '',
                 sets: props.exercise.sets || '',

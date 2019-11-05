@@ -9,6 +9,7 @@ class CreateExercise extends React.Component {
         this.state = {
             newExercise: {
                 name: '',
+                lastLogs: '',
                 strategy: 'linear',
                 goal: '',
                 sets: '',
